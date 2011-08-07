@@ -34,13 +34,13 @@ public:
   void setColor(const QColor &color);
   QColor color() const;
 
-signals:
+Q_SIGNALS:
   void colorChanged(const QColor &);
 
 protected:
   //void paintEvent(QPaintEvent *event);
 
-private slots:
+private Q_SLOTS:
   void chooseColor();
 
 private:

@@ -84,7 +84,7 @@ public:
   inline void setAllowClientUpdates(bool allow) { _allowClientUpdates = allow; }
   inline bool allowClientUpdates() const { return _allowClientUpdates; }
 
-public slots:
+public Q_SLOTS:
   virtual void setInitialized();
   void requestUpdate(const QVariantMap &properties);
   virtual void update(const QVariantMap &properties);
@@ -95,7 +95,7 @@ protected:
   void renameObject(const QString &newName);
   SyncableObject &operator=(const SyncableObject &other);
 
-signals:
+Q_SIGNALS:
   void initDone();
   void updatedRemotely();
   void updated();

@@ -96,7 +96,7 @@ public:
   inline QDateTime lastSpokenTo(BufferId id) const { return _lastSpokenTo.value(id); }
   void setLastSpokenTo(BufferId id, const QDateTime &time);
 
-public slots:
+public Q_SLOTS:
   void setUser(const QString &user);
   void setHost(const QString &host);
   void setNick(const QString &nick);
@@ -123,7 +123,7 @@ public slots:
   void addUserModes(const QString &modes);
   void removeUserModes(const QString &modes);
 
-signals:
+Q_SIGNALS:
 //   void userSet(QString user);
 //   void hostSet(QString host);
   void nickSet(QString newnick); // needed in NetworkModel
@@ -149,7 +149,7 @@ signals:
   void lastChannelActivityUpdated(BufferId id, const QDateTime &newTime);
   void lastSpokenToUpdated(BufferId id, const QDateTime &newTime);
 
-private slots:
+private Q_SLOTS:
   void updateObjectName();
   void channelDestroyed();
 

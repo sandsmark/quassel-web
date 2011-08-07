@@ -72,7 +72,7 @@ public:
   inline qint32 idx() const { return _idx; }
   inline bool emacsMode() const { return _emacsMode; }
 
-public slots:
+public Q_SLOTS:
   void setMode(Mode mode);
   void setMinHeight(int numLines);
   void setMaxHeight(int numLines);
@@ -88,7 +88,7 @@ public slots:
   inline void setTempHistory(QHash<int, QString> tempHistory) { _tempHistory = tempHistory; }
   inline void setIdx(qint32 idx) { _idx = idx; }
 
-signals:
+Q_SIGNALS:
   void textEntered(const QString &text);
   void noTextEntered();
 
@@ -97,7 +97,7 @@ protected:
   virtual void keyPressEvent(QKeyEvent * event);
   virtual void resizeEvent(QResizeEvent *event);
 
-private slots:
+private Q_SLOTS:
   void on_returnPressed();
   void on_returnPressed(const QString &text);
   void on_textChanged();

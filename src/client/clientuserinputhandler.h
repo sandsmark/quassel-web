@@ -32,13 +32,13 @@ class ClientUserInputHandler : public BasicHandler {
 public:
   ClientUserInputHandler(QObject *parent = 0);
 
-public slots:
+public Q_SLOTS:
   void handleUserInput(const BufferInfo &bufferInfo, const QString &msg);
 
-signals:
+Q_SIGNALS:
   void sendInput(const BufferInfo &, const QString &);
 
-private slots:
+private Q_SLOTS:
   void completionSuffixChanged(const QVariant &);
 
   void handleExec(const BufferInfo &bufferInfo, const QString &execString);

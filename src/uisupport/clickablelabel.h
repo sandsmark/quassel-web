@@ -29,7 +29,7 @@ class ClickableLabel : public QLabel {
 public:
   ClickableLabel(QWidget *parent = 0);
 
-signals:
+Q_SIGNALS:
   void clicked();
 
 protected:

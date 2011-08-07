@@ -19,6 +19,7 @@
  ***************************************************************************/
 
 #include <cstdlib>
+#include <stdio.h>
 
 #ifdef BUILD_CORE
 #  include "coreapplication.h"
@@ -26,6 +27,8 @@
 #  include "qtuiapplication.h"
 #elif defined BUILD_MONO
 #  include "monoapplication.h"
+#elif defined BUILD_WEBUI
+#  include "webapplication.h"
 
 #else
 #error "Something is wrong - you need to #define a build mode!"
@@ -111,6 +114,12 @@ int main(int argc, char **argv) {
   cliParser->addOption("change-userpass <username>", 0, "Starts an interactive session to change the password of the user identified by username");
 #endif
 
+  printf("lol\n");
+  cliParser->addOption("docroot <path>", 0, "Document root for static files");
+  cliParser->addOption("http-port <port>", 0, "Port for the HTTP server to listen to");
+  cliParser->addOption("http-addr <address>", 0, "Server for the HTTP server to listen to");
+
+
 #ifdef HAVE_KDE
   // the KDE version needs this extra call to parse argc/argv before app is instantiated
   if(!cliParser->init()) {
@@ -125,6 +134,10 @@ int main(int argc, char **argv) {
     QtUiApplication app(argc, argv);
 #  elif defined BUILD_MONO
     MonolithicApplication app(argc, argv);
+#  elif defined BUILD_WEBUI
+    WebApplication app(argc, argv);
+#else
+#error "Something is wrong - you need to #define a build mode!"
 #  endif
 
 #ifndef HAVE_KDE

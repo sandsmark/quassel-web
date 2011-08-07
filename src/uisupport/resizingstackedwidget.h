@@ -31,7 +31,7 @@ public:
 
   virtual QSize sizeHint() const;
 
-private slots:
+private Q_SLOTS:
   void indexChanged(int index);
 };
 

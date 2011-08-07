@@ -57,7 +57,7 @@ public:
 
   bool operator==(const CoreAccountModel &other) const;
 
-public slots:
+public Q_SLOTS:
   void save();
   void load();
   void clear();

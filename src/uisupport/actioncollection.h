@@ -87,16 +87,16 @@ class ActionCollection : public QObject {
       return a;
     }
 
-  signals:
+  Q_SIGNALS:
     void inserted(QAction *action);
     void actionHovered(QAction *action);
     void actionTriggered(QAction *action);
 
-  protected slots:
+  protected Q_SLOTS:
     virtual void connectNotify(const char *signal);
     virtual void slotActionTriggered();
 
-  private slots:
+  private Q_SLOTS:
     void slotActionHovered();
     void actionDestroyed(QObject *);
     void associatedWidgetDestroyed(QObject *);

@@ -114,7 +114,7 @@ public:
   bool isSecure() const { return _secure; }
   void dumpProxyStats();
 
-public slots:
+public Q_SLOTS:
   void detachObject(QObject *obj);
   void detachSignals(QObject *sender);
   void detachSlots(QObject *receiver);
@@ -124,7 +124,7 @@ protected:
   void sync_call__(const SyncableObject *obj, ProxyMode modeType, const char *funcname, va_list ap);
   void renameObject(const SyncableObject *obj, const QString &newname, const QString &oldname);
 
-private slots:
+private Q_SLOTS:
   void dataAvailable();
   void removePeerBySender();
   void objectRenamed(const QByteArray &classname, const QString &newname, const QString &oldname);
@@ -134,7 +134,7 @@ private slots:
 
   void updateSecureState();
 
-signals:
+Q_SIGNALS:
   void peerRemoved(QIODevice *dev);
   void connected();
   void disconnected();

@@ -97,7 +97,7 @@ public:
 
 //  virtual void addIgnoreListItem(const IgnoreListItem &item);
 
-public slots:
+public Q_SLOTS:
   virtual QVariantMap initIgnoreList() const;
   virtual void initSetIgnoreList(const QVariantMap &ignoreList);
 
@@ -141,7 +141,7 @@ protected:
   StrictnessType _match(const QString &msgContents, const QString &msgSender, Message::Type msgType, const QString &network, const QString &bufferName);
 
 
-signals:
+Q_SIGNALS:
   void ignoreAdded(IgnoreType type, const QString &ignoreRule, bool isRegex, StrictnessType strictness, ScopeType scope, const QVariant &scopeRule, bool isActive);
 
 private:

@@ -56,7 +56,7 @@ public:
   inline ResizeMode resizeMode() const { return _resizeMode; }
   void setResizeMode(ResizeMode);
 
-signals:
+Q_SIGNALS:
   void clickableActivated(const Clickable &click);
 
 protected:

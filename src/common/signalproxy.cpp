@@ -322,7 +322,7 @@ bool SignalProxy::addPeer(QIODevice* iodev) {
   _peers[iodev] = new IODevicePeer(iodev, iodev->property("UseCompression").toBool());
 
   if(_peers.count() == 1)
-    emit connected();
+    Q_EMIT connected();
 
   updateSecureState();
   return true;
@@ -361,7 +361,7 @@ bool SignalProxy::addPeer(SignalProxy* proxy) {
   proxy->addPeer(this);
 
   if(_peers.count() == 1)
-    emit connected();
+    Q_EMIT connected();
 
   updateSecureState();
   return true;
@@ -393,7 +393,7 @@ void SignalProxy::removePeer(QObject* dev) {
 
   disconnect(dev, 0, this, 0);
   if(peer->type() == AbstractPeer::IODevicePeer)
-    emit peerRemoved(static_cast<QIODevice *>(dev));
+    Q_EMIT peerRemoved(static_cast<QIODevice *>(dev));
 
   if(peer->type() == AbstractPeer::SignalProxyPeer) {
     SignalProxy *proxy = static_cast<SignalProxy *>(dev);
@@ -409,7 +409,7 @@ void SignalProxy::removePeer(QObject* dev) {
   updateSecureState();
 
   if(_peers.isEmpty())
-    emit disconnected();
+    Q_EMIT disconnected();
 }
 
 void SignalProxy::removePeerBySender() {
@@ -501,10 +501,10 @@ void SignalProxy::synchronize(SyncableObject *obj) {
 
   if(proxyMode() == Server) {
     obj->setInitialized();
-    emit objectInitialized(obj);
+    Q_EMIT objectInitialized(obj);
   } else {
     if(obj->isInitialized())
-      emit objectInitialized(obj);
+      Q_EMIT objectInitialized(obj);
     else
       requestInit(obj);
   }
@@ -687,7 +687,7 @@ void SignalProxy::handleSync(AbstractPeer *sender, QVariantList params) {
     sender->dispatchSignal(Sync, returnParams);
   }
 
-  // send emit update signal
+  // send Q_EMIT update signal
   invokeSlot(receiver, eMeta->updatedRemotelyId());
 }
 
@@ -904,6 +904,7 @@ bool SignalProxy::readDataFromDevice(QIODevice *dev, quint32 &blockSize, QVarian
       }
     }
 
+    qWarning() << rawItem.toBase64();
     rawItem = qUncompress(rawItem);
 
     QDataStream itemStream(&rawItem, QIODevice::ReadOnly);
@@ -940,7 +941,7 @@ void SignalProxy::setInitData(SyncableObject *obj, const QVariantMap &properties
     return;
   obj->fromVariantMap(properties);
   obj->setInitialized();
-  emit objectInitialized(obj);
+  Q_EMIT objectInitialized(obj);
   invokeSlot(obj, extendedMetaObject(obj)->updatedRemotelyId());
 }
 
@@ -1054,7 +1055,7 @@ void SignalProxy::disconnectDevice(QIODevice *dev, const QString &reason) {
 void SignalProxy::updateLag(IODevicePeer *peer, int lag) {
   peer->lag = lag;
   if(proxyMode() == Client) {
-    emit lagUpdated(lag);
+    Q_EMIT lagUpdated(lag);
   }
 }
 
@@ -1086,7 +1087,7 @@ void SignalProxy::updateSecureState() {
   }
 
   if(wasSecure != _secure)
-    emit secureStateChanged(_secure);
+    Q_EMIT secureStateChanged(_secure);
 }
 
 

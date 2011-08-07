@@ -74,7 +74,7 @@ bool SyncableObject::isInitialized() const {
 
 void SyncableObject::setInitialized() {
   _initialized = true;
-  emit initDone();
+  Q_EMIT initDone();
 }
 
 QVariantMap SyncableObject::toVariantMap() {
@@ -170,7 +170,7 @@ void SyncableObject::renameObject(const QString &newName) {
 void SyncableObject::update(const QVariantMap &properties) {
   fromVariantMap(properties);
   SYNC(ARG(properties))
-  emit updated();
+  Q_EMIT updated();
 }
 
 void SyncableObject::requestUpdate(const QVariantMap &properties) {

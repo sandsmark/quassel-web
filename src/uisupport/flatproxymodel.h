@@ -43,11 +43,11 @@ public:
   virtual int rowCount(const QModelIndex &index) const;
   virtual int columnCount(const QModelIndex &index) const;
 
-public slots:
+public Q_SLOTS:
   void linkTest() const;
   void completenessTest() const;
 
-private slots:
+private Q_SLOTS:
   void on_columnsAboutToBeInserted(const QModelIndex &parent, int start, int end);
   void on_columnsAboutToBeRemoved(const QModelIndex &parent, int start, int end);
   void on_columnsInserted(const QModelIndex &parent, int start, int end);

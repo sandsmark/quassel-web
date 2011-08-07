@@ -72,7 +72,7 @@ public:
   QString decodeString(const QByteArray &text) const;
   QByteArray encodeString(const QString &string) const;
 
-public slots:
+public Q_SLOTS:
   void setTopic(const QString &topic);
   void setPassword(const QString &password);
 
@@ -103,7 +103,7 @@ public slots:
   void initSetUserModes(const QVariantMap &usermodes);
   void initSetChanModes(const QVariantMap &chanModes);
 
-signals:
+Q_SIGNALS:
   void topicSet(const QString &topic); // needed by NetworkModel
 //   void passwordSet(const QString &password);
 //   void userModesSet(QString nick, QString modes);
@@ -120,9 +120,9 @@ signals:
   void ircUserModeRemoved(IrcUser *ircuser, QString mode);
   void ircUserModesSet(IrcUser *ircuser, QString modes);
 
-  void parted(); // convenience signal emitted before channels destruction
+  void parted(); // convenience signal Q_EMIT:ted before channels destruction
 
-private slots:
+private Q_SLOTS:
    void ircUserDestroyed();
    void ircUserNickSet(QString nick);
 

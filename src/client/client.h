@@ -138,7 +138,7 @@ public:
   static void logMessage(QtMsgType type, const char *msg);
   static inline const QString &debugLog() { return instance()->_debugLogBuffer; }
 
-signals:
+Q_SIGNALS:
   void requestNetworkStates();
 
   void showConfigWizard(const QVariantMap &coredata);
@@ -180,7 +180,7 @@ signals:
    */
   void bufferMarkedAsRead(BufferId id);
 
-public slots:
+public Q_SLOTS:
   void disconnectFromCore();
 
   void bufferRemoved(BufferId bufferId);
@@ -189,7 +189,7 @@ public slots:
 
   void markBufferAsRead(BufferId id);
 
-private slots:
+private Q_SLOTS:
   void setSyncedToCore();
   void setDisconnectedFromCore();
   void connectionStateChanged(CoreConnection::ConnectionState);

@@ -37,7 +37,7 @@ public:
   MsgId lastSeenMsg(BufferId buffer) const;
   MsgId markerLine(BufferId buffer) const;
 
-public slots:
+public Q_SLOTS:
   QVariantList initLastSeenMsg() const;
   void initSetLastSeenMsg(const QVariantList &);
 
@@ -51,17 +51,17 @@ public slots:
   virtual void removeBuffer(BufferId buffer);
 
   virtual inline void requestRenameBuffer(BufferId buffer, QString newName) { REQUEST(ARG(buffer), ARG(newName)) }
-  virtual inline void renameBuffer(BufferId buffer, QString newName) { SYNC(ARG(buffer), ARG(newName)) emit bufferRenamed(buffer, newName); }
+  virtual inline void renameBuffer(BufferId buffer, QString newName) { SYNC(ARG(buffer), ARG(newName)) Q_EMIT bufferRenamed(buffer, newName); }
 
-  virtual inline void requestMergeBuffersPermanently(BufferId buffer1, BufferId buffer2) { emit REQUEST(ARG(buffer1), ARG(buffer2)) }
+  virtual inline void requestMergeBuffersPermanently(BufferId buffer1, BufferId buffer2) { Q_EMIT REQUEST(ARG(buffer1), ARG(buffer2)) }
   virtual void mergeBuffersPermanently(BufferId buffer1, BufferId buffer2);
 
   virtual inline void requestPurgeBufferIds() { REQUEST(NO_ARG); }
 
-  virtual inline void requestMarkBufferAsRead(BufferId buffer) { REQUEST(ARG(buffer)) emit bufferMarkedAsRead(buffer); }
-  virtual inline void markBufferAsRead(BufferId buffer) { SYNC(ARG(buffer)) emit bufferMarkedAsRead(buffer); }
+  virtual inline void requestMarkBufferAsRead(BufferId buffer) { REQUEST(ARG(buffer)) Q_EMIT bufferMarkedAsRead(buffer); }
+  virtual inline void markBufferAsRead(BufferId buffer) { SYNC(ARG(buffer)) Q_EMIT bufferMarkedAsRead(buffer); }
 
-signals:
+Q_SIGNALS:
   void lastSeenMsgSet(BufferId buffer, const MsgId &msgId);
   void markerLineSet(BufferId buffer, const MsgId &msgId);
   void bufferRemoved(BufferId buffer);
@@ -69,7 +69,7 @@ signals:
   void buffersPermanentlyMerged(BufferId buffer1, BufferId buffer2);
   void bufferMarkedAsRead(BufferId buffer);
 
-protected slots:
+protected Q_SLOTS:
   bool setLastSeenMsg(BufferId buffer, const MsgId &msgId);
   bool setMarkerLine(BufferId buffer, const MsgId &msgId);
 

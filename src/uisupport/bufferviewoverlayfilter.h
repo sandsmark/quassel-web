@@ -38,7 +38,7 @@ public:
 protected:
   bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const;
 
-private slots:
+private Q_SLOTS:
   void overlayDestroyed();
 
 private:

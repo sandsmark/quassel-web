@@ -34,7 +34,8 @@ public:
   enum RunMode {
     Monolithic,
     ClientOnly,
-    CoreOnly
+    CoreOnly,
+    Web
   };
 
   struct BuildInfo {

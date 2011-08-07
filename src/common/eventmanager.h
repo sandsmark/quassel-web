@@ -117,7 +117,7 @@ public:
 
   QString enumName(EventType type) const;
 
-public slots:
+public Q_SLOTS:
   void registerObject(QObject *object, Priority priority = NormalPriority,
                       const QString &methodPrefix = "process",
                       const QString &filterPrefix = "filter");

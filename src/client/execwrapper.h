@@ -31,14 +31,14 @@ class ExecWrapper : public QObject {
 public:
   ExecWrapper(QObject *parent = 0);
 
-public slots:
+public Q_SLOTS:
   void start(const BufferInfo &info, const QString &command);
 
-signals:
+Q_SIGNALS:
   void error(const QString &errorMsg);
   void output(const QString &out);
 
-private slots:
+private Q_SLOTS:
   void processReadStdout();
   void processReadStderr();
   void processFinished(int exitCode, QProcess::ExitStatus exitStatus);

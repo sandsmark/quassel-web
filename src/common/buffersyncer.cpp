@@ -45,7 +45,7 @@ bool BufferSyncer::setLastSeenMsg(BufferId buffer, const MsgId &msgId) {
   if(!oldLastSeenMsg.isValid() || oldLastSeenMsg < msgId) {
     _lastSeenMsg[buffer] = msgId;
     SYNC(ARG(buffer), ARG(msgId))
-    emit lastSeenMsgSet(buffer, msgId);
+    Q_EMIT lastSeenMsgSet(buffer, msgId);
     return true;
   }
   return false;
@@ -64,7 +64,7 @@ bool BufferSyncer::setMarkerLine(BufferId buffer, const MsgId &msgId) {
 
   _markerLines[buffer] = msgId;
   SYNC(ARG(buffer), ARG(msgId))
-  emit markerLineSet(buffer, msgId);
+  Q_EMIT markerLineSet(buffer, msgId);
   return true;
 }
 
@@ -112,7 +112,7 @@ void BufferSyncer::removeBuffer(BufferId buffer) {
   if(_markerLines.contains(buffer))
     _markerLines.remove(buffer);
   SYNC(ARG(buffer))
-  emit bufferRemoved(buffer);
+  Q_EMIT bufferRemoved(buffer);
 }
 
 void BufferSyncer::mergeBuffersPermanently(BufferId buffer1, BufferId buffer2) {
@@ -121,5 +121,5 @@ void BufferSyncer::mergeBuffersPermanently(BufferId buffer1, BufferId buffer2) {
   if(_markerLines.contains(buffer2))
     _markerLines.remove(buffer2);
   SYNC(ARG(buffer1), ARG(buffer2))
-  emit buffersPermanentlyMerged(buffer1, buffer2);
+  Q_EMIT buffersPermanentlyMerged(buffer1, buffer2);
 }

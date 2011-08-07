@@ -38,7 +38,7 @@ public:
 
   inline QVariant &operator[](const QString &key) { return _coreData[key]; }
 
-public slots:
+public Q_SLOTS:
   inline virtual void setCoreData(const QVariantMap &data) { _coreData = data; }
 
 private:

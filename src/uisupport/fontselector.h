@@ -33,16 +33,16 @@ public:
 
   inline const QFont &selectedFont() const { return _font; }
 
-public slots:
+public Q_SLOTS:
   void setSelectedFont(const QFont &font);
 
-signals:
+Q_SIGNALS:
   void fontChanged(const QFont &);
 
 protected:
   void changeEvent(QEvent *e);
 
-protected slots:
+protected Q_SLOTS:
   void chooseFont();
 
 private:

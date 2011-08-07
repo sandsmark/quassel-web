@@ -116,7 +116,7 @@ public:
   };
   Q_DECLARE_FLAGS(ItemActiveStates, ItemActiveState)
 
-public slots:
+public Q_SLOTS:
   virtual void connectedToCore() {}
   virtual void disconnectedFromCore() {}
 
@@ -143,10 +143,10 @@ protected:
   BufferId findQueryBuffer(NetworkId, const QString &nickName) const;
   void removeBuffers(const QModelIndexList &indexList);
 
-protected slots:
+protected Q_SLOTS:
   virtual void actionTriggered(QAction *);
 
-signals:
+Q_SIGNALS:
   void showChannelList(NetworkId);
   void showIgnoreList(QString);
 
@@ -184,7 +184,7 @@ public:
   QString channelPassword() const;
   NetworkId networkId() const;
 
-private slots:
+private Q_SLOTS:
   void on_channel_textChanged(const QString &);
 
 private:

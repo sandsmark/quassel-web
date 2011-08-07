@@ -44,7 +44,7 @@ public:
 
   inline virtual const QMetaObject *syncMetaObject() const { return &staticMetaObject; }
 
-public slots:
+public Q_SLOTS:
   inline int bufferViewId() const { return _bufferViewId; }
 
   inline const QString &bufferViewName() const { return _bufferViewName; }
@@ -97,7 +97,7 @@ public slots:
   virtual inline void requestRemoveBufferPermanently(const BufferId &bufferId) { REQUEST(ARG(bufferId)) }
 
 
-signals:
+Q_SIGNALS:
   void bufferViewNameSet(const QString &bufferViewName); // invalidate
   void configChanged();
   void networkIdSet(const NetworkId &networkId);

@@ -78,12 +78,12 @@ public:
   inline const QSslSocket *sslSocket() const;
 #endif
 
-public slots:
+public Q_SLOTS:
   bool connectToCore(AccountId = 0);
   void reconnectToCore();
   void disconnectFromCore();
 
-signals:
+Q_SIGNALS:
   void stateChanged(CoreConnection::ConnectionState);
   void encrypted(bool isEncrypted = true);
   void synchronized();
@@ -114,7 +114,7 @@ signals:
   void handleSslErrors(const QSslSocket *socket, bool *accepted, bool *permanently);
 #endif
 
-private slots:
+private Q_SLOTS:
   void connectToCurrentAccount();
   void disconnectFromCore(const QString &errorString, bool wantReconnect = true);
 

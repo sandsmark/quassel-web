@@ -45,7 +45,7 @@ public:
   inline bool containsBuffer(const BufferId &id) const { return _validBuffers.contains(id); }
   inline QSet<BufferId> containedBuffers() const { return _validBuffers; }
 
-public slots:
+public Q_SLOTS:
   void messageTypeFilterChanged();
   void messageRedirectionChanged();
   void requestBacklog();

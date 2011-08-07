@@ -43,7 +43,7 @@ public:
   inline int rowCount(const QModelIndex &parent = QModelIndex()) const { Q_UNUSED(parent) return _channelList.count(); }
   inline int columnCount(const QModelIndex &parent = QModelIndex()) const { Q_UNUSED(parent) return 3; }
 
-public slots:
+public Q_SLOTS:
   void setChannelList(const QList<IrcListHelper::ChannelDescription> &channelList = QList<IrcListHelper::ChannelDescription>());
 
 private:

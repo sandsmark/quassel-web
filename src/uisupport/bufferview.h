@@ -59,14 +59,14 @@ public:
   void addActionsToMenu(QMenu *menu, const QModelIndex &index);
   void addFilterActions(QMenu *contextMenu, const QModelIndex &index);
 
-public slots:
+public Q_SLOTS:
   void setRootIndexForNetworkId(const NetworkId &networkId);
   void removeSelectedBuffers(bool permanently = false);
   void menuActionTriggered(QAction *);
   void nextBuffer();
   void previousBuffer();
 
-signals:
+Q_SIGNALS:
   void removeBuffer(const QModelIndex &);
   void removeBufferPermanently(const QModelIndex &);
 
@@ -80,7 +80,7 @@ protected:
   virtual void focusInEvent(QFocusEvent *event) { QAbstractScrollArea::focusInEvent(event); }
   virtual void contextMenuEvent(QContextMenuEvent *event);
 
-private slots:
+private Q_SLOTS:
   void joinChannel(const QModelIndex &index);
   void toggleHeader(bool checked);
 
@@ -133,10 +133,10 @@ public:
   inline BufferView *bufferView() const { return qobject_cast<BufferView *>(widget()); }
   inline bool isActive() const { return _active; }
 
-public slots:
+public Q_SLOTS:
   void setActive(bool active = true);
 
-private slots:
+private Q_SLOTS:
   void bufferViewRenamed(const QString &newName);
   void updateTitle();
 
