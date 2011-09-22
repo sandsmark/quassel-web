@@ -21,18 +21,22 @@
 #ifndef WEBUI_H
 #define WEBUI_H
 
-#include "graphicalui.h"
+#include "abstractui.h"
 
 class MainWin;
 class MessageModel;
-class QtUiMessageProcessor;
 
-class QtUi : public GraphicalUi {
+class WebUi : public AbstractUi {
   Q_OBJECT
 
 public:
-  QtUi();
-  ~QtUi();
+  WebUi();
+  ~WebUi();
+
+  MessageModel* createMessageModel(QObject*);
+  AbstractMessageProcessor* createMessageProcessor(QObject*);
+
+  virtual void init() {}
 };
 
 #endif

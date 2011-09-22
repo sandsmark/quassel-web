@@ -21,6 +21,8 @@
 #include <Wt/WApplication>
 #include <Wt/WEnvironment>
 #include "webapplication.h"
+#include "webui.h"
+#include "client.h"
 
 using namespace Wt;
 
@@ -42,7 +44,14 @@ WebApplication::~WebApplication()
 
 bool WebApplication::init()
 {
-    return true;
+    if (Quassel::init()) {
+        WebUi *ui = new WebUi();
+        Client::init(ui);
+        ui->init();
+        return true;
+    } else {
+        return false;
+    }
 }
 
 WApplication *WebApplication::createApplication(const WEnvironment& env)

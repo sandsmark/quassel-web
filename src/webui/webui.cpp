@@ -22,11 +22,19 @@
 
 #include "buffermodel.h"
 
-QtUi::QtUi() : GraphicalUi()
+WebUi::WebUi() : AbstractUi()
 {
 }
 
-QtUi::~QtUi()
+WebUi::~WebUi()
 {
 }
 
+AbstractMessageProcessor* WebUi::createMessageProcessor(QObject*)
+{
+    return 0;
+}
+MessageModel* WebUi::createMessageModel(QObject*)
+{
+    return 0;
+}

@@ -114,10 +114,11 @@ int main(int argc, char **argv) {
   cliParser->addOption("change-userpass <username>", 0, "Starts an interactive session to change the password of the user identified by username");
 #endif
 
-  printf("lol\n");
+#ifdef BUILD_WEBUI
   cliParser->addOption("docroot <path>", 0, "Document root for static files");
   cliParser->addOption("http-port <port>", 0, "Port for the HTTP server to listen to");
   cliParser->addOption("http-addr <address>", 0, "Server for the HTTP server to listen to");
+#endif
 
 
 #ifdef HAVE_KDE
