@@ -12,12 +12,14 @@ set(SOURCES
     webapplication.cpp
     webmessagemodel.cpp
     webmessagemodelitem.cpp
+    webmessageprocessor.cpp
     webui.cpp)
 
 set(MOC_HDRS
     webapplication.h
     webmessagemodel.h
     webmessagemodelitem.h
+    webmessageprocessor.h
     webui.h)
 
 set(HEADERS

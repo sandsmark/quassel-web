@@ -29,6 +29,7 @@
 #include <Wt/WTableView>
 
 #include "webmessagemodel.h"
+#include "webmessageprocessor.h"
 
 WebUi::WebUi(const WEnvironment& env) :
     AbstractUi(),
@@ -51,7 +52,7 @@ WebUi::~WebUi()
 
 AbstractMessageProcessor* WebUi::createMessageProcessor(QObject*)
 {
-    return 0;
+    return new WebMessageProcessor(this);
 }
 MessageModel* WebUi::createMessageModel(QObject*)
 {
