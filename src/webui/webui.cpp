@@ -26,6 +26,7 @@
 #include <Wt/WContainerWidget>
 #include <Wt/WLineEdit>
 #include <Wt/WText>
+#include <Wt/WTableView>
 
 #include "webmessagemodel.h"
 
@@ -37,9 +38,8 @@ WebUi::WebUi(const WEnvironment& env) :
     WVBoxLayout *layout = new WVBoxLayout;
     root()->setLayout(layout);
 
-    _chatView = new WContainerWidget(root());
+    _chatView = new WTableView(root());
     layout->addWidget(_chatView);
-    _chatView->addWidget(new WText("LOL"));
 
     _inputWidget = new WLineEdit(root());
     layout->addWidget(_inputWidget);
@@ -55,5 +55,7 @@ AbstractMessageProcessor* WebUi::createMessageProcessor(QObject*)
 }
 MessageModel* WebUi::createMessageModel(QObject*)
 {
-    return new WebMessageModel(root(), this);
+    _messageModel = new WebMessageModel(root(), this);
+    _chatView->setModel(_messageModel);
+    return _messageModel;
 }

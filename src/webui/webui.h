@@ -28,7 +28,7 @@
 
 using namespace Wt;
 
-class MessageModel;
+class WebMessageModel;
 
 class WebUi : public AbstractUi, public WApplication
 {
@@ -44,8 +44,9 @@ public:
   virtual void init() {}
 
 private:
-  WContainerWidget *_chatView;
+  WTableView *_chatView;
   WLineEdit *_inputWidget;
+  WebMessageModel *_messageModel;
 };
 
 #endif
