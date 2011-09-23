@@ -21,15 +21,19 @@
 
 #include "webui.h"
 
-#include "buffermodel.h"
 #include <Wt/WVBoxLayout>
 #include <Wt/WContainerWidget>
 #include <Wt/WLineEdit>
 #include <Wt/WText>
 #include <Wt/WTableView>
 
+#include "buffermodel.h"
+#include "client.h"
+#include "coreaccountmodel.h"
+
 #include "webmessagemodel.h"
 #include "webmessageprocessor.h"
+#include "weblogindialog.h"
 
 WebUi::WebUi(const WEnvironment& env) :
     AbstractUi(),
@@ -44,6 +48,10 @@ WebUi::WebUi(const WEnvironment& env) :
 
     _inputWidget = new WLineEdit(root());
     layout->addWidget(_inputWidget);
+
+    if (!Client::coreConnection()->connectToCore()) {
+        showLoginDialog();
+    }
 }
 
 WebUi::~WebUi()
@@ -54,9 +62,16 @@ AbstractMessageProcessor* WebUi::createMessageProcessor(QObject*)
 {
     return new WebMessageProcessor(this);
 }
+
 MessageModel* WebUi::createMessageModel(QObject*)
 {
     _messageModel = new WebMessageModel(root(), this);
     _chatView->setModel(_messageModel);
     return _messageModel;
+}
+
+void WebUi::showLoginDialog()
+{
+    WebLoginDialog *dialog = new WebLoginDialog;
+    dialog->show();
 }

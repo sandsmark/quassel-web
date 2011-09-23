@@ -44,6 +44,7 @@ public:
   virtual void init() {}
 
 private:
+  void showLoginDialog();
   WTableView *_chatView;
   WLineEdit *_inputWidget;
   WebMessageModel *_messageModel;

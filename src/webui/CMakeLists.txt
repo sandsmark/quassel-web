@@ -11,12 +11,14 @@ include(${QT_USE_FILE})
 set(SOURCES
     webapplication.cpp
     webmessagemodel.cpp
+    weblogindialog.cpp
     webmessagemodelitem.cpp
     webmessageprocessor.cpp
     webui.cpp)
 
 set(MOC_HDRS
     webapplication.h
+    weblogindialog.h
     webmessagemodel.h
     webmessagemodelitem.h
     webmessageprocessor.h
