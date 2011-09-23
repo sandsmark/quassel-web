@@ -96,12 +96,19 @@ int main(int argc, char **argv) {
 #endif
   cliParser->addOption("datadir <path>", 0, "DEPRECATED - Use --configdir instead");
 
+#ifdef BUILD_WEBUI
+  cliParser->addOption("docroot <path>", 0, "Document root for static files");
+  cliParser->addOption("http-port <port>", 0, "Port for the HTTP server to listen to");
+  cliParser->addOption("http-addr <address>", 0, "Server for the HTTP server to listen to");
+#else
+
 #ifndef BUILD_CORE
   // put client-only arguments here
   cliParser->addOption("qss <file.qss>", 0, "Load a custom application stylesheet");
   cliParser->addSwitch("debugbufferswitches", 0, "Enables debugging for bufferswitches");
   cliParser->addSwitch("debugmodel", 0, "Enables debugging for models");
 #endif
+
 #ifndef BUILD_QTUI
   // put core-only arguments here
   cliParser->addOption("listen <address>[,<address[,...]]>", 0, "The address(es) quasselcore will listen on", "::,0.0.0.0");
@@ -114,10 +121,6 @@ int main(int argc, char **argv) {
   cliParser->addOption("change-userpass <username>", 0, "Starts an interactive session to change the password of the user identified by username");
 #endif
 
-#ifdef BUILD_WEBUI
-  cliParser->addOption("docroot <path>", 0, "Document root for static files");
-  cliParser->addOption("http-port <port>", 0, "Port for the HTTP server to listen to");
-  cliParser->addOption("http-addr <address>", 0, "Server for the HTTP server to listen to");
 #endif
 
 

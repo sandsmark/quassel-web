@@ -18,12 +18,31 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+
 #include "webui.h"
 
 #include "buffermodel.h"
+#include <Wt/WVBoxLayout>
+#include <Wt/WContainerWidget>
+#include <Wt/WLineEdit>
+#include <Wt/WText>
 
-WebUi::WebUi() : AbstractUi()
+#include "webmessagemodel.h"
+
+WebUi::WebUi(const WEnvironment& env) :
+    AbstractUi(),
+    WApplication(env)
 {
+    setTitle("Quassel web interface");
+    WVBoxLayout *layout = new WVBoxLayout;
+    root()->setLayout(layout);
+
+    _chatView = new WContainerWidget(root());
+    layout->addWidget(_chatView);
+    _chatView->addWidget(new WText("LOL"));
+
+    _inputWidget = new WLineEdit(root());
+    layout->addWidget(_inputWidget);
 }
 
 WebUi::~WebUi()
@@ -36,5 +55,5 @@ AbstractMessageProcessor* WebUi::createMessageProcessor(QObject*)
 }
 MessageModel* WebUi::createMessageModel(QObject*)
 {
-    return 0;
+    return new WebMessageModel(root(), this);
 }

@@ -18,7 +18,6 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <Wt/WApplication>
 #include <Wt/WEnvironment>
 #include "webapplication.h"
 #include "webui.h"
@@ -45,10 +44,7 @@ WebApplication::~WebApplication()
 bool WebApplication::init()
 {
     if (Quassel::init()) {
-        WebUi *ui = new WebUi();
-        Client::init(ui);
-        ui->init();
-        return true;
+        return Wt::WRun(m_argc, m_argv, &createApplication);
     } else {
         return false;
     }
@@ -56,13 +52,8 @@ bool WebApplication::init()
 
 WApplication *WebApplication::createApplication(const WEnvironment& env)
 {
-    WApplication *app = new WApplication(env);
-    app->setTitle("Quassel IRC - web interface");
+    WebUi *app = new WebUi(env);
     return app;
 }
 
-bool WebApplication::exec()
-{
-    return Wt::WRun(m_argc, m_argv, &createApplication);
-}
 

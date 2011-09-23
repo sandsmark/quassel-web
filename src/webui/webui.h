@@ -21,22 +21,31 @@
 #ifndef WEBUI_H
 #define WEBUI_H
 
+
 #include "abstractui.h"
 
-class MainWin;
+#include <Wt/WApplication>
+
+using namespace Wt;
+
 class MessageModel;
 
-class WebUi : public AbstractUi {
+class WebUi : public AbstractUi, public WApplication
+{
   Q_OBJECT
 
 public:
-  WebUi();
+  WebUi(const WEnvironment& env);
   ~WebUi();
 
   MessageModel* createMessageModel(QObject*);
   AbstractMessageProcessor* createMessageProcessor(QObject*);
 
   virtual void init() {}
+
+private:
+  WContainerWidget *_chatView;
+  WLineEdit *_inputWidget;
 };
 
 #endif

@@ -10,10 +10,14 @@ include(${QT_USE_FILE})
 
 set(SOURCES
     webapplication.cpp
+    webmessagemodel.cpp
+    webmessagemodelitem.cpp
     webui.cpp)
 
 set(MOC_HDRS
     webapplication.h
+    webmessagemodel.h
+    webmessagemodelitem.h
     webui.h)
 
 set(HEADERS

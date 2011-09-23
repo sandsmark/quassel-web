@@ -41,7 +41,6 @@ public:
     ~WebApplication();
 
     bool init();
-    bool exec();
 
 private:
     static Wt::WApplication *createApplication(const Wt::WEnvironment&);
