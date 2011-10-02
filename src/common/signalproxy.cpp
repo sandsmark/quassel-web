@@ -168,7 +168,6 @@ void SignalProxy::IODevicePeer::dispatchSignal(const RequestType &requestType, c
   QVariantList packedFunc;
   packedFunc << (qint16)requestType
              << params;
-
   dispatchPackedFunc(QVariant(packedFunc));
 }
 
@@ -547,26 +546,6 @@ void SignalProxy::stopSynchronize(SyncableObject *obj) {
 }
 
 void SignalProxy::dispatchSignal(const RequestType &requestType, const QVariantList &params) {
-    switch(requestType) {
-    case Sync:
-        qDebug() << "> Sync: " << params;
-        break;
-    case RpcCall:
-        qDebug() << "> RpcCall: " << params;
-        break;
-    case InitRequest:
-        qDebug() << "> InitRequest: " << params;
-        break;
-    case InitData:
-        qDebug() << "> InitData: " << params;
-        break;
-    case HeartBeat:
-        qDebug() << "> HeartBeat: " << params;
-        break;
-    case HeartBeatReply:
-        qDebug() << "> HeartBeatReply: " << params;
-        break;
-    }
   QVariant packedFunc(QVariantList() << (qint16)requestType << params);
   PeerHash::iterator peer = _peers.begin();
   while(peer != _peers.end()) {
@@ -620,33 +599,27 @@ void SignalProxy::receivePeerSignal(AbstractPeer *sender, const RequestType &req
     if(params.empty())
       qWarning() << "SignalProxy::receivePeerSignal(): received empty RPC-Call";
     else
-      qDebug() << "< RpcCall: " << params;
       handleSignal(params);
       //handleSignal(params.takeFirst().toByteArray(), params);
     break;
 
   case Sync:
-    qDebug() << "< Sync: " << params;
     handleSync(sender, params);
     break;
 
   case InitRequest:
-    qDebug() << "< InitRequest: " << params;
     handleInitRequest(sender, params);
     break;
 
   case InitData:
-    qDebug() << "< InitData: " << params;
     handleInitData(sender, params);
     break;
 
   case HeartBeat:
-    qDebug() << "< HeartBeat: " << params;
     receiveHeartBeat(sender, params);
     break;
 
   case HeartBeatReply:
-    qDebug() << "< HeartBeatReply: " << params;
     receiveHeartBeatReply(sender, params);
     break;
 
@@ -805,8 +778,6 @@ bool SignalProxy::invokeSlot(QObject *receiver, int methodId, const QVariantList
     : args.count();
 
   if(eMeta->minArgCount(methodId) > params.count()) {
-      qWarning() << eMeta->minArgCount(methodId) << params.count();
-      qWarning() << params;
       qWarning() << "SignalProxy::invokeSlot(): not enough params to invoke" << eMeta->methodName(methodId);
       return false;
   }

@@ -57,7 +57,6 @@ inline QDataStream &operator<<(QDataStream &out, const SignedId &signedId) { out
 inline QDataStream &operator>>(QDataStream &in, SignedId &signedId) { in >> signedId.id; return in; }
 inline QTextStream &operator<<(QTextStream &out, const SignedId &signedId) { out << QString::number(signedId.toInt()); return out; }
 inline QDebug operator<<(QDebug dbg, const SignedId &signedId) { dbg.space() << signedId.toInt(); return dbg; }
-
 inline uint qHash(const SignedId &id) { return qHash(id.toInt()); }
 
 struct UserId : public SignedId {
@@ -88,8 +87,7 @@ struct IdentityId : public SignedId {
 struct AccountId : public SignedId {
   inline AccountId(int _id = 0) : SignedId(_id) {};
 };
-inline QDebug operator<<(QDebug dbg, const MsgId &signedId) { dbg.space() << signedId.toInt(); return dbg; }
-inline QDebug operator<<(QDebug dbg, const BufferId &signedId) { dbg.space() << signedId.toInt(); return dbg; }
+
 Q_DECLARE_METATYPE(UserId)
 Q_DECLARE_METATYPE(MsgId)
 Q_DECLARE_METATYPE(BufferId)
