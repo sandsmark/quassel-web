@@ -126,7 +126,7 @@ void IrcUser::setAway(const bool &away) {
   if(away != _away) {
     _away = away;
     SYNC(ARG(away))
-    emit awaySet(away);
+    Q_EMIT awaySet(away);
   }
 }
 
@@ -185,7 +185,7 @@ void IrcUser::setNick(const QString &nick) {
     _nick = nick;
     updateObjectName();
     SYNC(ARG(nick))
-    emit nickSet(nick);
+    Q_EMIT nickSet(nick);
   }
 }
 
@@ -259,7 +259,7 @@ void IrcUser::quit() {
   }
   network()->removeIrcUser(this);
   SYNC(NO_ARG)
-  emit quited();
+  Q_EMIT quited();
 }
 
 void IrcUser::channelDestroyed() {
@@ -275,7 +275,7 @@ void IrcUser::channelDestroyed() {
 void IrcUser::setUserModes(const QString &modes) {
   _userModes = modes;
   SYNC(ARG(modes))
-  emit userModesSet(modes);
+  Q_EMIT userModesSet(modes);
 }
 
 void IrcUser::addUserModes(const QString &modes) {
@@ -288,7 +288,7 @@ void IrcUser::addUserModes(const QString &modes) {
   }
 
   SYNC(ARG(modes))
-  emit userModesAdded(modes);
+  Q_EMIT userModesAdded(modes);
 }
 
 void IrcUser::removeUserModes(const QString &modes) {
@@ -299,15 +299,15 @@ void IrcUser::removeUserModes(const QString &modes) {
     _userModes.remove(modes[i]);
   }
   SYNC(ARG(modes))
-  emit userModesRemoved(modes);
+  Q_EMIT userModesRemoved(modes);
 }
 
 void IrcUser::setLastChannelActivity(BufferId buffer, const QDateTime &time) {
   _lastActivity[buffer] = time;
-  emit lastChannelActivityUpdated(buffer, time);
+  Q_EMIT lastChannelActivityUpdated(buffer, time);
 }
 
 void IrcUser::setLastSpokenTo(BufferId buffer, const QDateTime &time) {
   _lastSpokenTo[buffer] = time;
-  emit lastSpokenToUpdated(buffer, time);
+  Q_EMIT lastSpokenToUpdated(buffer, time);
 }

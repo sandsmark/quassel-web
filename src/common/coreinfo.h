@@ -35,7 +35,7 @@ class CoreInfo : public SyncableObject {
 public:
   CoreInfo(QObject *parent = 0) : SyncableObject(parent) {}
 
-public slots:
+public Q_SLOTS:
   virtual inline QVariantMap coreData() const { return QVariantMap(); }
   virtual inline void setCoreData(const QVariantMap &) {}
 };

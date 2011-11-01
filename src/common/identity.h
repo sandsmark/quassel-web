@@ -86,7 +86,7 @@ public:
   inline const QString &partReason() const { return _partReason; }
   inline const QString &quitReason() const { return _quitReason; }
 
-public slots:
+public Q_SLOTS:
   void setId(IdentityId id);
   void setIdentityName(const QString &name);
   void setRealName(const QString &realName);
@@ -109,7 +109,7 @@ public slots:
 
   void copyFrom(const Identity &other);
 
-signals:
+Q_SIGNALS:
   void idSet(IdentityId id);
 //   void identityNameSet(const QString &name);
 //   void realNameSet(const QString &realName);
@@ -178,7 +178,7 @@ public:
   virtual const QSslCertificate &sslCert() const = 0;
   inline QByteArray sslCertPem() const { return sslCert().toPem(); }
 
-public slots:
+public Q_SLOTS:
   inline virtual void setSslKey(const QByteArray &encoded) { SYNC(ARG(encoded)) }
   inline virtual void setSslCert(const QByteArray &encoded) { SYNC(ARG(encoded)) }
 };

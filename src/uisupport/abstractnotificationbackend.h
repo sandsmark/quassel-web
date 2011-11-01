@@ -63,7 +63,7 @@ public:
    */
   virtual SettingsPage *createConfigWidget() const = 0;
 
-signals:
+Q_SIGNALS:
   //! May be emitted by the notification to tell the MainWin to raise itself
   void activated(uint notificationId = 0);
 

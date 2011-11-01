@@ -40,7 +40,7 @@ public:
   inline QModelIndex currentIndex() const { return _selectionModel.currentIndex(); }
   inline QItemSelection currentSelection() const { return _selectionModel.selection(); }
 
-private slots:
+private Q_SLOTS:
   void syncedCurrentChanged(const QModelIndex &current, const QModelIndex &previous);
   void syncedSelectionChanged(const QItemSelection &selected, const QItemSelection &previous);
 

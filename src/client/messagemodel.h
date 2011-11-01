@@ -71,10 +71,10 @@ public:
 
   void clear();
 
-signals:
+Q_SIGNALS:
   void finishedBacklogFetch(BufferId bufferId);
 
-public slots:
+public Q_SLOTS:
   void requestBacklog(BufferId bufferId);
   void messagesReceived(BufferId bufferId, int count);
   void buffersPermanentlyMerged(BufferId bufferId1, BufferId bufferId2);
@@ -99,7 +99,7 @@ protected:
 
   virtual void customEvent(QEvent *event);
 
-private slots:
+private Q_SLOTS:
   void changeOfDay();
 
 private:

@@ -2,16 +2,26 @@
 
 add_subdirectory(common)
 include_directories(BEFORE common)
+
+if (WANT_WEBUI OR WANT_GUI)
+  add_subdirectory(client)
+  add_subdirectory(uisupport)
+  include_directories(BEFORE client)
+  include_directories(BEFORE uisupport)
+endif(WANT_WEBUI OR WANT_GUI)
+
+if (WANT_WEBUI)
+  add_subdirectory (webui)
+  include_directories(BEFORE webui)
+endif (WANT_WEBUI)
+
 if(BUILD_CORE)
   add_subdirectory(core)
   include_directories(BEFORE core)
 endif(BUILD_CORE)
+
 if(BUILD_GUI)
-  add_subdirectory(client)
-  add_subdirectory(uisupport)
   add_subdirectory(qtui)
-  include_directories(BEFORE client)
-  include_directories(BEFORE uisupport)
   include_directories(BEFORE qtui)
 
   if(STATIC)
@@ -28,9 +38,24 @@ qt4_add_resources(CLIENT_DEPS ${CLIENT_RCS})
 qt4_add_resources(CORE_DEPS ${CORE_RCS})
 qt4_add_resources(COMMON_DEPS ${COMMON_RCS})
 
+if (WANT_WEBUI)
+  setup_qt4_variables(NETWORK)
+  add_executable(quasselweb common/main.cpp ${COMMON_DEPS} ${WEBUI_DEPS})
+  add_dependencies(quasselweb genversion_run)
+  set_target_properties(quasselweb PROPERTIES
+                        COMPILE_FLAGS "-DQT_NETWORK_LIB -DBUILD_WEBUI"
+                                    OUTPUT_NAME ../quasselweb)
+  target_link_libraries(quasselweb mod_webui mod_client mod_common ${CLIENT_LIBS}
+                                    ${QUASSEL_QT_LIBRARIES}
+                                    ${QUASSEL_SSL_LIBRARIES}
+                                    ${CLIENT_LIBRARIES})
+
+  install(TARGETS quasselweb RUNTIME DESTINATION ${BIN_INSTALL_DIR})
+endif (WANT_WEBUI)
+
 if(WANT_CORE)
   setup_qt4_variables(NETWORK SCRIPT SQL)
-  add_executable(quasselcore common/main.cpp ${COMMON_DEPS} ${CORE_DEPS})
+  add_executable(quasselcore common/main.cpp ${COMMON_DEPS})
   add_dependencies(quasselcore po genversion_run)
   set_target_properties(quasselcore PROPERTIES
                                     COMPILE_FLAGS "-DQT_NETWORK_LIB -DQT_SCRIPT_LIB -DQT_SQL_LIB -DBUILD_CORE"

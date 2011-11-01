@@ -47,7 +47,7 @@ public:
 
   inline bool isInitialized() { return _uninitializedViewCount == 0; }
 
-public slots:
+public Q_SLOTS:
   void addView(int viewId);
   void removeView(int viewId);
 
@@ -58,14 +58,14 @@ public slots:
   // updates propagated from the actual views
   void update();
 
-signals:
+Q_SIGNALS:
   void hasChanged();
   void initDone();
 
 protected:
   virtual void customEvent(QEvent *event);
 
-private slots:
+private Q_SLOTS:
   void viewInitialized();
   void viewInitialized(BufferViewConfig *config);
 

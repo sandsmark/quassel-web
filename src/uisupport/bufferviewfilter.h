@@ -68,7 +68,7 @@ public:
 
   QList<QAction *> actions(const QModelIndex &index);
 
-public slots:
+public Q_SLOTS:
   void checkPreviousCurrentForRemoval(const QModelIndex &current, const QModelIndex &previous);
   void checkItemForRemoval(const QModelIndex &index) { checkItemsForRemoval(index, index); }
   void checkItemsForRemoval(const QModelIndex &topLeft, const QModelIndex &bottomRight);
@@ -80,11 +80,11 @@ protected:
   bool networkLessThan(const QModelIndex &source_left, const QModelIndex &source_right) const;
   virtual void customEvent(QEvent *event);
 
-signals:
+Q_SIGNALS:
   void _dataChanged(const QModelIndex &source_topLeft, const QModelIndex &source_bottomRight);
   void configChanged();
 
-private slots:
+private Q_SLOTS:
   void configInitialized();
   void enableEditMode(bool enable);
   void showServerQueriesChanged();

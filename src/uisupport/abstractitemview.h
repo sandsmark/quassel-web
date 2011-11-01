@@ -43,7 +43,7 @@ public:
 
   inline QModelIndex currentIndex() const { return _selectionModel->currentIndex(); }
 
-protected slots:
+protected Q_SLOTS:
   virtual void closeEditor(QWidget *, QAbstractItemDelegate::EndEditHint) {};
   virtual void commitData(QWidget *) {};
   virtual void currentChanged(const QModelIndex &, const QModelIndex &) {};

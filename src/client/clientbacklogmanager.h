@@ -38,7 +38,7 @@ public:
 
   void reset();
 
-public slots:
+public Q_SLOTS:
   virtual QVariantList requestBacklog(BufferId bufferId, MsgId first = -1, MsgId last = -1, int limit = -1, int additional = 0);
   virtual void receiveBacklog(BufferId bufferId, MsgId first, MsgId last, int limit, int additional, QVariantList msgs);
   virtual void receiveBacklogAll(MsgId first, MsgId last, int limit, int additional, QVariantList msgs);
@@ -48,7 +48,7 @@ public slots:
   void checkForBacklog(BufferId bufferId);
   void checkForBacklog(const BufferIdList &bufferIds);
 
-signals:
+Q_SIGNALS:
   void messagesReceived(BufferId bufferId, int count) const;
   void messagesRequested(const QString &) const;
   void messagesProcessed(const QString &) const;

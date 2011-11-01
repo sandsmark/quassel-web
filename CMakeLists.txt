@@ -38,6 +38,7 @@ include(QuasselMacros)
 option(WANT_CORE     "Build the core (server) binary"           ON)
 option(WANT_QTCLIENT "Build the Qt4 GUI client binary"          ON)
 option(WANT_MONO     "Build the monolithic (all-in-one) binary" ON)
+option(WANT_WEBUI    "Build the web-based interface"            ON)
 
 option(WITH_OPENSSL  "Enable OpenSSL support if present on the system"	ON)
 option(WITH_DBUS     "Enable D-Bus support if present on the system"	ON)
@@ -314,8 +315,18 @@ if(BUILD_CORE)
   else(WITH_CRYPT)
     message(STATUS "Not enabling encryption support")
   endif(WITH_CRYPT)
-
 endif(BUILD_CORE)
+
+if(WANT_WEBUI)
+    # TODO: only link with the webui thingy
+  find_package(Wt REQUIRED)
+
+  set(Boost_USE_MULTITHREADED ON)
+  find_package(Boost 1.36.0 COMPONENTS random REQUIRED)
+  message(STATUS "Found Wt and boost, enabling Web-based UI")
+endif(WANT_WEBUI)
+
+
 
 # needed to compile with mingw without kde
 if(MINGW AND NOT HAVE_KDE)
@@ -392,6 +403,7 @@ add_dependencies(genversion_run genversion)
 
 # These variables will be added to the main targets (CORE, QTCLIENT, MONO)
 set(COMMON_DEPS ${RC_WIN32})
+set(WAEBUI_DEPS )
 set(CORE_DEPS )
 set(CLIENT_DEPS )
 

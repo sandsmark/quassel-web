@@ -65,7 +65,7 @@ void Settings::notify(const QString &key, QObject *receiver, const char *slot) {
 
 void Settings::initAndNotify(const QString &key, QObject *receiver, const char *slot, const QVariant &defaultValue) {
   notify(key, receiver, slot);
-  emit notifier(normalizedKey(group, key))->valueChanged(localValue(key, defaultValue));
+  Q_EMIT notifier(normalizedKey(group, key))->valueChanged(localValue(key, defaultValue));
 }
 
 uint Settings::version() {
@@ -122,7 +122,7 @@ void Settings::setLocalValue(const QString &key, const QVariant &data) {
   s.setValue(normKey, data);
   setCacheValue(normKey, data);
   if(hasNotifier(normKey)) {
-    emit notifier(normKey)->valueChanged(data);
+    Q_EMIT notifier(normKey)->valueChanged(data);
   }
 }
 

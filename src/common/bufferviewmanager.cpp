@@ -50,7 +50,7 @@ void BufferViewManager::addBufferViewConfig(BufferViewConfig *config) {
   _bufferViewConfigs[config->bufferViewId()] = config;
   int bufferViewId = config->bufferViewId();
   SYNC_OTHER(addBufferViewConfig, ARG(bufferViewId))
-  emit bufferViewConfigAdded(bufferViewId);
+  Q_EMIT bufferViewConfigAdded(bufferViewId);
 }
 
 void BufferViewManager::addBufferViewConfig(int bufferViewConfigId) {
@@ -67,7 +67,7 @@ void BufferViewManager::deleteBufferViewConfig(int bufferViewConfigId) {
   _bufferViewConfigs[bufferViewConfigId]->deleteLater();
   _bufferViewConfigs.remove(bufferViewConfigId);
   SYNC(ARG(bufferViewConfigId))
-  emit bufferViewConfigDeleted(bufferViewConfigId);
+  Q_EMIT bufferViewConfigDeleted(bufferViewConfigId);
 }
 
 QVariantList BufferViewManager::initBufferViewIds() const {

@@ -32,7 +32,7 @@
 class SettingsChangeNotifier : public QObject {
   Q_OBJECT
 
-signals:
+Q_SIGNALS:
   void valueChanged(const QVariant &newValue);
 
 private:

@@ -40,7 +40,7 @@ public:
 
   void addActions(QToolBar *, ToolBarType type);
 
-public slots:
+public Q_SLOTS:
   virtual void disconnectedFromCore();
 
 protected:
@@ -49,7 +49,7 @@ protected:
   virtual void handleNickAction(ActionType, QAction *);
   virtual void handleGeneralAction(ActionType, QAction *);
 
-private slots:
+private Q_SLOTS:
   void networkCreated(NetworkId id);
   void networkRemoved(NetworkId id);
   void networkUpdated(const Network *net = 0);

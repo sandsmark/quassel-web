@@ -108,7 +108,7 @@ public:
   static void load(QSpinBox *box, int value);
   static bool hasChanged(QSpinBox *box);
 
-public slots:
+public Q_SLOTS:
   //! Save settings to permanent storage.
   /** This baseclass implementation saves the autoWidgets, so be sure to call it if you use
    *  this feature in your settingsPage!
@@ -127,7 +127,7 @@ public slots:
    */
   virtual void defaults();
 
-protected slots:
+protected Q_SLOTS:
   //! Calling this slot is equivalent to calling setChangedState(true).
   inline void changed() { setChangedState(true); }
 
@@ -139,11 +139,11 @@ protected:
   virtual QVariant loadAutoWidgetValue(const QString &widgetName);
   virtual void saveAutoWidgetValue(const QString &widgetName, const QVariant &value);
 
-signals:
+Q_SIGNALS:
   //! Emitted whenever the widget state changes.
   void changed(bool hasChanged);
 
-private slots:
+private Q_SLOTS:
   // for auto stuff
   void autoWidgetHasChanged();
 

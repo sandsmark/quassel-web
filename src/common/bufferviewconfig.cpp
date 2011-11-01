@@ -50,7 +50,7 @@ void BufferViewConfig::setBufferViewName(const QString &bufferViewName) {
 
   _bufferViewName = bufferViewName;
   SYNC(ARG(bufferViewName))
-  emit bufferViewNameSet(bufferViewName);
+  Q_EMIT bufferViewNameSet(bufferViewName);
 }
 
 void BufferViewConfig::setNetworkId(const NetworkId &networkId) {
@@ -59,8 +59,8 @@ void BufferViewConfig::setNetworkId(const NetworkId &networkId) {
 
   _networkId = networkId;
   SYNC(ARG(networkId))
-  emit networkIdSet(networkId);
-  emit configChanged();
+  Q_EMIT networkIdSet(networkId);
+  Q_EMIT configChanged();
 }
 
 void BufferViewConfig::setAddNewBuffersAutomatically(bool addNewBuffersAutomatically) {
@@ -69,7 +69,7 @@ void BufferViewConfig::setAddNewBuffersAutomatically(bool addNewBuffersAutomatic
 
   _addNewBuffersAutomatically = addNewBuffersAutomatically;
   SYNC(ARG(addNewBuffersAutomatically))
-  emit configChanged();
+  Q_EMIT configChanged();
 }
 
 void BufferViewConfig::setSortAlphabetically(bool sortAlphabetically) {
@@ -78,7 +78,7 @@ void BufferViewConfig::setSortAlphabetically(bool sortAlphabetically) {
 
   _sortAlphabetically = sortAlphabetically;
   SYNC(ARG(sortAlphabetically))
-  emit configChanged();
+  Q_EMIT configChanged();
 }
 
 void BufferViewConfig::setDisableDecoration(bool disableDecoration) {
@@ -95,7 +95,7 @@ void BufferViewConfig::setAllowedBufferTypes(int bufferTypes) {
 
   _allowedBufferTypes = bufferTypes;
   SYNC(ARG(bufferTypes))
-  emit configChanged();
+  Q_EMIT configChanged();
 }
 
 void BufferViewConfig::setMinimumActivity(int activity) {
@@ -104,7 +104,7 @@ void BufferViewConfig::setMinimumActivity(int activity) {
 
   _minimumActivity = activity;
   SYNC(ARG(activity))
-  emit configChanged();
+  Q_EMIT configChanged();
 }
 
 void BufferViewConfig::setHideInactiveBuffers(bool hideInactiveBuffers) {
@@ -113,7 +113,7 @@ void BufferViewConfig::setHideInactiveBuffers(bool hideInactiveBuffers) {
 
   _hideInactiveBuffers = hideInactiveBuffers;
   SYNC(ARG(hideInactiveBuffers))
-  emit configChanged();
+  Q_EMIT configChanged();
 }
 
 QVariantList BufferViewConfig::initBufferList() const {
@@ -133,7 +133,7 @@ void BufferViewConfig::initSetBufferList(const QVariantList &buffers) {
     _buffers << buffer.value<BufferId>();
   }
 
-  emit configChanged(); // used to track changes in the settingspage
+  Q_EMIT configChanged(); // used to track changes in the settingspage
 }
 
 void BufferViewConfig::initSetBufferList(const QList<BufferId> &buffers) {
@@ -143,7 +143,7 @@ void BufferViewConfig::initSetBufferList(const QList<BufferId> &buffers) {
     _buffers << bufferId;
   }
 
-  emit configChanged(); // used to track changes in the settingspage
+  Q_EMIT configChanged(); // used to track changes in the settingspage
 }
 
 QVariantList BufferViewConfig::initRemovedBuffers() const {
@@ -199,8 +199,8 @@ void BufferViewConfig::addBuffer(const BufferId &bufferId, int pos) {
 
   _buffers.insert(pos, bufferId);
   SYNC(ARG(bufferId), ARG(pos))
-  emit bufferAdded(bufferId, pos);
-  emit configChanged();
+  Q_EMIT bufferAdded(bufferId, pos);
+  Q_EMIT configChanged();
 }
 
 void BufferViewConfig::moveBuffer(const BufferId &bufferId, int pos) {
@@ -214,8 +214,8 @@ void BufferViewConfig::moveBuffer(const BufferId &bufferId, int pos) {
 
   _buffers.move(_buffers.indexOf(bufferId), pos);
   SYNC(ARG(bufferId), ARG(pos))
-  emit bufferMoved(bufferId, pos);
-  emit configChanged();
+  Q_EMIT bufferMoved(bufferId, pos);
+  Q_EMIT configChanged();
 }
 
 void BufferViewConfig::removeBuffer(const BufferId &bufferId) {
@@ -227,8 +227,8 @@ void BufferViewConfig::removeBuffer(const BufferId &bufferId) {
 
   _temporarilyRemovedBuffers << bufferId;
   SYNC(ARG(bufferId))
-  emit bufferRemoved(bufferId);
-  emit configChanged();
+  Q_EMIT bufferRemoved(bufferId);
+  Q_EMIT configChanged();
 }
 
 void BufferViewConfig::removeBufferPermanently(const BufferId &bufferId) {
@@ -241,6 +241,6 @@ void BufferViewConfig::removeBufferPermanently(const BufferId &bufferId) {
   _removedBuffers << bufferId;
 
   SYNC(ARG(bufferId))
-  emit bufferPermanentlyRemoved(bufferId);
-  emit configChanged();
+  Q_EMIT bufferPermanentlyRemoved(bufferId);
+  Q_EMIT configChanged();
 }

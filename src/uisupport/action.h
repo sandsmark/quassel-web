@@ -57,13 +57,13 @@ class Action : public QWidgetAction {
     bool isShortcutConfigurable() const;
     void setShortcutConfigurable(bool configurable);
 
-  signals:
+  Q_SIGNALS:
     void triggered(Qt::MouseButtons buttons, Qt::KeyboardModifiers modifiers);
 
   private:
     void init();
 
-  private slots:
+  private Q_SLOTS:
     void slotTriggered();
 };
 

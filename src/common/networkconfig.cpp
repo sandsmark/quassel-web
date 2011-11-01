@@ -40,7 +40,7 @@ void NetworkConfig::setPingTimeoutEnabled(bool enabled) {
 
   _pingTimeoutEnabled = enabled;
   SYNC(ARG(enabled))
-  emit pingTimeoutEnabledSet(enabled);
+  Q_EMIT pingTimeoutEnabledSet(enabled);
 }
 
 void NetworkConfig::setPingInterval(int interval) {
@@ -49,7 +49,7 @@ void NetworkConfig::setPingInterval(int interval) {
 
   _pingInterval = interval;
   SYNC(ARG(interval))
-  emit pingIntervalSet(interval);
+  Q_EMIT pingIntervalSet(interval);
 }
 
 void NetworkConfig::setMaxPingCount(int count) {
@@ -66,7 +66,7 @@ void NetworkConfig::setAutoWhoEnabled(bool enabled) {
 
   _autoWhoEnabled = enabled;
   SYNC(ARG(enabled))
-  emit autoWhoEnabledSet(enabled);
+  Q_EMIT autoWhoEnabledSet(enabled);
 }
 
 void NetworkConfig::setAutoWhoInterval(int interval) {
@@ -75,7 +75,7 @@ void NetworkConfig::setAutoWhoInterval(int interval) {
 
   _autoWhoInterval = interval;
   SYNC(ARG(interval))
-  emit autoWhoIntervalSet(interval);
+  Q_EMIT autoWhoIntervalSet(interval);
 }
 
 void NetworkConfig::setAutoWhoNickLimit(int nickLimit) {
@@ -92,5 +92,5 @@ void NetworkConfig::setAutoWhoDelay(int delay) {
 
   _autoWhoDelay = delay;
   SYNC(ARG(delay))
-  emit autoWhoDelaySet(delay);
+  Q_EMIT autoWhoDelaySet(delay);
 }

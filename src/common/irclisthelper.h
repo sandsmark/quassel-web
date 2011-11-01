@@ -46,7 +46,7 @@ public:
     ChannelDescription(const QString &channelName_, quint32 userCount_, const QString &topic_) : channelName(channelName_), userCount(userCount_), topic(topic_) {};
   };
 
-public slots:
+public Q_SLOTS:
   inline virtual QVariantList requestChannelList(const NetworkId &netId, const QStringList &channelFilters) { REQUEST(ARG(netId), ARG(channelFilters)); return QVariantList(); }
   inline virtual void receiveChannelList(const NetworkId &, const QStringList &, const QVariantList &) {};
   inline virtual void reportFinishedList(const NetworkId &netId) { SYNC(ARG(netId)) }

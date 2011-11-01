@@ -37,7 +37,7 @@ public:
 
   inline BufferId currentBuffer() const { return _currentBuffer; }
 
-signals:
+Q_SIGNALS:
   void currentChanged(BufferId);
   void currentChanged(const QModelIndex &);
 
@@ -57,7 +57,7 @@ protected:
    */
   virtual inline bool autoMarkerLine() const { return true; }
 
-protected slots:
+protected Q_SLOTS:
   virtual void currentChanged(const QModelIndex &current, const QModelIndex &previous);
   virtual void rowsAboutToBeRemoved(const QModelIndex &parent, int start, int end);
 
@@ -68,7 +68,7 @@ protected slots:
    */
   virtual void showChatView(BufferId) = 0;
 
-private slots:
+private Q_SLOTS:
   void removeBuffer(BufferId bufferId);
   void setCurrentBuffer(BufferId bufferId);
 

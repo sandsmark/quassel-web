@@ -40,7 +40,7 @@ public:
 
   inline virtual const QMetaObject *syncMetaObject() const { return &staticMetaObject; }
 
-public slots:
+public Q_SLOTS:
   inline bool pingTimeoutEnabled() const { return _pingTimeoutEnabled; }
   void setPingTimeoutEnabled(bool);
   virtual inline void requestSetPingTimeoutEnabled(bool b) { REQUEST(ARG(b)) }
@@ -69,7 +69,7 @@ public slots:
   void setAutoWhoDelay(int);
   virtual inline void requestSetAutoWhoDelay(int i) { REQUEST(ARG(i)) }
 
-signals:
+Q_SIGNALS:
   void pingTimeoutEnabledSet(bool);
   void pingIntervalSet(int);
 //   void maxPingCountSet(int);

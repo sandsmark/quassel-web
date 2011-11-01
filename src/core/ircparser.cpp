@@ -34,7 +34,7 @@ IrcParser::IrcParser(CoreSession *session) :
   QObject(session),
   _coreSession(session)
 {
-
+  connect(this, SIGNAL(newEvent(Event *)), coreSession()->eventManager(), SLOT(postEvent(Event *)));
 }
 
 bool IrcParser::checkParamCount(const QString &cmd, const QList<QByteArray> &params, int minParams) {
@@ -48,6 +48,9 @@ bool IrcParser::checkParamCount(const QString &cmd, const QList<QByteArray> &par
 QByteArray IrcParser::decrypt(Network *network, const QString &bufferName, const QByteArray &message, bool isTopic) {
 #ifdef HAVE_QCA2
   if(message.isEmpty())
+    return message;
+
+  if(!Cipher::neededFeaturesAvailable())
     return message;
 
   Cipher *cipher = qobject_cast<CoreNetwork *>(network)->cipher(bufferName);
@@ -133,16 +136,18 @@ void IrcParser::processNetworkIncoming(NetworkDataEvent *e) {
   QList<Event *> events;
   EventManager::EventType type = EventManager::Invalid;
 
-  // numeric replies have the target as first param (RFC 2812 - 2.4). this is usually our own nick. Remove this!
   uint num = cmd.toUInt();
   if(num > 0) {
+    // numeric reply
     if(params.count() == 0) {
       qWarning() << "Message received from server violates RFC and is ignored!" << msg;
       return;
     }
+    // numeric replies have the target as first param (RFC 2812 - 2.4). this is usually our own nick. Remove this!
     target = net->serverDecode(params.takeFirst());
     type = EventManager::IrcEventNumeric;
   } else {
+    // any other irc command
     QString typeName = QLatin1String("IrcEvent") + cmd.at(0).toUpper() + cmd.mid(1).toLower();
     type = eventManager()->eventTypeByName(typeName);
     if(type == EventManager::Invalid) {
@@ -297,6 +302,6 @@ void IrcParser::processNetworkIncoming(NetworkDataEvent *e) {
   }
 
   foreach(Event *event, events) {
-    coreSession()->eventManager()->sendEvent(event);
+    emit newEvent(event);
   }
 }

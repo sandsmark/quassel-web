@@ -48,13 +48,13 @@ public:
   void setSslKey(const QSslKey &key);
   void setSslCert(const QSslCertificate &cert);
 
-public slots:
+public Q_SLOTS:
   void requestUpdateSslSettings();
 
-signals:
+Q_SIGNALS:
   void sslSettingsUpdated();
 
-private slots:
+private Q_SLOTS:
   void markClean();
 
 private:
@@ -78,7 +78,7 @@ public:
   virtual inline const QSslKey &sslKey() const { return _certIdentity->sslKey(); }
   virtual inline const QSslCertificate &sslCert() const { return _certIdentity->sslCert(); }
 
-public slots:
+public Q_SLOTS:
   virtual void setSslKey(const QByteArray &encoded);
   virtual void setSslCert(const QByteArray &encoded);
 

@@ -148,10 +148,10 @@ public:
   QVariant bufferViewItemData(const QModelIndex &networkModelIndex, int role) const;
   QVariant nickViewItemData(const QModelIndex &networkModelIndex, int role) const;
 
-public slots:
+public Q_SLOTS:
   void reload();
 
-signals:
+Q_SIGNALS:
   void changed();
 
 protected:
@@ -170,7 +170,7 @@ protected:
 
   QVariant itemData(int role, const QTextCharFormat &format) const;
 
-private slots:
+private Q_SLOTS:
   void allowMircColorsChanged(const QVariant &);
   void showItemViewIconsChanged(const QVariant &);
 

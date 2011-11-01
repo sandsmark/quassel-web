@@ -32,7 +32,7 @@ public:
   AbstractMessageProcessor(QObject *parent);
   virtual void reset() = 0;
 
-public slots:
+public Q_SLOTS:
   virtual void process(Message &msg) = 0;
   virtual void process(QList<Message> &msgs) = 0;
 

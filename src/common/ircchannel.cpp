@@ -117,7 +117,7 @@ QByteArray IrcChannel::encodeString(const QString &string) const {
 void IrcChannel::setTopic(const QString &topic) {
   _topic = topic;
   SYNC(ARG(topic))
-  emit topicSet(topic);
+  Q_EMIT topicSet(topic);
 }
 
 void IrcChannel::setPassword(const QString &password) {
@@ -163,7 +163,7 @@ void IrcChannel::joinIrcUsers(const QList<IrcUser *> &users, const QStringList &
     return;
 
   SYNC_OTHER(joinIrcUsers, ARG(newNicks), ARG(newModes));
-  emit ircUsersJoined(newUsers);
+  Q_EMIT ircUsersJoined(newUsers);
 }
 
 void IrcChannel::joinIrcUsers(const QStringList &nicks, const QStringList &modes) {
@@ -188,7 +188,7 @@ void IrcChannel::part(IrcUser *ircuser) {
     // if you wonder why there is no counterpart to ircUserParted:
     // the joines are propagted by the ircuser. the signal ircUserParted is only for convenience
     disconnect(ircuser, 0, this, 0);
-    emit ircUserParted(ircuser);
+    Q_EMIT ircUserParted(ircuser);
 
     if(network()->isMe(ircuser) || _userModes.isEmpty()) {
       // in either case we're no longer in the channel
@@ -199,7 +199,7 @@ void IrcChannel::part(IrcUser *ircuser) {
         disconnect(user, 0, this, 0);
         user->partChannel(this);
       }
-      emit parted();
+      Q_EMIT parted();
       network()->removeIrcChannel(this);
     }
   }
@@ -215,7 +215,7 @@ void IrcChannel::setUserModes(IrcUser *ircuser, const QString &modes) {
     _userModes[ircuser] = modes;
     QString nick = ircuser->nick();
     SYNC_OTHER(setUserModes, ARG(nick), ARG(modes))
-    emit ircUserModesSet(ircuser, modes);
+    Q_EMIT ircUserModesSet(ircuser, modes);
   }
 }
 
@@ -232,7 +232,7 @@ void IrcChannel::addUserMode(IrcUser *ircuser, const QString &mode) {
     _userModes[ircuser] += mode;
     QString nick = ircuser->nick();
     SYNC_OTHER(addUserMode, ARG(nick), ARG(mode))
-    emit ircUserModeAdded(ircuser, mode);
+    Q_EMIT ircUserModeAdded(ircuser, mode);
   }
 
 }
@@ -250,7 +250,7 @@ void IrcChannel::removeUserMode(IrcUser *ircuser, const QString &mode) {
     _userModes[ircuser].remove(mode);
     QString nick = ircuser->nick();
     SYNC_OTHER(removeUserMode, ARG(nick), ARG(mode));
-    emit ircUserModeRemoved(ircuser, mode);
+    Q_EMIT ircUserModeRemoved(ircuser, mode);
   }
 }
 
@@ -359,7 +359,7 @@ void IrcChannel::ircUserDestroyed() {
 void IrcChannel::ircUserNickSet(QString nick) {
   IrcUser *ircUser = qobject_cast<IrcUser *>(sender());
   Q_ASSERT(ircUser);
-  emit ircUserNickSet(ircUser, nick);
+  Q_EMIT ircUserNickSet(ircUser, nick);
 }
 
 /*******************************************************************************

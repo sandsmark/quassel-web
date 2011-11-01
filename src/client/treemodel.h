@@ -71,7 +71,7 @@ public:
 
   void dumpChildList();
 
-signals:
+Q_SIGNALS:
   void dataChanged(int column = -1);
 
   void beginAppendChilds(int firstRow, int lastRow);
@@ -168,7 +168,7 @@ public:
 
   virtual void clear();
 
-private slots:
+private Q_SLOTS:
   void itemDataChanged(int column = -1);
   
   void beginAppendChilds(int firstRow, int lastRow);
@@ -193,7 +193,7 @@ private:
   ChildStatus _childStatus;
   int _aboutToRemoveOrInsert;
 
-private slots:
+private Q_SLOTS:
   void debug_rowsAboutToBeInserted(const QModelIndex &parent, int start, int end);
   void debug_rowsAboutToBeRemoved(const QModelIndex &parent, int start, int end);
   void debug_rowsInserted(const QModelIndex &parent, int start, int end);

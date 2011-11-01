@@ -58,7 +58,7 @@ public:
 
   CommandList processInput(const BufferInfo &info, const QString &message);
 
-public slots:
+public Q_SLOTS:
   virtual QVariantMap initAliases() const;
   virtual void initSetAliases(const QVariantMap &aliases);
 

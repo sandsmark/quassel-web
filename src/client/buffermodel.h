@@ -49,7 +49,7 @@ public:
   inline QModelIndex currentIndex() { return standardSelectionModel()->currentIndex(); }
   inline BufferId currentBuffer() { return currentIndex().data(NetworkModel::BufferIdRole).value<BufferId>(); }
 
-public slots:
+public Q_SLOTS:
   void setCurrentIndex(const QModelIndex &newCurrent);
   void switchToBuffer(const BufferId &bufferId);
   void switchToBufferIndex(const QModelIndex &bufferIdx);
@@ -59,7 +59,7 @@ public slots:
   }
   void switchToBufferAfterCreation(NetworkId network, const QString &name);
 
-private slots:
+private Q_SLOTS:
   void debug_currentChanged(QModelIndex current, QModelIndex previous);
   void newNetwork(NetworkId id);
   void networkConnectionChanged(Network::ConnectionState state);

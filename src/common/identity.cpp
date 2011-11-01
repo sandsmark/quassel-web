@@ -185,7 +185,7 @@ void Identity::setToDefaults() {
 void Identity::setId(IdentityId _id) {
   _identityId = _id;
   SYNC(ARG(_id))
-  emit idSet(_id);
+  Q_EMIT idSet(_id);
   renameObject(QString::number(id().toInt()));
 }
 
@@ -202,7 +202,7 @@ void Identity::setRealName(const QString &realName) {
 void Identity::setNicks(const QStringList &nicks) {
   _nicks = nicks;
   SYNC(ARG(nicks))
-  emit nicksSet(nicks);
+  Q_EMIT nicksSet(nicks);
 }
 
 void Identity::setAwayNick(const QString &nick) {

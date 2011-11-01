@@ -43,11 +43,11 @@ public:
   virtual MessageModel *createMessageModel(QObject *parent) = 0;
   virtual AbstractMessageProcessor *createMessageProcessor(QObject *parent) = 0;
 
-protected slots:
+protected Q_SLOTS:
   virtual void connectedToCore() {}
   virtual void disconnectedFromCore() {}
 
-signals:
+Q_SIGNALS:
   void connectToCore(const QVariantMap &connInfo);
   void disconnectFromCore();
 };

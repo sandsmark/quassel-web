@@ -58,7 +58,7 @@ public:
   BufferItem *bufferItem(const BufferInfo &bufferInfo);
   inline StatusBufferItem *statusBufferItem() const { return _statusBufferItem; }
 
-public slots:
+public Q_SLOTS:
   void setNetworkName(const QString &networkName);
   void setCurrentServer(const QString &serverName);
 
@@ -66,10 +66,10 @@ public slots:
   void attachIrcChannel(IrcChannel *channel);
   void attachIrcUser(IrcUser *ircUser);
 
-signals:
+Q_SIGNALS:
   void networkDataChanged(int column = -1);
 
-private slots:
+private Q_SLOTS:
   void onBeginRemoveChilds(int start, int end);
 
 private:
@@ -120,8 +120,8 @@ public:
   bool isCurrentBuffer() const;
   virtual QString toolTip(int column) const;
 
-public slots:
-  virtual inline void setTopic(const QString &) { emit dataChanged(1); }
+public Q_SLOTS:
+  virtual inline void setTopic(const QString &) { Q_EMIT dataChanged(1); }
 
 private:
   BufferInfo _bufferInfo;
@@ -161,7 +161,7 @@ public:
 
   virtual void setBufferName(const QString &name);
 
-public slots:
+public Q_SLOTS:
   void setIrcUser(IrcUser *ircUser);
   void removeIrcUser();
 
@@ -189,7 +189,7 @@ public:
 
   void attachIrcChannel(IrcChannel *ircChannel);
 
-public slots:
+public Q_SLOTS:
   void join(const QList<IrcUser *> &ircUsers);
   void part(IrcUser *ircUser);
 
@@ -199,7 +199,7 @@ public slots:
   void removeUserFromCategory(IrcUser *ircUser);
   void userModeChanged(IrcUser *ircUser);
 
-private slots:
+private Q_SLOTS:
   void ircChannelParted();
 
 private:
@@ -250,7 +250,7 @@ public:
   virtual QVariant data(int column, int role) const;
   virtual QString toolTip(int column) const;
 
-private slots:
+private Q_SLOTS:
   inline void ircUserQuited() { parent()->removeChild(this); }
 
 private:
@@ -328,7 +328,7 @@ public:
   QList<BufferId> allBufferIdsSorted() const;
   void sortBufferIds(QList<BufferId> &bufferIds) const;
 
-public slots:
+public Q_SLOTS:
   void bufferUpdated(BufferInfo bufferInfo);
   void removeBuffer(BufferId bufferId);
   MsgId lastSeenMsgId(const BufferId &bufferId);
@@ -339,12 +339,12 @@ public slots:
   void updateBufferActivity(Message &msg);
   void networkRemoved(const NetworkId &networkId);
 
-signals:
+Q_SIGNALS:
   void requestSetLastSeenMsg(BufferId buffer, MsgId msg);
   void lastSeenMsgSet(BufferId buffer, MsgId msg);
   void markerLineSet(BufferId buffer, MsgId msg);
 
-private slots:
+private Q_SLOTS:
   void checkForRemovedBuffers(const QModelIndex &parent, int start, int end);
   void checkForNewBuffers(const QModelIndex &parent, int start, int end);
   void messageRedirectionSettingsChanged();

@@ -216,7 +216,7 @@ public:
   static QStringList presetDefaultChannels(const QString &networkName);
   static NetworkInfo networkInfoFromPreset(const QString &networkName);
 
-public slots:
+public Q_SLOTS:
   void setNetworkName(const QString &networkName);
   void setCurrentServer(const QString &currentServer);
   void setConnected(bool isConnected);
@@ -272,12 +272,12 @@ public slots:
 
   void emitConnectionError(const QString &);
 
-protected slots:
+protected Q_SLOTS:
   virtual void removeIrcUser(IrcUser *ircuser);
   virtual void removeIrcChannel(IrcChannel *ircChannel);
   virtual void removeChansAndUsers();
 
-signals:
+Q_SIGNALS:
   void aboutToBeDestroyed();
   void networkNameSet(const QString &networkName);
   void currentServerSet(const QString &currentServer);

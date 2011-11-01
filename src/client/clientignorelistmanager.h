@@ -41,7 +41,7 @@ public:
     */
   QMap<QString, bool> matchingRulesForHostmask(const QString &hostmask, const QString &network, const QString &channel) const;
 
-signals:
+Q_SIGNALS:
   void ignoreListChanged();
 
 private:

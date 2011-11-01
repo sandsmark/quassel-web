@@ -1198,11 +1198,26 @@ bool PostgreSqlStorage::logMessage(Message &msg) {
     return false;
   }
 
-  if(!prepareQuery("insert_message", queryString("insert_message"), db)) {
-    qWarning() << "PostgreSqlStorage::logMessages(): unable to prepare query:" << queryString("insert_message");
-    qWarning() << "  Error:" << db.lastError().text();
-    db.rollback();
-    return false;
+  QSqlQuery getSenderIdQuery = executePreparedQuery("select_senderid", msg.sender(), db);
+  int senderId;
+  if(getSenderIdQuery.first()) {
+    senderId = getSenderIdQuery.value(0).toInt();
+  } else {
+    // it's possible that the sender was already added by another thread
+    // since the insert might fail we're setting a savepoint
+    savePoint("sender_sp1", db);
+    QSqlQuery addSenderQuery = executePreparedQuery("insert_sender", msg.sender(), db);
+
+    if(addSenderQuery.lastError().isValid()) {
+      rollbackSavePoint("sender_sp1", db);
+      getSenderIdQuery = db.exec(getSenderIdQuery.lastQuery());
+      getSenderIdQuery.first();
+      senderId = getSenderIdQuery.value(0).toInt();
+    } else {
+      releaseSavePoint("sender_sp1", db);
+      addSenderQuery.first();
+      senderId = addSenderQuery.value(0).toInt();
+    }
   }
 
   QVariantList params;
@@ -1210,39 +1225,13 @@ bool PostgreSqlStorage::logMessage(Message &msg) {
 	 << msg.bufferInfo().bufferId().toInt()
 	 << msg.type()
 	 << (int)msg.flags()
-	 << msg.sender()
+	 << senderId
 	 << msg.contents();
   QSqlQuery logMessageQuery = executePreparedQuery("insert_message", params, db);
 
-  if(logMessageQuery.lastError().isValid()) {
-    // first we need to reset the transaction
+  if(!watchQuery(logMessageQuery)) {
     db.rollback();
-    db.transaction();
-
-    if(!prepareQuery("insert_sender", queryString("insert_sender"), db)) {
-      qWarning() << "PostgreSqlStorage::logMessages(): unable to prepare query:" << queryString("insert_sender");
-      qWarning() << "  Error:" << db.lastError().text();
-      db.rollback();
-      return false;
-    }
-
-    // it's possible that the sender was already added by another thread
-    // since the insert might fail we're setting a savepoint
-    savePoint("sender_sp1", db);
-    QSqlQuery addSenderQuery = executePreparedQuery("insert_sender", msg.sender(), db);
-    if(addSenderQuery.lastError().isValid())
-      rollbackSavePoint("sender_sp1", db);
-    else
-      releaseSavePoint("sender_sp1", db);
-
-    logMessageQuery = db.exec(logMessageQuery.lastQuery());
-    if(!watchQuery(logMessageQuery)) {
-      qDebug() << "==================== Sender Query:";
-      watchQuery(addSenderQuery);
-      qDebug() << "==================== /Sender Query";
-      db.rollback();
-      return false;
-    }
+    return false;
   }
 
   logMessageQuery.first();
@@ -1264,34 +1253,41 @@ bool PostgreSqlStorage::logMessages(MessageList &msgs) {
     return false;
   }
 
-  if(!prepareQuery("insert_sender", queryString("insert_sender"), db)) {
-    qWarning() << "PostgreSqlStorage::logMessages(): unable to prepare query:" << queryString("insert_sender");
-    qWarning() << "  Error:" << db.lastError().text();
-    db.rollback();
-    return false;
-  }
-  QSet<QString> senders;
+  QList<int> senderIdList;
+  QHash<QString, int> senderIds;
+  QSqlQuery addSenderQuery;
+  QSqlQuery selectSenderQuery;;
   for(int i = 0; i < msgs.count(); i++) {
     const QString &sender = msgs.at(i).sender();
-    if(senders.contains(sender))
+    if(senderIds.contains(sender)) {
+      senderIdList << senderIds[sender];
       continue;
-    senders << sender;
+    }
 
-    savePoint("sender_sp", db);
-    QSqlQuery addSenderQuery = executePreparedQuery("insert_sender", sender, db);
-    if(addSenderQuery.lastError().isValid())
-      rollbackSavePoint("sender_sp", db);
-    else
-      releaseSavePoint("sender_sp", db);
+    selectSenderQuery = executePreparedQuery("select_senderid", sender, db);
+    if(selectSenderQuery.first()) {
+      senderIdList << selectSenderQuery.value(0).toInt();
+      senderIds[sender] = selectSenderQuery.value(0).toInt();
+    } else {
+      savePoint("sender_sp", db);
+      addSenderQuery= executePreparedQuery("insert_sender", sender, db);
+      if(addSenderQuery.lastError().isValid()) {
+        // seems it was inserted meanwhile... by a different thread
+        rollbackSavePoint("sender_sp", db);
+        selectSenderQuery = db.exec(selectSenderQuery.lastQuery());
+        selectSenderQuery.first();
+        senderIdList << selectSenderQuery.value(0).toInt();
+        senderIds[sender] = selectSenderQuery.value(0).toInt();
+      } else {
+        releaseSavePoint("sender_sp", db);
+        addSenderQuery.first();
+        senderIdList << addSenderQuery.value(0).toInt();
+        senderIds[sender] = addSenderQuery.value(0).toInt();
+      }
+    }
   }
 
   // yes we loop twice over the same list. This avoids alternating queries.
-  if(!prepareQuery("insert_message", queryString("insert_message"), db)) {
-    qWarning() << "PostgreSqlStorage::logMessages(): unable to prepare query:" << queryString("insert_message");
-    qWarning() << "  Error:" << db.lastError().text();
-    db.rollback();
-    return false;
-  }
   bool error = false;
   for(int i = 0; i < msgs.count(); i++) {
     Message &msg = msgs[i];
@@ -1300,7 +1296,7 @@ bool PostgreSqlStorage::logMessages(MessageList &msgs) {
 	   << msg.bufferInfo().bufferId().toInt()
 	   << msg.type()
 	   << (int)msg.flags()
-	   << msg.sender()
+	   << senderIdList.at(i)
 	   << msg.contents();
     QSqlQuery logMessageQuery = executePreparedQuery("insert_message", params, db);
     if(!watchQuery(logMessageQuery)) {
@@ -1358,13 +1354,6 @@ QList<Message> PostgreSqlStorage::requestMsgs(UserId user, BufferId bufferId, Ms
     params << limit;
   else
     params << "ALL";
-
-  if(!prepareQuery(queryName, queryString(queryName), db)) {
-    qWarning() << "PostgreSqlStorage::logMessages(): unable to prepare query:" << queryString(queryName);
-    qWarning() << "  Error:" << db.lastError().text();
-    db.rollback();
-    return messagelist;
-  }
 
   QSqlQuery query = executePreparedQuery(queryName, params, db);
 
@@ -1469,30 +1458,49 @@ bool PostgreSqlStorage::beginReadOnlyTransaction(QSqlDatabase &db) {
   return !query.lastError().isValid();
 }
 
-bool PostgreSqlStorage::prepareQuery(const QString &handle, const QString &query, const QSqlDatabase &db) {
-  if(_preparedQueries.contains(db.connectionName()) && _preparedQueries[db.connectionName()].contains(handle))
-    return true; // already prepared
+QSqlQuery PostgreSqlStorage::prepareAndExecuteQuery(const QString &queryname, const QString &paramstring, const QSqlDatabase &db) {
+  // Query preparing is done lazily. That means that instead of always checking if the query is already prepared
+  // we just EXECUTE and catch the error
+  QSqlQuery query;
 
-  QMutexLocker locker(&_queryHashMutex);
-
-  static unsigned int stmtCount = 0;
-  QString queryId = QLatin1String("quassel_") + QString::number(++stmtCount, 16);
-  // qDebug() << "prepare:" << QString("PREPARE %1 AS %2").arg(queryId).arg(query);
-  db.exec(QString("PREPARE %1 AS %2").arg(queryId).arg(query));
-  if(db.lastError().isValid()) {
-    return false;
+  db.exec("SAVEPOINT quassel_prepare_query");
+  if(paramstring.isNull()) {
+    query = db.exec(QString("EXECUTE quassel_%1").arg(queryname));
   } else {
-    _preparedQueries[db.connectionName()][handle] = queryId;
-    return true;
+    query = db.exec(QString("EXECUTE quassel_%1 (%2)").arg(queryname).arg(paramstring));
   }
+
+  if(db.lastError().isValid()) {
+    // and once again: Qt leaves us without error codes so we either parse (language dependant(!)) strings
+    // or we just guess the error. As we're only interested in unprepared queries, this will be our guess. :)
+    db.exec("ROLLBACK TO SAVEPOINT quassel_prepare_query");
+    QSqlQuery checkQuery = db.exec(QString("SELECT count(name) FROM pg_prepared_statements WHERE name = 'quassel_%1' AND from_sql = TRUE").arg(queryname.toLower()));
+    checkQuery.first();
+    if(checkQuery.value(0).toInt() == 0) {
+      db.exec(QString("PREPARE quassel_%1 AS %2").arg(queryname).arg(queryString(queryname)));
+      if(db.lastError().isValid()) {
+        qWarning() << "PostgreSqlStorage::prepareQuery(): unable to prepare query:" << queryname << "AS" << queryString(queryname);
+        qWarning() << "  Error:" << db.lastError().text();
+        return QSqlQuery(db);
+      }
+    }
+    // we alwas execute the query again, even if the query was already prepared.
+    // this ensures, that the error is properly propagated to the calling function
+    // (otherwise the last call would be the testing select to pg_prepared_statements
+    // which always gives a proper result and the error would be lost)
+    if(paramstring.isNull()) {
+      query = db.exec(QString("EXECUTE quassel_%1").arg(queryname));
+    } else {
+      query = db.exec(QString("EXECUTE quassel_%1 (%2)").arg(queryname).arg(paramstring));
+    }
+  } else {
+    // only release the SAVEPOINT
+    db.exec("RELEASE SAVEPOINT quassel_prepare_query");
+  }
+  return query;
 }
 
-QSqlQuery PostgreSqlStorage::executePreparedQuery(const QString &handle, const QVariantList &params, const QSqlDatabase &db) {
-  if(!_preparedQueries.contains(db.connectionName()) || !_preparedQueries[db.connectionName()].contains(handle)) {
-    qWarning() << "PostgreSqlStorage::executePreparedQuery() no prepared Query with handle" << handle << "on Database" << db.connectionName();
-    return QSqlQuery(db);
-  }
-
+QSqlQuery PostgreSqlStorage::executePreparedQuery(const QString &queryname, const QVariantList &params, const QSqlDatabase &db) {
   QSqlDriver *driver = db.driver();
 
   QStringList paramStrings;
@@ -1508,21 +1516,14 @@ QSqlQuery PostgreSqlStorage::executePreparedQuery(const QString &handle, const Q
     paramStrings << driver->formatValue(field);
   }
 
-  const QString &queryId = _preparedQueries[db.connectionName()][handle];
   if(params.isEmpty()) {
-    return db.exec(QString("EXECUTE %1").arg(queryId));
+    return prepareAndExecuteQuery(queryname, db);
   } else {
-    // qDebug() << "preparedExec:" << QString("EXECUTE %1 (%2)").arg(queryId).arg(paramStrings.join(", "));
-    return db.exec(QString("EXECUTE %1 (%2)").arg(queryId).arg(paramStrings.join(", ")));
+    return prepareAndExecuteQuery(queryname, paramStrings.join(", "), db);
   }
 }
 
-QSqlQuery PostgreSqlStorage::executePreparedQuery(const QString &handle, const QVariant &param, const QSqlDatabase &db) {
-  if(!_preparedQueries.contains(db.connectionName()) || !_preparedQueries[db.connectionName()].contains(handle)) {
-    qWarning() << "PostgreSqlStorage::executePreparedQuery() no prepared Query with handle" << handle << "on Database" << db.connectionName();
-    return QSqlQuery(db);
-  }
-
+QSqlQuery PostgreSqlStorage::executePreparedQuery(const QString &queryname, const QVariant &param, const QSqlDatabase &db) {
   QSqlField field;
   field.setType(param.type());
   if(param.isNull())
@@ -1530,20 +1531,12 @@ QSqlQuery PostgreSqlStorage::executePreparedQuery(const QString &handle, const Q
   else
     field.setValue(param);
 
-  const QString &queryId = _preparedQueries[db.connectionName()][handle];
   QString paramString = db.driver()->formatValue(field);
-
-  // qDebug() << "preparedExec:" << QString("EXECUTE %1 (%2)").arg(queryId).arg(paramString);
-  return db.exec(QString("EXECUTE %1 (%2)").arg(queryId).arg(paramString));
+  return prepareAndExecuteQuery(queryname, paramString, db);
 }
 
-void PostgreSqlStorage::deallocateQuery(const QString &handle, const QSqlDatabase &db) {
-  if(!_preparedQueries.contains(db.connectionName()) || !_preparedQueries[db.connectionName()].contains(handle)) {
-    return;
-  }
-  QMutexLocker locker(&_queryHashMutex);
-  QString queryId = _preparedQueries[db.connectionName()].take(handle);
-  db.exec(QString("DEALLOCATE %1").arg(queryId));
+void PostgreSqlStorage::deallocateQuery(const QString &queryname, const QSqlDatabase &db) {
+  db.exec(QString("DEALLOCATE quassel_%1").arg(queryname));
 }
 
 // ========================================

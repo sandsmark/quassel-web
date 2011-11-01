@@ -61,7 +61,7 @@ Network::Network(const NetworkId &networkid, QObject *parent)
 }
 
 Network::~Network() {
-  emit aboutToBeDestroyed();
+  Q_EMIT aboutToBeDestroyed();
 }
 
 bool Network::isChannelName(const QString &channelname) const {
@@ -210,8 +210,8 @@ IrcUser *Network::newIrcUser(const QString &hostmask, const QVariantMap &initDat
     _ircUsers[nick] = ircuser;
 
     SYNC_OTHER(addIrcUser, ARG(hostmask))
-    // emit ircUserAdded(hostmask);
-    emit ircUserAdded(ircuser);
+    // Q_EMIT ircUserAdded(hostmask);
+    Q_EMIT ircUserAdded(ircuser);
   }
 
   return _ircUsers[nick];
@@ -285,8 +285,8 @@ IrcChannel *Network::newIrcChannel(const QString &channelname, const QVariantMap
     _ircChannels[channelname.toLower()] = channel;
 
     SYNC_OTHER(addIrcChannel, ARG(channelname))
-    // emit ircChannelAdded(channelname);
-    emit ircChannelAdded(channel);
+    // Q_EMIT ircChannelAdded(channelname);
+    Q_EMIT ircChannelAdded(channel);
   }
   return _ircChannels[channelname.toLower()];
 }
@@ -343,7 +343,7 @@ void Network::setCodecForServer(QTextCodec *codec) {
   _codecForServer = codec;
   QByteArray codecName = codecForServer();
   SYNC_OTHER(setCodecForServer, ARG(codecName))
-  emit configChanged();
+  Q_EMIT configChanged();
 }
 
 QByteArray Network::codecForEncoding() const {
@@ -360,7 +360,7 @@ void Network::setCodecForEncoding(QTextCodec *codec) {
   _codecForEncoding = codec;
   QByteArray codecName = codecForEncoding();
   SYNC_OTHER(setCodecForEncoding, ARG(codecName))
-  emit configChanged();
+  Q_EMIT configChanged();
 }
 
 QByteArray Network::codecForDecoding() const {
@@ -377,7 +377,7 @@ void Network::setCodecForDecoding(QTextCodec *codec) {
   _codecForDecoding = codec;
   QByteArray codecName = codecForDecoding();
   SYNC_OTHER(setCodecForDecoding, ARG(codecName))
-  emit configChanged();
+  Q_EMIT configChanged();
 }
 
 // FIXME use server encoding if appropriate
@@ -481,14 +481,14 @@ NetworkInfo Network::networkInfoFromPreset(const QString &networkName) {
 void Network::setNetworkName(const QString &networkName) {
   _networkName = networkName;
   SYNC(ARG(networkName))
-  emit networkNameSet(networkName);
-  emit configChanged();
+  Q_EMIT networkNameSet(networkName);
+  Q_EMIT configChanged();
 }
 
 void Network::setCurrentServer(const QString &currentServer) {
   _currentServer = currentServer;
   SYNC(ARG(currentServer))
-  emit currentServerSet(currentServer);
+  Q_EMIT currentServerSet(currentServer);
 }
 
 void Network::setConnected(bool connected) {
@@ -502,7 +502,7 @@ void Network::setConnected(bool connected) {
     removeChansAndUsers();
   }
   SYNC(ARG(connected))
-  emit connectedSet(connected);
+  Q_EMIT connectedSet(connected);
 }
 
 //void Network::setConnectionState(ConnectionState state) {
@@ -510,7 +510,7 @@ void Network::setConnectionState(int state) {
   _connectionState = (ConnectionState)state;
   //qDebug() << "netstate" << networkId() << networkName() << state;
   SYNC(ARG(state))
-  emit connectionStateSet(_connectionState);
+  Q_EMIT connectionStateSet(_connectionState);
 }
 
 void Network::setMyNick(const QString &nickname) {
@@ -519,7 +519,7 @@ void Network::setMyNick(const QString &nickname) {
     newIrcUser(myNick());
   }
   SYNC(ARG(nickname))
-  emit myNickSet(nickname);
+  Q_EMIT myNickSet(nickname);
 }
 
 void Network::setLatency(int latency) {
@@ -532,92 +532,92 @@ void Network::setLatency(int latency) {
 void Network::setIdentity(IdentityId id) {
   _identity = id;
   SYNC(ARG(id))
-  emit identitySet(id);
-  emit configChanged();
+  Q_EMIT identitySet(id);
+  Q_EMIT configChanged();
 }
 
 void Network::setServerList(const QVariantList &serverList) {
   _serverList = fromVariantList<Server>(serverList);
   SYNC(ARG(serverList))
-  emit configChanged();
+  Q_EMIT configChanged();
 }
 
 void Network::setUseRandomServer(bool use) {
   _useRandomServer = use;
   SYNC(ARG(use))
-  emit configChanged();
+  Q_EMIT configChanged();
 }
 
 void Network::setPerform(const QStringList &perform) {
   _perform = perform;
   SYNC(ARG(perform))
-  emit configChanged();
+  Q_EMIT configChanged();
 }
 
 void Network::setUseAutoIdentify(bool use) {
   _useAutoIdentify = use;
   SYNC(ARG(use))
-  emit configChanged();
+  Q_EMIT configChanged();
 }
 
 void Network::setAutoIdentifyService(const QString &service) {
   _autoIdentifyService = service;
   SYNC(ARG(service))
-  emit configChanged();
+  Q_EMIT configChanged();
 }
 
 void Network::setAutoIdentifyPassword(const QString &password) {
   _autoIdentifyPassword = password;
   SYNC(ARG(password))
-  emit configChanged();
+  Q_EMIT configChanged();
 }
 
 void Network::setUseSasl(bool use) {
   _useSasl = use;
   SYNC(ARG(use))
-  emit configChanged();
+  Q_EMIT configChanged();
 }
 
 void Network::setSaslAccount(const QString &account) {
   _saslAccount = account;
   SYNC(ARG(account))
-  emit configChanged();
+  Q_EMIT configChanged();
 }
 
 void Network::setSaslPassword(const QString &password) {
   _saslPassword = password;
   SYNC(ARG(password))
-  emit configChanged();
+  Q_EMIT configChanged();
 }
 
 void Network::setUseAutoReconnect(bool use) {
   _useAutoReconnect = use;
   SYNC(ARG(use))
-  emit configChanged();
+  Q_EMIT configChanged();
 }
 
 void Network::setAutoReconnectInterval(quint32 interval) {
   _autoReconnectInterval = interval;
   SYNC(ARG(interval))
-  emit configChanged();
+  Q_EMIT configChanged();
 }
 
 void Network::setAutoReconnectRetries(quint16 retries) {
   _autoReconnectRetries = retries;
   SYNC(ARG(retries))
-  emit configChanged();
+  Q_EMIT configChanged();
 }
 
 void Network::setUnlimitedReconnectRetries(bool unlimited) {
   _unlimitedReconnectRetries = unlimited;
   SYNC(ARG(unlimited))
-  emit configChanged();
+  Q_EMIT configChanged();
 }
 
 void Network::setRejoinChannels(bool rejoin) {
   _rejoinChannels = rejoin;
   SYNC(ARG(rejoin))
-  emit configChanged();
+  Q_EMIT configChanged();
 }
 
 void Network::addSupport(const QString &param, const QString &value) {
@@ -726,7 +726,7 @@ void Network::ircUserNickChanged(QString newnick) {
 }
 
 void Network::emitConnectionError(const QString &errorMsg) {
-  emit connectionError(errorMsg);
+  Q_EMIT connectionError(errorMsg);
 }
 
 // ====================
