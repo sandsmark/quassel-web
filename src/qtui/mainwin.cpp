@@ -145,12 +145,16 @@ MainWin::MainWin(QWidget *parent)
   if(!style.isEmpty()) {
     QApplication::setStyle(style);
   }
+  if (uiSettings.value("UseTransparency", false).toBool()) {
+      setAttribute(Qt::WA_TranslucentBackground, true);
+  }
 
   QApplication::setQuitOnLastWindowClosed(false);
 
   setWindowTitle("Quassel IRC");
   setWindowIconText("Quassel IRC");
   updateIcon();
+
 }
 
 void MainWin::init() {

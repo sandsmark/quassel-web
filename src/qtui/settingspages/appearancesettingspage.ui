@@ -145,6 +145,19 @@
     </layout>
    </item>
    <item>
+    <widget class="QCheckBox" name="useTransparency">
+     <property name="text">
+      <string>Use transparency (if available, requires restart)</string>
+     </property>
+     <property name="settingsKey" stdset="0">
+      <string notr="true">UseTransparency</string>
+     </property>
+     <property name="defaultValue" stdset="0">
+      <bool>false</bool>
+     </property>
+    </widget>
+   </item>
+   <item>
     <widget class="QCheckBox" name="useSystemTrayIcon">
      <property name="text">
       <string>Show system tray icon</string>
