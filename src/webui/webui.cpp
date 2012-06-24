@@ -85,6 +85,10 @@ void WebUi::userAuthenticationRequired(CoreAccount* account, bool* okay, QString
     WebLoginDialog dialog(account);
     dialog.exec();
     *okay = true;
+    if (Client::coreAccountModel()->rowCount() > 0)
+        qDebug() << " Connection succeeded?" << Client::coreConnection()->connectToCore(Client::coreAccountModel()->accountIds().first());
+    else
+        qWarning() << "No core accounts available.";
 }
 
 void WebUi::connect()

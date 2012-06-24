@@ -43,6 +43,8 @@ WebApplication::~WebApplication()
 
 bool WebApplication::init()
 {
+    //int argc = 4;
+    //char *argv[4] = { "quasselweb", "--http-port=8080", "--http-addr=127.0.0.1", "--docroot=/home/cassarossa/itk/sandsmark/tmp/wt-3.2.1" };
     if (Quassel::init()) {
         return Wt::WRun(m_argc, m_argv, &createApplication);
     } else {

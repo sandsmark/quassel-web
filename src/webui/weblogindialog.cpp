@@ -48,5 +48,6 @@ void WebLoginDialog::saveAndConnect()
     m_coreAccount->setHostName(QString::fromStdString(m_hostEdit->valueText().toUTF8()));
     
     Client::coreAccountModel()->createOrUpdateAccount(*m_coreAccount);
+    Client::coreAccountModel()->save();
     accept();
 }
