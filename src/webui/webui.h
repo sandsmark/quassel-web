@@ -26,6 +26,7 @@
 
 #include <Wt/WApplication>
 
+class CoreAccount;
 using namespace Wt;
 
 class WebMessageModel;
@@ -43,11 +44,16 @@ public:
 
   virtual void init() {}
 
+private Q_SLOTS:
+    void userAuthenticationRequired(CoreAccount*,bool*,QString);
+    void connected();
+
 private:
-  void showLoginDialog();
+  void connect();
   WTableView *_chatView;
   WLineEdit *_inputWidget;
   WebMessageModel *_messageModel;
+  WPushButton *m_loginButton;
 };
 
 #endif

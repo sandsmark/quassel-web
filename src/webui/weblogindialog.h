@@ -5,19 +5,19 @@
 
 using namespace Wt;
 
-class CoreAccountModel;
+class CoreAccount;
 
 class WebLoginDialog : public WDialog
 {
 public:
-    WebLoginDialog();
+    WebLoginDialog(CoreAccount *account = 0);
 
 private:
     void saveAndConnect();
-    WLineEdit *_userEdit;
-    WLineEdit *_passwordEdit;
-    WLineEdit *_hostEdit;
-    CoreAccountModel *_coreAccountModel;
+    WLineEdit *m_userEdit;
+    WLineEdit *m_passwordEdit;
+    WLineEdit *m_hostEdit;
+    CoreAccount *m_coreAccount;
 };
 
 #endif // WEBLOGINDIALOG_H

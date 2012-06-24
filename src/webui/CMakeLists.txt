@@ -1,6 +1,6 @@
 # Builds the webui module
 
-add_definitions(-DQT_NO_KEYWORDS)
+add_definitions(-DQT_NO_KEYWORDS -DWT_NO_SLOT_MACROS)
 link_libraries(${Wt_LIBRARIES} ${Boost_LIBRARIES} ${QT_LIBRARIES})
 include_directories(${Wt_INCLUDE_DIR} ${Boost_INCLUDE_DIRS})
 
