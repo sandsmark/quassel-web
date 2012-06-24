@@ -21,3 +21,7 @@ The dev team can be reached by email: <devel@quassel-irc.org>
 
 Thanks for reading,
 ~ The Quassel IRC Team
+
+
+PS: Web interface deps:
+    libboost-random-dev libboost-signals-dev libwtdbosqlite-dev libwt libwt-dev
