@@ -21,7 +21,7 @@ WebLoginDialog::WebLoginDialog() :
     new WText("Password:", contents());
     _passwordEdit = new WLineEdit(contents());
     _passwordEdit->setEchoMode(WLineEdit::Password);
-    _passwordEdit->setText(_coreAccountModel->data());
+    _passwordEdit->setText(_coreAccountModel->data(_coreAccountModel->index(0)).toString().toStdString());
 
     new WBreak(contents());
     new WText("Host:", contents());

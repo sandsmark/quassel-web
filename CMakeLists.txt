@@ -166,7 +166,7 @@ endif(QT)
 # Now that we have the correct $PATH, lets find Qt!
 find_package(Qt4 REQUIRED)
 
-set(QT_DONT_USE_QTGUI 1)
+# set(QT_DONT_USE_QTGUI 1)
 include(${QT_USE_FILE})
 include_directories(${QT_INCLUDES})
 
@@ -322,7 +322,7 @@ if(WANT_WEBUI)
   find_package(Wt REQUIRED)
 
   set(Boost_USE_MULTITHREADED ON)
-  find_package(Boost 1.36.0 COMPONENTS random REQUIRED)
+  find_package(Boost 1.36.0 COMPONENTS random signals REQUIRED)
   message(STATUS "Found Wt and boost, enabling Web-based UI")
 endif(WANT_WEBUI)
 
@@ -411,5 +411,4 @@ set(CLIENT_DEPS )
 add_subdirectory(data)
 add_subdirectory(icons)
 add_subdirectory(pics)
-add_subdirectory(po)
 add_subdirectory(src)

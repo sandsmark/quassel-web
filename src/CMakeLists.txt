@@ -5,9 +5,7 @@ include_directories(BEFORE common)
 
 if (WANT_WEBUI OR WANT_GUI)
   add_subdirectory(client)
-  add_subdirectory(uisupport)
   include_directories(BEFORE client)
-  include_directories(BEFORE uisupport)
 endif(WANT_WEBUI OR WANT_GUI)
 
 if (WANT_WEBUI)
@@ -22,7 +20,9 @@ endif(BUILD_CORE)
 
 if(BUILD_GUI)
   add_subdirectory(qtui)
+  add_subdirectory(uisupport)
   include_directories(BEFORE qtui)
+  include_directories(BEFORE uisupport)
 
   if(STATIC)
     link_directories(${QT_PLUGINS_DIR}/imageformats)
@@ -48,7 +48,8 @@ if (WANT_WEBUI)
   target_link_libraries(quasselweb mod_webui mod_client mod_common ${CLIENT_LIBS}
                                     ${QUASSEL_QT_LIBRARIES}
                                     ${QUASSEL_SSL_LIBRARIES}
-                                    ${CLIENT_LIBRARIES})
+                                    ${CLIENT_LIBRARIES}
+                                    ${QT_LIBRARIES})
 
   install(TARGETS quasselweb RUNTIME DESTINATION ${BIN_INSTALL_DIR})
 endif (WANT_WEBUI)
@@ -61,7 +62,7 @@ if(WANT_CORE)
                                     COMPILE_FLAGS "-DQT_NETWORK_LIB -DQT_SCRIPT_LIB -DQT_SQL_LIB -DBUILD_CORE"
                                     OUTPUT_NAME ../quasselcore)
   target_link_libraries(quasselcore mod_core mod_common
-                                    ${QUASSEL_QT_LIBRARIES} ${QUASSEL_SSL_LIBRARIES})
+      ${QUASSEL_QT_LIBRARIES} ${QUASSEL_SSL_LIBRARIES})
   install(TARGETS quasselcore RUNTIME DESTINATION ${BIN_INSTALL_DIR})
 endif(WANT_CORE)
 
