@@ -139,6 +139,7 @@ int main(int argc, char **argv) {
 #  elif defined BUILD_MONO
     MonolithicApplication app(argc, argv);
 #  elif defined BUILD_WEBUI
+    QCoreApplication qapp(argc, argv);//this is hackish, but how Wt needs it
     WebApplication app(argc, argv);
 #else
 #error "Something is wrong - you need to #define a build mode!"

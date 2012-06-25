@@ -43,9 +43,11 @@ WebLoginDialog::WebLoginDialog(CoreAccount* account) :
 
 void WebLoginDialog::saveAndConnect()
 {
+    m_coreAccount->setAccountName("webinterface");
     m_coreAccount->setUser(QString::fromStdString(m_userEdit->valueText().toUTF8()));
     m_coreAccount->setPassword(QString::fromStdString(m_passwordEdit->valueText().toUTF8()));
     m_coreAccount->setHostName(QString::fromStdString(m_hostEdit->valueText().toUTF8()));
+    m_coreAccount->setPort(4242);
     
     Client::coreAccountModel()->createOrUpdateAccount(*m_coreAccount);
     Client::coreAccountModel()->save();

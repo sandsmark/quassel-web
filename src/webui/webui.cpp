@@ -35,32 +35,36 @@
 #include "webmessageprocessor.h"
 #include "weblogindialog.h"
 
-WebUi::WebUi(const WEnvironment& env) :
+WebUi::WebUi(WApplication *app) :
     AbstractUi(),
-    WApplication(env)
+    m_app(app)
 {
-    setTitle("Quassel web interface");
+    app->setTitle("Quassel web interface");
     WVBoxLayout *layout = new WVBoxLayout;
-    root()->setLayout(layout);
+    app->root()->setLayout(layout);
     
     /*m_loginButton = new WPushButton("Connect");
     m_loginButton->clicked().connect(this, &WebUi::connect);
     layout->addWidget(m_loginButton);*/
 
-    _chatView = new WTableView(root());
+    _chatView = new WTableView(app->root());
     layout->addWidget(_chatView);
 
-    _inputWidget = new WLineEdit(root());
+    _inputWidget = new WLineEdit(app->root());
     layout->addWidget(_inputWidget);
     
 
     QObject::connect(Client::coreConnection(), SIGNAL(userAuthenticationRequired(CoreAccount*,bool*,QString)), SLOT(userAuthenticationRequired(CoreAccount*,bool*,QString)));
-    QObject::connect(Client::coreConnection(), SIGNAL(connected()), SLOT(connected()));
+    QObject::connect(Client::coreConnection(), SIGNAL(connectionMsg(QString)), SLOT(printMsg(QString)));
+    QObject::connect(Client::coreConnection(), SIGNAL(progressTextChanged(QString)), SLOT(printMsg(QString)));
+    QObject::connect(Client::coreConnection(), SIGNAL(connectionError(QString)), SLOT(printMsg(QString)));
+    QObject::connect(Client::coreConnection(), SIGNAL(connectionErrorPopup(QString)), SLOT(printMsg(QString)));
     //QObject::connect(Client::coreConnection(), SIGNAL(userAuthenticationRequired(CoreAccount*,bool*,QString)), SLOT(userAuthenticationRequired(CoreAccount*,bool*,QString)));
-    if (!Client::coreConnection()->connectToCore()) {
+    //Client::coreAccountModel()->load();
+    //if (!Client::coreConnection()->connectToCore()) {
         bool ok;
         userAuthenticationRequired(0, &ok, "");
-    }
+    //}
 }
 
 WebUi::~WebUi()
@@ -74,7 +78,7 @@ AbstractMessageProcessor* WebUi::createMessageProcessor(QObject*)
 
 MessageModel* WebUi::createMessageModel(QObject*)
 {
-    _messageModel = new WebMessageModel(root(), this);
+    _messageModel = new WebMessageModel(m_app->root(), this);
     _chatView->setModel(_messageModel);
     return _messageModel;
 }
@@ -100,4 +104,9 @@ void WebUi::connect()
 void WebUi::connected()
 {
     qWarning() << "WE ARE CONNECTED";
+}
+
+void WebUi::printMsg(QString msg)
+{
+    qWarning() << " HA HA HA WE HAVE MESSAGE: " << msg;
 }

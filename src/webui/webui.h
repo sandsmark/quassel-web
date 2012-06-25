@@ -31,12 +31,12 @@ using namespace Wt;
 
 class WebMessageModel;
 
-class WebUi : public AbstractUi, public WApplication
+class WebUi : public AbstractUi
 {
   Q_OBJECT
 
 public:
-  WebUi(const WEnvironment& env);
+  WebUi(WApplication *app);
   ~WebUi();
 
   MessageModel* createMessageModel(QObject*);
@@ -47,6 +47,7 @@ public:
 private Q_SLOTS:
     void userAuthenticationRequired(CoreAccount*,bool*,QString);
     void connected();
+    void printMsg(QString);
 
 private:
   void connect();
@@ -54,6 +55,7 @@ private:
   WLineEdit *_inputWidget;
   WebMessageModel *_messageModel;
   WPushButton *m_loginButton;
+  WApplication *m_app;
 };
 
 #endif

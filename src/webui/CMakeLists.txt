@@ -1,7 +1,9 @@
 # Builds the webui module
 
+add_subdirectory(lib)
+
 add_definitions(-DQT_NO_KEYWORDS -DWT_NO_SLOT_MACROS)
-link_libraries(${Wt_LIBRARIES} ${Boost_LIBRARIES} ${QT_LIBRARIES})
+# link_libraries( )
 include_directories(${Wt_INCLUDE_DIR} ${Boost_INCLUDE_DIRS})
 
 set(QT_DONT_USE_QTGUI 1)
@@ -32,8 +34,10 @@ qt4_wrap_cpp(MOC ${MOC_HDRS} ${SPHDR} OPTIONS -DBOOST_TT_HAS_OPERATOR_HPP_INCLUD
 include_directories(${CMAKE_SOURCE_DIR}/src/common
                     ${CMAKE_SOURCE_DIR}/src/client
                     ${CMAKE_SOURCE_DIR}/src/webui
+                    ${CMAKE_SOURCE_DIR}/src/webui/lib
                     ${CMAKE_CURRENT_BINARY_DIR})
 
 add_library(mod_webui STATIC ${SOURCES} ${SPSRC} ${MOC} ${DBUS} ${UI} ${HEADERS})
+target_link_libraries(mod_webui ${Wt_LIBRARIES} ${Boost_LIBRARIES} ${QT_LIBRARIES} wtwithqt)
 add_dependencies(mod_webui mod_common mod_client)
 

@@ -23,39 +23,72 @@
 #include "webui.h"
 #include "client.h"
 
+#include "wqapplication.h"
+
 using namespace Wt;
 
-WebApplication::WebApplication(int &argc, char **argv)
-  : QCoreApplication(argc, argv), Quassel(),
+
+// We need this because of the retarded Wt architecture
+class WebApplicationSpawner : public Wt::WQApplication
+{
+public:
+    WebApplicationSpawner(Wt::WEnvironment);
+    virtual void create();
+    virtual void destroy();
+private:
+    WebUi *m_ui;
+};
+
+
+static WApplication *createApplication(const WEnvironment& env)
+{
+    WebApplicationSpawner *app = new WebApplicationSpawner(env);
+    return app;
+}
+
+WebApplication::WebApplication(int &argc, char **argv) :
+  //: QCoreApplication(argc, argv),
+    Quassel(),
     m_argc(argc),
     m_argv(argv)
 {
 #ifdef Q_OS_MAC
   disableCrashhandler();
 #endif /* Q_OS_MAC */
-
   setRunMode(Quassel::Web);
+  for (int i=0; i<argc; i++) {
+      m_arguments.append(QString::fromLocal8Bit(argv[i]));
+  }
 }
 
 WebApplication::~WebApplication()
 {
 }
 
-bool WebApplication::init()
+void WebApplicationSpawner::create()
 {
-    //int argc = 4;
-    //char *argv[4] = { "quasselweb", "--http-port=8080", "--http-addr=127.0.0.1", "--docroot=/home/cassarossa/itk/sandsmark/tmp/wt-3.2.1" };
-    if (Quassel::init()) {
-        return Wt::WRun(m_argc, m_argv, &createApplication);
-    } else {
-        return false;
+    m_ui = new WebUi(this);
+}
+
+void WebApplicationSpawner::destroy()
+{
+    delete m_ui;
+}
+
+WebApplicationSpawner::WebApplicationSpawner(WEnvironment env): WQApplication(env)
+{
+}
+
+bool WebApplication::exec()
+{
+    return Wt::WRun(m_argc, m_argv, &createApplication);
+}
+
+/*bool WebApplicationSpawner::notify(QObject* receiver, QEvent* event)
+{
+    try {
+        return QCoreApplication::notify(receiver, event);
+    } catch(Wt::WException e) {
+        qWarning() << "Got exception:" << e.what();
     }
-}
-
-WApplication *WebApplication::createApplication(const WEnvironment& env)
-{
-    WebUi *app = new WebUi(env);
-    return app;
-}
-
-
+}*/

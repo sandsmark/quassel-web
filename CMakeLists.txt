@@ -322,7 +322,7 @@ if(WANT_WEBUI)
   find_package(Wt REQUIRED)
 
   set(Boost_USE_MULTITHREADED ON)
-  find_package(Boost 1.36.0 COMPONENTS random signals REQUIRED)
+  find_package(Boost 1.36.0 COMPONENTS random signals thread REQUIRED)
   message(STATUS "Found Wt and boost, enabling Web-based UI")
 endif(WANT_WEBUI)
 

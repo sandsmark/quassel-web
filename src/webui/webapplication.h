@@ -25,28 +25,26 @@
 #include <QObject>
 #include "quassel.h"
 
+class WebUi;
 
-namespace Wt {
-    class WApplication;
-    class WEnvironment;
-}
+class WebApplication : /*public QCoreApplication,*/ public Quassel {
 
-
-class WebApplication : public QCoreApplication, public Quassel {
-
-    Q_OBJECT
+//     Q_OBJECT
 
 public:
     WebApplication(int &argc, char **argv);
     ~WebApplication();
 
-    bool init();
+    virtual bool init() { Quassel::init(); }
+    virtual bool exec();
+    QStringList arguments() const { return m_arguments; }
+    
+//     virtual bool notify(QObject *receiver, QEvent *event);
 
 private:
-    static Wt::WApplication *createApplication(const Wt::WEnvironment&);
-
     int m_argc;
     char **m_argv;
+    QStringList m_arguments;
 };
 
 #endif

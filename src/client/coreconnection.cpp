@@ -252,12 +252,12 @@ void CoreConnection::setState(ConnectionState state) {
 }
 
 void CoreConnection::coreSocketError(QAbstractSocket::SocketError) {
-  qDebug() << "coreSocketError" << _socket << _socket->errorString();
+  qWarning() << "coreSocketError" << _socket << _socket->errorString();
   disconnectFromCore(_socket->errorString(), true);
 }
 
 void CoreConnection::coreSocketDisconnected() {
-  // qDebug() << Q_FUNC_INFO;
+   qDebug() << Q_FUNC_INFO;
   _wasReconnect = !_requestedDisconnect;
   resetConnection(true);
   // FIXME handle disconnects gracefully
@@ -447,13 +447,14 @@ void CoreConnection::connectToCurrentAccount() {
   connect(sock, SIGNAL(error(QAbstractSocket::SocketError)), SLOT(coreSocketError(QAbstractSocket::SocketError)));
   connect(sock, SIGNAL(stateChanged(QAbstractSocket::SocketState)), SLOT(socketStateChanged(QAbstractSocket::SocketState)));
 
+  qWarning() << _account.hostName()<< _account.port();
   emit connectionMsg(tr("Connecting to %1...").arg(currentAccount().accountName()));
   sock->connectToHost(_account.hostName(), _account.port());
 }
 
 void CoreConnection::coreSocketConnected() {
   // Phase One: Send client info and wait for core info
-
+qWarning() << "LOL SANDSMARK IS MY HOMEBOY";
   emit connectionMsg(tr("Synchronizing to core..."));
 
   QVariantMap clientInit;
