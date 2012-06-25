@@ -123,16 +123,17 @@ public:
   static bool DEBUG;
 
   static void logFatalMessage(const char *msg);
-
+  virtual bool init();
+  
 protected:
   Quassel();
-  virtual bool init();
   virtual void quit();
 
   inline void setRunMode(RunMode mode);
   inline void setDataDirPaths(const QStringList &paths);
   QStringList findDataDirPaths() const;
   inline void disableCrashhandler();
+  static inline Quassel *instance() { return _instance; }
 
 private:
   void registerMetaTypes();

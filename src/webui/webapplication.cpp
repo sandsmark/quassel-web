@@ -68,6 +68,7 @@ WebApplication::~WebApplication()
 void WebApplicationSpawner::create()
 {
     m_ui = new WebUi(this);
+    WebApplication::initQuassel();
 }
 
 void WebApplicationSpawner::destroy()

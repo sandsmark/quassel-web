@@ -35,9 +35,10 @@ public:
     WebApplication(int &argc, char **argv);
     ~WebApplication();
 
-    virtual bool init() { Quassel::init(); }
+    //virtual bool init() { Quassel::init(); }
     virtual bool exec();
     QStringList arguments() const { return m_arguments; }
+    static void initQuassel() { instance()->init(); }
     
 //     virtual bool notify(QObject *receiver, QEvent *event);
 
