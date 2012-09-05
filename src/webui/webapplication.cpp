@@ -32,7 +32,7 @@ using namespace Wt;
 class WebApplicationSpawner : public Wt::WQApplication
 {
 public:
-    WebApplicationSpawner(Wt::WEnvironment);
+    WebApplicationSpawner(const Wt::WEnvironment&);
     virtual void create();
     virtual void destroy();
 private:
@@ -76,7 +76,7 @@ void WebApplicationSpawner::destroy()
     delete m_ui;
 }
 
-WebApplicationSpawner::WebApplicationSpawner(WEnvironment env): WQApplication(env)
+WebApplicationSpawner::WebApplicationSpawner(const WEnvironment &env): WQApplication(env)
 {
 }
 
