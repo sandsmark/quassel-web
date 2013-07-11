@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-09 by the Quassel Project                          *
+ *   Copyright (C) 2005-2013 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -15,7 +15,7 @@
  *   You should have received a copy of the GNU General Public License     *
  *   along with this program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
- *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************
  * Parts of this API have been shamelessly stolen from KDE's kaction.h     *
  ***************************************************************************/
@@ -32,17 +32,18 @@
 /** This declares/implements a subset of KAction's API (notably we've left out global shortcuts
  *  for now), which should make it easy to plug in KDE support later on.
  */
-class Action : public QWidgetAction {
-  Q_OBJECT
+class Action : public QWidgetAction
+{
+    Q_OBJECT
 
-  Q_PROPERTY(QKeySequence shortcut READ shortcut WRITE setShortcut)
-  Q_PROPERTY(bool shortcutConfigurable READ isShortcutConfigurable WRITE setShortcutConfigurable)
-  Q_FLAGS(ShortcutType)
+    Q_PROPERTY(QKeySequence shortcut READ shortcut WRITE setShortcut)
+    Q_PROPERTY(bool shortcutConfigurable READ isShortcutConfigurable WRITE setShortcutConfigurable)
+    Q_FLAGS(ShortcutType)
 
-  public:
-    enum ShortcutType {
-      ActiveShortcut = 0x01,
-      DefaultShortcut = 0x02
+public :
+        enum ShortcutType {
+        ActiveShortcut = 0x01,
+        DefaultShortcut = 0x02
     };
     Q_DECLARE_FLAGS(ShortcutTypes, ShortcutType)
 
@@ -57,32 +58,36 @@ class Action : public QWidgetAction {
     bool isShortcutConfigurable() const;
     void setShortcutConfigurable(bool configurable);
 
-  Q_SIGNALS:
+signals:
     void triggered(Qt::MouseButtons buttons, Qt::KeyboardModifiers modifiers);
 
-  private:
+private:
     void init();
 
-  private Q_SLOTS:
+private slots:
     void slotTriggered();
 };
+
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(Action::ShortcutTypes)
 
 #else /* HAVE_KDE */
 #include <KAction>
 
-class Action : public KAction {
-  Q_OBJECT
+class Action : public KAction
+{
+    Q_OBJECT
 
-  public:
+public:
     explicit Action(QObject *parent);
     Action(const QString &text, QObject *parent, const QObject *receiver = 0, const char *slot = 0, const QKeySequence &shortcut = 0);
     Action(const QIcon &icon, const QString &text, QObject *parent, const QObject *receiver = 0, const char *slot = 0, const QKeySequence &shortcut = 0);
 
-  private:
+private:
     void init();
 };
+
+
 #endif
 
 #endif

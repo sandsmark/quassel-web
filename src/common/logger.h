@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005 by the Quassel Project                             *
+ *   Copyright (C) 2005-2013 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -15,57 +15,58 @@
  *   You should have received a copy of the GNU General Public License     *
  *   along with this program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
- *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
 #ifndef LOGGER_H
 #define LOGGER_H
 
-#include "types.h"
-
-#include <QString>
 #include <QStringList>
 #include <QTextStream>
 
-class Logger {
+#include "quassel.h"
+#include "types.h"
+
+class Logger
+{
 public:
-  enum LogLevel {
-    DebugLevel,
-    InfoLevel,
-    WarningLevel,
-    ErrorLevel
-  };
+    inline Logger(Quassel::LogLevel level) : _stream(&_buffer, QIODevice::WriteOnly), _logLevel(level) {}
+    ~Logger();
 
-  inline Logger(LogLevel level) : _stream(&_buffer, QIODevice::WriteOnly), _logLevel(level) {}
-  ~Logger();
+    static void logMessage(QtMsgType type, const char *msg);
 
-  static void logMessage(QtMsgType type, const char *msg);
-
-  template<typename T>
-  inline Logger &operator<<(const T &value) { _stream << value << " "; return *this; }
-  inline Logger &operator<<(const QStringList & t) { _stream << t.join(" ") << " "; return *this; }
-  inline Logger &operator<<(bool t) { _stream << (t ? "true" : "false") << " "; return *this; }
+    template<typename T>
+    inline Logger &operator<<(const T &value) { _stream << value << " "; return *this; }
+    inline Logger &operator<<(const QStringList &t) { _stream << t.join(" ") << " "; return *this; }
+    inline Logger &operator<<(bool t) { _stream << (t ? "true" : "false") << " "; return *this; }
 
 private:
-  void log();
-  QTextStream _stream;
-  QString _buffer;
-  LogLevel _logLevel;
+    void log();
+    QTextStream _stream;
+    QString _buffer;
+    Quassel::LogLevel _logLevel;
 };
 
-class quInfo : public Logger {
+
+class quInfo : public Logger
+{
 public:
-  inline quInfo() : Logger(Logger::InfoLevel) {}
+    inline quInfo() : Logger(Quassel::InfoLevel) {}
 };
 
-class quWarning : public Logger {
+
+class quWarning : public Logger
+{
 public:
-  inline quWarning() : Logger(Logger::WarningLevel) {}
+    inline quWarning() : Logger(Quassel::WarningLevel) {}
 };
 
-class quError : public Logger {
+
+class quError : public Logger
+{
 public:
-  inline quError() : Logger(Logger::ErrorLevel) {}
+    inline quError() : Logger(Quassel::ErrorLevel) {}
 };
+
 
 #endif

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-09 by the Quassel Project                          *
+ *   Copyright (C) 2005-2013 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -15,7 +15,7 @@
  *   You should have received a copy of the GNU General Public License     *
  *   along with this program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
- *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
 #include "debugconsole.h"
@@ -23,24 +23,29 @@
 #include "signalproxy.h"
 
 DebugConsole::DebugConsole(QWidget *parent)
-  : QDialog(parent)
+    : QDialog(parent)
 {
-  ui.setupUi(this);
+    ui.setupUi(this);
 
-  Client::signalProxy()->attachSignal(this, SIGNAL(scriptRequest(QString)));
-  Client::signalProxy()->attachSlot(SIGNAL(scriptResult(QString)), this, SLOT(scriptResult(QString)));
-
+    Client::signalProxy()->attachSignal(this, SIGNAL(scriptRequest(QString)));
+    Client::signalProxy()->attachSlot(SIGNAL(scriptResult(QString)), this, SLOT(scriptResult(QString)));
 }
 
-DebugConsole::~DebugConsole() {
+
+DebugConsole::~DebugConsole()
+{
 }
 
-void DebugConsole::on_evalButton_clicked() {
-  if(ui.selectCore->isChecked()) {
-    emit scriptRequest(ui.scriptEdit->toPlainText());
-  }
+
+void DebugConsole::on_evalButton_clicked()
+{
+    if (ui.selectCore->isChecked()) {
+        emit scriptRequest(ui.scriptEdit->toPlainText());
+    }
 }
 
-void DebugConsole::scriptResult(QString result) {
-  ui.resultLabel->setText(result);
+
+void DebugConsole::scriptResult(QString result)
+{
+    ui.resultLabel->setText(result);
 }

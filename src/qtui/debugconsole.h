@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-09 by the Quassel Project                          *
+ *   Copyright (C) 2005-2013 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -15,7 +15,7 @@
  *   You should have received a copy of the GNU General Public License     *
  *   along with this program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
- *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
 #ifndef DEBUGCONSOLE_H
@@ -23,24 +23,26 @@
 
 #include "ui_debugconsole.h"
 
-class DebugConsole : public QDialog {
-  Q_OBJECT
+class DebugConsole : public QDialog
+{
+    Q_OBJECT
 
 public:
-  DebugConsole(QWidget *parent = 0);
-  virtual ~DebugConsole();
+    DebugConsole(QWidget *parent = 0);
+    virtual ~DebugConsole();
 
 public slots:
-  void scriptResult(QString result);
+    void scriptResult(QString result);
 
 signals:
-  void scriptRequest(QString script);
+    void scriptRequest(QString script);
 
 private slots:
-  void on_evalButton_clicked();
-  
+    void on_evalButton_clicked();
+
 private:
-  Ui::DebugConsole ui;
+    Ui::DebugConsole ui;
 };
+
 
 #endif

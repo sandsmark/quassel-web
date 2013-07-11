@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2010 by the Quassel Project                        *
+ *   Copyright (C) 2005-2013 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -15,7 +15,7 @@
  *   You should have received a copy of the GNU General Public License     *
  *   along with this program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
- *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
 #ifndef SYSTRAYNOTIFICATIONBACKEND_H_
@@ -27,52 +27,56 @@
 
 class QCheckBox;
 
-class SystrayNotificationBackend : public AbstractNotificationBackend {
-  Q_OBJECT
+class SystrayNotificationBackend : public AbstractNotificationBackend
+{
+    Q_OBJECT
 
 public:
-  SystrayNotificationBackend(QObject *parent = 0);
+    SystrayNotificationBackend(QObject *parent = 0);
 
-  void notify(const Notification &);
-  void close(uint notificationId);
-  virtual SettingsPage *createConfigWidget() const;
+    void notify(const Notification &);
+    void close(uint notificationId);
+    virtual SettingsPage *createConfigWidget() const;
 
 protected:
-  virtual bool eventFilter(QObject *obj, QEvent *event);
+    virtual bool eventFilter(QObject *obj, QEvent *event);
 
 private slots:
-  void notificationActivated(uint notificationId);
-  void notificationActivated(SystemTray::ActivationReason);
+    void notificationActivated(uint notificationId);
+    void notificationActivated(SystemTray::ActivationReason);
 
-  void animateChanged(const QVariant &);
-  void showBubbleChanged(const QVariant &);
-  void updateToolTip();
+    void animateChanged(const QVariant &);
+    void showBubbleChanged(const QVariant &);
+    void updateToolTip();
 
 private:
-  class ConfigWidget;
+    class ConfigWidget;
 
-  bool _showBubble;
-  bool _animate;
-  QList<Notification> _notifications;
-  bool _blockActivation;
+    bool _showBubble;
+    bool _animate;
+    QList<Notification> _notifications;
+    bool _blockActivation;
 };
 
-class SystrayNotificationBackend::ConfigWidget : public SettingsPage {
-  Q_OBJECT
+
+class SystrayNotificationBackend::ConfigWidget : public SettingsPage
+{
+    Q_OBJECT
 
 public:
-  ConfigWidget(QWidget *parent = 0);
-  void save();
-  void load();
-  bool hasDefaults() const;
-  void defaults();
+    ConfigWidget(QWidget *parent = 0);
+    void save();
+    void load();
+    bool hasDefaults() const;
+    void defaults();
 
 private slots:
-  void widgetChanged();
+    void widgetChanged();
 
 private:
-  QCheckBox *_showBubbleBox;
-  bool _showBubble;
+    QCheckBox *_showBubbleBox;
+    bool _showBubble;
 };
+
 
 #endif

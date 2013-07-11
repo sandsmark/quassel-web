@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-09 by the Quassel Project                          *
+ *   Copyright (C) 2005-2013 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -15,7 +15,7 @@
  *   You should have received a copy of the GNU General Public License     *
  *   along with this program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
- *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
 #ifndef CLIENTBACKLOGMANAGER_H
@@ -26,49 +26,53 @@
 
 class BacklogRequester;
 
-class ClientBacklogManager : public BacklogManager {
-  SYNCABLE_OBJECT
-  Q_OBJECT
+class ClientBacklogManager : public BacklogManager
+{
+    SYNCABLE_OBJECT
+        Q_OBJECT
 
 public:
-  ClientBacklogManager(QObject *parent = 0);
+    ClientBacklogManager(QObject *parent = 0);
 
-  // helper for the backlogRequester, as it isn't a QObject and can't emit itself
-  inline void emitMessagesRequested(const QString &msg) const { emit messagesRequested(msg); }
+    // helper for the backlogRequester, as it isn't a QObject and can't emit itself
+    inline void emitMessagesRequested(const QString &msg) const { emit messagesRequested(msg); }
 
-  void reset();
+    void reset();
 
-public Q_SLOTS:
-  virtual QVariantList requestBacklog(BufferId bufferId, MsgId first = -1, MsgId last = -1, int limit = -1, int additional = 0);
-  virtual void receiveBacklog(BufferId bufferId, MsgId first, MsgId last, int limit, int additional, QVariantList msgs);
-  virtual void receiveBacklogAll(MsgId first, MsgId last, int limit, int additional, QVariantList msgs);
+public slots:
+    virtual QVariantList requestBacklog(BufferId bufferId, MsgId first = -1, MsgId last = -1, int limit = -1, int additional = 0);
+    virtual void receiveBacklog(BufferId bufferId, MsgId first, MsgId last, int limit, int additional, QVariantList msgs);
+    virtual void receiveBacklogAll(MsgId first, MsgId last, int limit, int additional, QVariantList msgs);
 
-  void requestInitialBacklog();
+    void requestInitialBacklog();
 
-  void checkForBacklog(BufferId bufferId);
-  void checkForBacklog(const BufferIdList &bufferIds);
+    void checkForBacklog(BufferId bufferId);
+    void checkForBacklog(const BufferIdList &bufferIds);
 
-Q_SIGNALS:
-  void messagesReceived(BufferId bufferId, int count) const;
-  void messagesRequested(const QString &) const;
-  void messagesProcessed(const QString &) const;
+signals:
+    void messagesReceived(BufferId bufferId, int count) const;
+    void messagesRequested(const QString &) const;
+    void messagesProcessed(const QString &) const;
 
-  void updateProgress(int, int);
+    void updateProgress(int, int);
 
 private:
-  bool isBuffering();
-  BufferIdList filterNewBufferIds(const BufferIdList &bufferIds);
+    bool isBuffering();
+    BufferIdList filterNewBufferIds(const BufferIdList &bufferIds);
 
-  void dispatchMessages(const MessageList &messages, bool sort = false);
+    void dispatchMessages(const MessageList &messages, bool sort = false);
 
-  BacklogRequester *_requester;
-  bool _initBacklogRequested;
-  QSet<BufferId> _buffersRequested;
+    BacklogRequester *_requester;
+    bool _initBacklogRequested;
+    QSet<BufferId> _buffersRequested;
 };
 
+
 // inlines
-inline void ClientBacklogManager::checkForBacklog(BufferId bufferId) {
-  checkForBacklog(BufferIdList() << bufferId);
+inline void ClientBacklogManager::checkForBacklog(BufferId bufferId)
+{
+    checkForBacklog(BufferIdList() << bufferId);
 }
+
 
 #endif // CLIENTBACKLOGMANAGER_H

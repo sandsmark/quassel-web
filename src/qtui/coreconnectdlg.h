@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2009 by the Quassel Project                             *
+ *   Copyright (C) 2005-2013 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -15,7 +15,7 @@
  *   You should have received a copy of the GNU General Public License     *
  *   along with this program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
- *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
 #ifndef CORECONNECTDLG_H
@@ -29,33 +29,37 @@
 
 class CoreAccountSettingsPage;
 
-class CoreConnectDlg : public QDialog {
-  Q_OBJECT
+class CoreConnectDlg : public QDialog
+{
+    Q_OBJECT
 
 public:
-  CoreConnectDlg(QWidget *parent = 0);
-  AccountId selectedAccount() const;
+    CoreConnectDlg(QWidget *parent = 0);
+    AccountId selectedAccount() const;
 
-  void accept();
+    void accept();
 
 private:
-  CoreAccountSettingsPage *_settingsPage;
+    CoreAccountSettingsPage *_settingsPage;
 };
 
-class CoreConnectAuthDlg : public QDialog {
-  Q_OBJECT
+
+class CoreConnectAuthDlg : public QDialog
+{
+    Q_OBJECT
 
 public:
-  CoreConnectAuthDlg(CoreAccount *account, QWidget *parent = 0);
+    CoreConnectAuthDlg(CoreAccount *account, QWidget *parent = 0);
 
-  void accept();
+    void accept();
 
 private slots:
-  void setButtonStates();
+    void setButtonStates();
 
 private:
-  Ui::CoreConnectAuthDlg ui;
-  CoreAccount *_account;
+    Ui::CoreConnectAuthDlg ui;
+    CoreAccount *_account;
 };
+
 
 #endif

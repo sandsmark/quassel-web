@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-09 by the Quassel Project                          *
+ *   Copyright (C) 2005-2013 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -15,7 +15,7 @@
  *   You should have received a copy of the GNU General Public License     *
  *   along with this program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
- *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************
  * This is a subset of the API of KDE's KActionCollection.                 *
  ***************************************************************************/
@@ -36,10 +36,11 @@ class QWidget;
 class Action;
 class QAction;
 
-class ActionCollection : public QObject {
-  Q_OBJECT
+class ActionCollection : public QObject
+{
+    Q_OBJECT
 
-  public:
+public:
     explicit ActionCollection(QObject *parent);
     virtual ~ActionCollection();
 
@@ -79,29 +80,31 @@ class ActionCollection : public QObject {
 
     /// Create new action under the given name, add it to the collection and connect its triggered(bool) signal to the specified receiver.
     template<class ActionType>
-    ActionType *add(const QString &name, const QObject *receiver = 0, const char *member = 0) {
-      ActionType *a = new ActionType(this);
-      if(receiver && member)
-        connect(a, SIGNAL(triggered(bool)), receiver, member);
-      addAction(name, a);
-      return a;
+    ActionType *add(const QString &name, const QObject *receiver = 0, const char *member = 0)
+    {
+        ActionType *a = new ActionType(this);
+        if (receiver && member)
+            connect(a, SIGNAL(triggered(bool)), receiver, member);
+        addAction(name, a);
+        return a;
     }
 
-  Q_SIGNALS:
+
+signals:
     void inserted(QAction *action);
     void actionHovered(QAction *action);
     void actionTriggered(QAction *action);
 
-  protected Q_SLOTS:
+protected slots:
     virtual void connectNotify(const char *signal);
     virtual void slotActionTriggered();
 
-  private Q_SLOTS:
+private slots:
     void slotActionHovered();
     void actionDestroyed(QObject *);
     void associatedWidgetDestroyed(QObject *);
 
-  private:
+private:
     bool unlistAction(QAction *);
 
     QMap<QString, QAction *> _actionByName;
@@ -112,6 +115,7 @@ class ActionCollection : public QObject {
     bool _connectTriggered;
 };
 
+
 int ActionCollection::count() const { return actions().count(); }
 bool ActionCollection::isEmpty() const { return actions().count(); }
 
@@ -119,13 +123,15 @@ bool ActionCollection::isEmpty() const { return actions().count(); }
 
 #include <KActionCollection>
 
-class ActionCollection : public KActionCollection {
-  Q_OBJECT
+class ActionCollection : public KActionCollection
+{
+    Q_OBJECT
 
-  public:
+public:
     explicit ActionCollection(QObject *parent) : KActionCollection(parent) {};
-
 };
+
+
 #endif
 
 #endif

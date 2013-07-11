@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-09 by the Quassel Project                          *
+ *   Copyright (C) 2005-2013 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -15,7 +15,7 @@
  *   You should have received a copy of the GNU General Public License     *
  *   along with this program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
- *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
 #ifndef BUFFERVIEWSETTINGSPAGE_H
@@ -29,83 +29,84 @@
 
 class BufferViewConfig;
 
-class BufferViewSettingsPage : public SettingsPage {
-  Q_OBJECT
+class BufferViewSettingsPage : public SettingsPage
+{
+    Q_OBJECT
 
 public:
-  BufferViewSettingsPage(QWidget *parent = 0);
-  ~BufferViewSettingsPage();
+    BufferViewSettingsPage(QWidget *parent = 0);
+    ~BufferViewSettingsPage();
 
 public slots:
-  void save();
-  void load();
-  void reset();
+    void save();
+    void load();
+    void reset();
 
 private slots:
-  void coreConnectionStateChanged(bool state);
+    void coreConnectionStateChanged(bool state);
 
-  void addBufferView(BufferViewConfig *config);
-  void addBufferView(int bufferViewId);
-  void bufferViewDeleted();
-  void newBufferView(const QString &bufferViewName);
-  void updateBufferView();
+    void addBufferView(BufferViewConfig *config);
+    void addBufferView(int bufferViewId);
+    void bufferViewDeleted();
+    void newBufferView(const QString &bufferViewName);
+    void updateBufferView();
 
-  void enableStatusBuffers(int networkIdx);
+    void enableStatusBuffers(int networkIdx);
 
-  void on_addBufferView_clicked();
-  void on_renameBufferView_clicked();
-  void on_deleteBufferView_clicked();
-  void bufferViewSelectionChanged(const QItemSelection &current, const QItemSelection &previous);
+    void on_addBufferView_clicked();
+    void on_renameBufferView_clicked();
+    void on_deleteBufferView_clicked();
+    void bufferViewSelectionChanged(const QItemSelection &current, const QItemSelection &previous);
 
-  void widgetHasChanged();
-  
+    void widgetHasChanged();
+
 private:
-  Ui::BufferViewSettingsPage ui;
-  bool _ignoreWidgetChanges;
-  bool _useBufferViewHint;
-  int _bufferViewHint;
+    Ui::BufferViewSettingsPage ui;
+    bool _ignoreWidgetChanges;
+    bool _useBufferViewHint;
+    int _bufferViewHint;
 
-  // list of bufferviews to create
-  QList<BufferViewConfig *> _newBufferViews;
+    // list of bufferviews to create
+    QList<BufferViewConfig *> _newBufferViews;
 
-  // list of buferViews to delete
-  QList<int> _deleteBufferViews;
-  
-  // Hash of pointers to cloned bufferViewConfigs holding the changes
-  QHash<BufferViewConfig *, BufferViewConfig *> _changedBufferViews;
+    // list of buferViews to delete
+    QList<int> _deleteBufferViews;
 
-  int listPos(BufferViewConfig *config);
-  BufferViewConfig *bufferView(int listPos);
-  bool selectBufferViewById(int bufferViewId);
-  BufferViewConfig *cloneConfig(BufferViewConfig *config);
-  BufferViewConfig *configForDisplay(BufferViewConfig *config);
+    // Hash of pointers to cloned bufferViewConfigs holding the changes
+    QHash<BufferViewConfig *, BufferViewConfig *> _changedBufferViews;
 
-  void loadConfig(BufferViewConfig *config);
-  void saveConfig(BufferViewConfig *config);
-  bool testHasChanged();
+    int listPos(BufferViewConfig *config);
+    BufferViewConfig *bufferView(int listPos);
+    bool selectBufferViewById(int bufferViewId);
+    BufferViewConfig *cloneConfig(BufferViewConfig *config);
+    BufferViewConfig *configForDisplay(BufferViewConfig *config);
+
+    void loadConfig(BufferViewConfig *config);
+    void saveConfig(BufferViewConfig *config);
+    bool testHasChanged();
 };
 
 
 /**************************************************************************
  * BufferViewEditDlg
  *************************************************************************/
-class BufferViewEditDlg : public QDialog {
-  Q_OBJECT
+class BufferViewEditDlg : public QDialog
+{
+    Q_OBJECT
 
 public:
-  BufferViewEditDlg(const QString &old, const QStringList &existing = QStringList(), QWidget *parent = 0);
+    BufferViewEditDlg(const QString &old, const QStringList &existing = QStringList(), QWidget *parent = 0);
 
-  inline QString bufferViewName() const { return ui.bufferViewEdit->text(); }
+    inline QString bufferViewName() const { return ui.bufferViewEdit->text(); }
 
 private slots:
-  void on_bufferViewEdit_textChanged(const QString &);
-  
+    void on_bufferViewEdit_textChanged(const QString &);
+
 private:
-  Ui::BufferViewEditDlg ui;
+    Ui::BufferViewEditDlg ui;
 
-  QStringList existing;
+    QStringList existing;
 };
-
 
 
 #endif // BUFFERVIEWSETTINGSPAGE_H

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-09 by the Quassel Project                          *
+ *   Copyright (C) 2005-2013 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -15,7 +15,7 @@
  *   You should have received a copy of the GNU General Public License     *
  *   along with this program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
- *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
 #ifndef NICKLISTWIDGET_H_
@@ -34,50 +34,53 @@ class Buffer;
 class NickView;
 class QDockWidget;
 
-class NickListWidget : public AbstractItemView {
-  Q_OBJECT
+class NickListWidget : public AbstractItemView
+{
+    Q_OBJECT
 
 public:
-  NickListWidget(QWidget *parent = 0);
+    NickListWidget(QWidget *parent = 0);
 
 public slots:
-  void showWidget(bool visible);
+    void showWidget(bool visible);
 
 signals:
-  void nickSelectionChanged(const QModelIndexList &);
+    void nickSelectionChanged(const QModelIndexList &);
 
 protected:
-  virtual QSize sizeHint() const;
-  virtual void hideEvent(QHideEvent *);
-  virtual void showEvent(QShowEvent *);
+    virtual QSize sizeHint() const;
+    virtual void hideEvent(QHideEvent *);
+    virtual void showEvent(QShowEvent *);
 
 protected slots:
-  virtual void currentChanged(const QModelIndex &current, const QModelIndex &previous);
-  virtual void rowsAboutToBeRemoved(const QModelIndex &parent, int start, int end);
+    virtual void currentChanged(const QModelIndex &current, const QModelIndex &previous);
+    virtual void rowsAboutToBeRemoved(const QModelIndex &parent, int start, int end);
 
 private slots:
-  void removeBuffer(BufferId bufferId);
-  void nickSelectionChanged();
+    void removeBuffer(BufferId bufferId);
+    void nickSelectionChanged();
 
 private:
-  Ui::NickListWidget ui;
-  QHash<BufferId, NickView *> nickViews;
+    Ui::NickListWidget ui;
+    QHash<BufferId, NickView *> nickViews;
 
-  QDockWidget *dock() const;
+    QDockWidget *dock() const;
 };
 
 
 // ==============================
 //  NickList Dock
 // ==============================
-class NickListDock : public QDockWidget {
-  Q_OBJECT
+class NickListDock : public QDockWidget
+{
+    Q_OBJECT
 
 public:
-  NickListDock(const QString &title, QWidget *parent = 0);
-  // ~NickListDock();
+    NickListDock(const QString &title, QWidget *parent = 0);
+    // ~NickListDock();
 
-  // virtual bool event(QEvent *event);
+    // virtual bool event(QEvent *event);
 };
+
 
 #endif

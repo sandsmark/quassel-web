@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-09 by the Quassel Project                          *
+ *   Copyright (C) 2005-2013 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -15,7 +15,7 @@
  *   You should have received a copy of the GNU General Public License     *
  *   along with this program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
- *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
 #ifndef BUFFERVIEWOVERLAYFILTER_H_
@@ -27,22 +27,24 @@
 
 class BufferViewOverlay;
 
-class BufferViewOverlayFilter : public QSortFilterProxyModel {
-  Q_OBJECT
+class BufferViewOverlayFilter : public QSortFilterProxyModel
+{
+    Q_OBJECT
 
 public:
-  BufferViewOverlayFilter(QAbstractItemModel *model, BufferViewOverlay *overlay = 0);
+    BufferViewOverlayFilter(QAbstractItemModel *model, BufferViewOverlay *overlay = 0);
 
-  void setOverlay(BufferViewOverlay *overlay);
+    void setOverlay(BufferViewOverlay *overlay);
 
 protected:
-  bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const;
+    bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const;
 
-private Q_SLOTS:
-  void overlayDestroyed();
+private slots:
+    void overlayDestroyed();
 
 private:
-  BufferViewOverlay *_overlay;
+    BufferViewOverlay *_overlay;
 };
+
 
 #endif // BUFFERVIEWOVERLAYFILTER_H_

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2010 by the Quassel Project                        *
+ *   Copyright (C) 2005-2013 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -15,7 +15,7 @@
  *   You should have received a copy of the GNU General Public License     *
  *   along with this program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
- *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
 #ifndef ABSTRACTUI_H
@@ -33,23 +33,25 @@ class AbstractActionProvider;
 class QAction;
 class QMenu;
 
-class AbstractUi : public QObject {
-  Q_OBJECT
+class AbstractUi : public QObject
+{
+    Q_OBJECT
 
 public:
-  AbstractUi(QObject *parent = 0) : QObject(parent) {}
-  virtual ~AbstractUi() {}
-  virtual void init() = 0;  // called after the client is initialized
-  virtual MessageModel *createMessageModel(QObject *parent) = 0;
-  virtual AbstractMessageProcessor *createMessageProcessor(QObject *parent) = 0;
+    AbstractUi(QObject *parent = 0) : QObject(parent) {}
+    virtual ~AbstractUi() {}
+    virtual void init() = 0; // called after the client is initialized
+    virtual MessageModel *createMessageModel(QObject *parent) = 0;
+    virtual AbstractMessageProcessor *createMessageProcessor(QObject *parent) = 0;
 
-protected Q_SLOTS:
-  virtual void connectedToCore() {}
-  virtual void disconnectedFromCore() {}
+protected slots:
+    virtual void connectedToCore() {}
+    virtual void disconnectedFromCore() {}
 
-Q_SIGNALS:
-  void connectToCore(const QVariantMap &connInfo);
-  void disconnectFromCore();
+signals:
+    void connectToCore(const QVariantMap &connInfo);
+    void disconnectFromCore();
 };
+
 
 #endif

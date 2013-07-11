@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-09 by the Quassel Project                          *
+ *   Copyright (C) 2005-2013 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -15,63 +15,65 @@
  *   You should have received a copy of the GNU General Public License     *
  *   along with this program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
- *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
+
 #ifndef BUFFERINFO_H
 #define BUFFERINFO_H
 
-#include <QtCore>
 #include "types.h"
 
 class QString;
 class QDataStream;
 
-class BufferInfo {
+class BufferInfo
+{
 public:
-  enum Type {
-    InvalidBuffer = 0x00,
-    StatusBuffer = 0x01,
-    ChannelBuffer = 0x02,
-    QueryBuffer = 0x04,
-    GroupBuffer = 0x08
-  };
-  
-  enum Activity {
-    NoActivity = 0x00,
-    OtherActivity = 0x01,
-    NewMessage = 0x02,
-    Highlight = 0x40
-  };
-  Q_DECLARE_FLAGS(ActivityLevel, Activity)
+    enum Type {
+        InvalidBuffer = 0x00,
+        StatusBuffer = 0x01,
+        ChannelBuffer = 0x02,
+        QueryBuffer = 0x04,
+        GroupBuffer = 0x08
+    };
 
-  BufferInfo();
-  BufferInfo(BufferId id, NetworkId networkid, Type type, uint gid = 0, QString buf = QString());
+    enum Activity {
+        NoActivity = 0x00,
+        OtherActivity = 0x01,
+        NewMessage = 0x02,
+        Highlight = 0x40
+    };
+    Q_DECLARE_FLAGS(ActivityLevel, Activity)
 
-  static BufferInfo fakeStatusBuffer(NetworkId networkId);
+    BufferInfo();
+    BufferInfo(BufferId id, NetworkId networkid, Type type, uint gid = 0, QString buf = QString());
 
-  inline bool isValid() const { return _bufferId != 0; }
-  inline const BufferId &bufferId() const { return _bufferId; }
-  inline void setBufferId(BufferId id) { _bufferId = id; }
-  inline const NetworkId &networkId() const { return _netid; }
-  inline const Type &type() const { return _type; }
-  inline const uint &groupId() const { return _groupId; }
-  void setGroupId(uint gid) { _groupId = gid; }
+    static BufferInfo fakeStatusBuffer(NetworkId networkId);
 
-  QString bufferName() const;
-  
-  inline bool operator==(const BufferInfo &other) const { return _bufferId == other._bufferId; }
+    inline bool isValid() const { return _bufferId != 0; }
+    inline const BufferId &bufferId() const { return _bufferId; }
+    inline void setBufferId(BufferId id) { _bufferId = id; }
+    inline const NetworkId &networkId() const { return _netid; }
+    inline const Type &type() const { return _type; }
+    inline const uint &groupId() const { return _groupId; }
+    void setGroupId(uint gid) { _groupId = gid; }
+
+    QString bufferName() const;
+
+    inline bool operator==(const BufferInfo &other) const { return _bufferId == other._bufferId; }
 
 private:
-  BufferId _bufferId;
-  NetworkId _netid;
-  Type _type;
-  uint _groupId;
-  QString _bufferName;
-  
-  friend uint qHash(const BufferInfo &);
-  friend QDataStream &operator<<(QDataStream &out, const BufferInfo &bufferInfo);
-  friend QDataStream &operator>>(QDataStream &in, BufferInfo &bufferInfo);
+    BufferId _bufferId;
+    NetworkId _netid;
+    Type _type;
+    uint _groupId;
+    QString _bufferName;
+
+    friend uint qHash(const BufferInfo &);
+    friend QDataStream &operator<<(QDataStream &out, const BufferInfo &bufferInfo);
+    friend QDataStream &operator>>(QDataStream &in, BufferInfo &bufferInfo);
 };
+
 
 QDataStream &operator<<(QDataStream &out, const BufferInfo &bufferInfo);
 QDataStream &operator>>(QDataStream &in, BufferInfo &bufferInfo);

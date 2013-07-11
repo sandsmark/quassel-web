@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-08 by the Quassel Project                          *
+ *   Copyright (C) 2005-2013 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -15,23 +15,24 @@
  *   You should have received a copy of the GNU General Public License     *
  *   along with this program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
- *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
 #include "mac_utils.h"
 
 #include <QVarLengthArray>
 
-QString CFStringToQString(CFStringRef str) {
-  if(!str)
-    return QString();
+QString CFStringToQString(CFStringRef str)
+{
+    if (!str)
+        return QString();
 
-  CFIndex length = CFStringGetLength(str);
-  const UniChar *chars = CFStringGetCharactersPtr(str);
-  if(chars)
-    return QString(reinterpret_cast<const QChar *>(chars), length);
+    CFIndex length = CFStringGetLength(str);
+    const UniChar *chars = CFStringGetCharactersPtr(str);
+    if (chars)
+        return QString(reinterpret_cast<const QChar *>(chars), length);
 
-  QVarLengthArray<UniChar> buffer(length);
-  CFStringGetCharacters(str, CFRangeMake(0, length), buffer.data());
-  return QString(reinterpret_cast<const QChar *>(buffer.constData()), length);
+    QVarLengthArray<UniChar> buffer(length);
+    CFStringGetCharacters(str, CFRangeMake(0, length), buffer.data());
+    return QString(reinterpret_cast<const QChar *>(buffer.constData()), length);
 }

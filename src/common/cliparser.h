@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-09 by the Quassel Project                          *
+ *   Copyright (C) 2005-2013 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -15,36 +15,38 @@
  *   You should have received a copy of the GNU General Public License     *
  *   along with this program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
- *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
 #ifndef CLIPARSER_H
 #define CLIPARSER_H
 
-#include <QHash>
+#include <QMap>
 
 #include "abstractcliparser.h"
 
 //! Quassel's own parser for command line arguments
-class CliParser : public AbstractCliParser {
+class CliParser : public AbstractCliParser
+{
 public:
-  CliParser();
+    CliParser();
 
-  bool init(const QStringList &arguments = QStringList());
+    bool init(const QStringList &arguments = QStringList());
 
-  QString value(const QString &longName);
-  bool isSet(const QString &longName);
-  void usage();
+    QString value(const QString &longName);
+    bool isSet(const QString &longName);
+    void usage();
 
 private:
-  void addArgument(const QString &longName, const CliParserArg &arg);
-  bool addLongArg(const CliParserArg::CliArgType type, const QString &name, const QString &value = QString());
-  bool addShortArg(const CliParserArg::CliArgType type, const char shortName, const QString &value = QString());
-  QString escapedValue(const QString &value);
-  QString lnameOfShortArg(const char arg);
+    void addArgument(const QString &longName, const CliParserArg &arg);
+    bool addLongArg(const CliParserArg::CliArgType type, const QString &name, const QString &value = QString());
+    bool addShortArg(const CliParserArg::CliArgType type, const char shortName, const QString &value = QString());
+    QString escapedValue(const QString &value);
+    QString lnameOfShortArg(const char arg);
 
-  QStringList argsRaw;
-  QHash<QString, CliParserArg> argsHash;
+    QStringList argsRaw;
+    QMap<QString, CliParserArg> argsMap;
 };
+
 
 #endif

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-09 by the Quassel Project                          *
+ *   Copyright (C) 2005-2013 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -15,7 +15,7 @@
  *   You should have received a copy of the GNU General Public License     *
  *   along with this program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
- *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
 #ifndef NICKVIEW_H_
@@ -25,31 +25,34 @@
 
 #include "bufferinfo.h"
 
-class NickView : public QTreeView {
-  Q_OBJECT
+class NickView : public QTreeView
+{
+    Q_OBJECT
 
 public:
-  NickView(QWidget *parent = 0);
+    NickView(QWidget *parent = 0);
 
 protected:
-  virtual void rowsInserted(const QModelIndex &parent, int start, int end);
-  virtual void customEvent(QEvent *event);
+    virtual void rowsInserted(const QModelIndex &parent, int start, int end);
 
-  //! This reimplementation ensures that the current index is first in list
-  virtual QModelIndexList selectedIndexes() const;
+    //! This reimplementation ensures that the current index is first in list
+    virtual QModelIndexList selectedIndexes() const;
 
-public Q_SLOTS:
-  virtual void setModel(QAbstractItemModel *model);
-  virtual void setRootIndex(const QModelIndex &index);
-  void init();
-  void showContextMenu(const QPoint & pos);
-  void startQuery(const QModelIndex & modelIndex);
+    void unanimatedExpandAll();
 
-Q_SIGNALS:
-  void selectionUpdated();
+public slots:
+    virtual void setModel(QAbstractItemModel *model);
+    virtual void setRootIndex(const QModelIndex &index);
+    void init();
+    void showContextMenu(const QPoint &pos);
+    void startQuery(const QModelIndex &modelIndex);
+
+signals:
+    void selectionUpdated();
 
 private:
-  friend class NickListWidget;  // needs selectedIndexes()
+    friend class NickListWidget; // needs selectedIndexes()
 };
+
 
 #endif

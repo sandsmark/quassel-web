@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2010 by the Quassel Project                        *
+ *   Copyright (C) 2005-2013 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -15,7 +15,7 @@
  *   You should have received a copy of the GNU General Public License     *
  *   along with this program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
- *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
 #ifndef UISETTINGS_H
@@ -24,62 +24,69 @@
 #include "clientsettings.h"
 #include "uistyle.h"
 
-class UiSettings : public ClientSettings {
+class UiSettings : public ClientSettings
+{
 public:
-  UiSettings(const QString &group = "Ui");
+    UiSettings(const QString &group = "Ui");
 
-  virtual inline void setValue(const QString &key, const QVariant &data) { setLocalValue(key, data); }
-  virtual inline QVariant value(const QString &key, const QVariant &def = QVariant()) { return localValue(key, def); }
+    virtual inline void setValue(const QString &key, const QVariant &data) { setLocalValue(key, data); }
+    virtual inline QVariant value(const QString &key, const QVariant &def = QVariant()) { return localValue(key, def); }
 
-  inline void remove(const QString &key) { removeLocalKey(key); }
+    inline void remove(const QString &key) { removeLocalKey(key); }
 };
 
 
-class UiStyleSettings : public UiSettings {
+class UiStyleSettings : public UiSettings
+{
 public:
-  UiStyleSettings();
-  UiStyleSettings(const QString &subGroup);
+    UiStyleSettings();
+    UiStyleSettings(const QString &subGroup);
 
-  void setCustomFormat(UiStyle::FormatType, QTextCharFormat);
-  QTextCharFormat customFormat(UiStyle::FormatType);
+    void setCustomFormat(UiStyle::FormatType, QTextCharFormat);
+    QTextCharFormat customFormat(UiStyle::FormatType);
 
-  void removeCustomFormat(UiStyle::FormatType);
-  QList<UiStyle::FormatType> availableFormats();
+    void removeCustomFormat(UiStyle::FormatType);
+    QList<UiStyle::FormatType> availableFormats();
 };
 
-class SessionSettings : public UiSettings {
+
+class SessionSettings : public UiSettings
+{
 public:
-  SessionSettings(const QString &sessionId, const QString &group = "Session");
+    SessionSettings(const QString &sessionId, const QString &group = "Session");
 
-  virtual void setValue(const QString &key, const QVariant &data);
-  virtual QVariant value(const QString &key, const QVariant &def = QVariant());
+    virtual void setValue(const QString &key, const QVariant &data);
+    virtual QVariant value(const QString &key, const QVariant &def = QVariant());
 
-  void removeKey(const QString &key);
-  void removeSession();
+    void removeKey(const QString &key);
+    void removeSession();
 
-  void cleanup();
-  void sessionAging();
+    void cleanup();
+    void sessionAging();
 
-  int sessionAge();
-  void setSessionAge(int age);
-  inline const QString sessionId() { return _sessionId; };
-  inline void setSessionId(const QString &sessionId) { _sessionId = sessionId; }
+    int sessionAge();
+    void setSessionAge(int age);
+    inline const QString sessionId() { return _sessionId; };
+    inline void setSessionId(const QString &sessionId) { _sessionId = sessionId; }
 
 private:
-  QString _sessionId;
+    QString _sessionId;
 };
 
-class ShortcutSettings : public UiSettings {
+
+class ShortcutSettings : public UiSettings
+{
 public:
-  ShortcutSettings();
+    ShortcutSettings();
 
-  //! Remove all stored shortcuts
-  void clear();
+    //! Remove all stored shortcuts
+    void clear();
 
-  QStringList savedShortcuts();
+    QStringList savedShortcuts();
 
-  void saveShortcut(const QString &name, const QKeySequence &shortcut);
-  QKeySequence loadShortcut(const QString &name);
+    void saveShortcut(const QString &name, const QKeySequence &shortcut);
+    QKeySequence loadShortcut(const QString &name);
 };
+
 
 #endif

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-09 by the Quassel Project                          *
+ *   Copyright (C) 2005-2013 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -15,7 +15,7 @@
  *   You should have received a copy of the GNU General Public License     *
  *   along with this program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
- *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
 #include "nickviewfilter.h"
@@ -30,32 +30,36 @@
  * NickViewFilter
  ******************************************************************************************/
 NickViewFilter::NickViewFilter(const BufferId &bufferId, NetworkModel *parent)
-  : QSortFilterProxyModel(parent),
+    : QSortFilterProxyModel(parent),
     _bufferId(bufferId)
 {
-  setSourceModel(parent);
-  setDynamicSortFilter(true);
-  setSortCaseSensitivity(Qt::CaseInsensitive);
-  setSortRole(TreeModel::SortRole);
+    setSourceModel(parent);
+    setDynamicSortFilter(true);
+    setSortCaseSensitivity(Qt::CaseInsensitive);
+    setSortRole(TreeModel::SortRole);
 }
 
-bool NickViewFilter::filterAcceptsRow(int source_row, const QModelIndex &source_parent) const {
-  // root node, networkindexes, the bufferindex of the buffer this filter is active for and it's children are accepted
-  if(!source_parent.isValid())
-    return true;
 
-  QModelIndex source_child = source_parent.child(source_row, 0);
-  return (sourceModel()->data(source_child, NetworkModel::BufferIdRole).value<BufferId>() == _bufferId);
+bool NickViewFilter::filterAcceptsRow(int source_row, const QModelIndex &source_parent) const
+{
+    // root node, networkindexes, the bufferindex of the buffer this filter is active for and it's children are accepted
+    if (!source_parent.isValid())
+        return true;
+
+    QModelIndex source_child = source_parent.child(source_row, 0);
+    return (sourceModel()->data(source_child, NetworkModel::BufferIdRole).value<BufferId>() == _bufferId);
 }
 
-QVariant NickViewFilter::data(const QModelIndex &index, int role) const {
-  switch(role) {
-  case Qt::FontRole:
-  case Qt::ForegroundRole:
-  case Qt::BackgroundRole:
-  case Qt::DecorationRole:
-    return GraphicalUi::uiStyle()->nickViewItemData(mapToSource(index), role);
-  default:
-    return QSortFilterProxyModel::data(index, role);
-  }
+
+QVariant NickViewFilter::data(const QModelIndex &index, int role) const
+{
+    switch (role) {
+    case Qt::FontRole:
+    case Qt::ForegroundRole:
+    case Qt::BackgroundRole:
+    case Qt::DecorationRole:
+        return GraphicalUi::uiStyle()->nickViewItemData(mapToSource(index), role);
+    default:
+        return QSortFilterProxyModel::data(index, role);
+    }
 }

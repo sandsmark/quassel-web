@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-09 by the Quassel Project                          *
+ *   Copyright (C) 2005-2013 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -15,7 +15,7 @@
  *   You should have received a copy of the GNU General Public License     *
  *   along with this program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
- *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
 #ifndef ITEMVIEWSETTINGSPAGE_H_
@@ -28,27 +28,29 @@ class ColorButton;
 class QSignalMapper;
 class QTreeWidgetItem;
 
-class ItemViewSettingsPage : public SettingsPage {
-  Q_OBJECT
+class ItemViewSettingsPage : public SettingsPage
+{
+    Q_OBJECT
 
 public:
-  ItemViewSettingsPage(QWidget *parent = 0);
+    ItemViewSettingsPage(QWidget *parent = 0);
 
-  inline bool hasDefaults() const { return true; }
+    inline bool hasDefaults() const { return true; }
 
 public slots:
-  void save();
+    void save();
 
 private slots:
-  void updateBufferViewPreview(QWidget *button);
+    void updateBufferViewPreview(QWidget *button);
 
 private:
-  Ui::ItemViewSettingsPage ui;
-  QSignalMapper *_mapper;
-  QTreeWidgetItem *_networkItem, *_defaultBufferItem, *_inactiveBufferItem,
-                  *_activeBufferItem, *_unreadBufferItem, *_highlightedBufferItem;
+    Ui::ItemViewSettingsPage ui;
+    QSignalMapper *_mapper;
+    QTreeWidgetItem *_networkItem, *_defaultBufferItem, *_inactiveBufferItem,
+    *_activeBufferItem, *_unreadBufferItem, *_highlightedBufferItem;
 
-  inline QString settingsKey() const { return QString("ItemViews"); }
+    inline QString settingsKey() const { return QString("ItemViews"); }
 };
+
 
 #endif

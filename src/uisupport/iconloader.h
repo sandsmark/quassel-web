@@ -1,6 +1,9 @@
 /***************************************************************************
- *   Copyright (C) 2005-09 by the Quassel Project                          *
+ *   Copyright (C) 2005-2013 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
+ *                                                                         *
+ *   Based in part on KDE's kiconloader.h                                  *
+ *   This declares a subset of that API.                                   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -15,10 +18,7 @@
  *   You should have received a copy of the GNU General Public License     *
  *   along with this program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
- *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
- ***************************************************************************
- * Based in part on KDE's kiconloader.h                                    *
- * This declares a subset of that API.                                     *
+ *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
 #ifndef ICONLOADER_H_
@@ -49,57 +49,59 @@
  *
  *  We don't search for size/context dirs in /pics, i.e. for a given $name, we expect pics/$name.png.
  */
-class IconLoader : public QObject {
-  Q_OBJECT
+class IconLoader : public QObject
+{
+    Q_OBJECT
 
 public:
-  enum Group {
-    NoGroup = -1,   ///< No group
-    Desktop = 0,    ///< Desktop icons
-    Toolbar,        ///< Toolbar icons
-    MainToolbar,    ///< Main toolbar icons
-    Small,          ///< Small icons, e.g. for buttons
-    Panel,          ///< Panel icons
-    Dialog,         ///< Icons for use in dialog title etc.
-    LastGroup
-  };
+    enum Group {
+        NoGroup = -1, ///< No group
+        Desktop = 0, ///< Desktop icons
+        Toolbar,    ///< Toolbar icons
+        MainToolbar, ///< Main toolbar icons
+        Small,      ///< Small icons, e.g. for buttons
+        Panel,      ///< Panel icons
+        Dialog,     ///< Icons for use in dialog title etc.
+        LastGroup
+    };
 
-  /// Standard icon sizes
-  enum StdSizes {
-    SizeSmall=16,         ///< Small icons for menu entries
-    SizeSmallMedium=22,   ///< Slightly larger small icons for toolbars, panels, etc
-    SizeMedium=32,        ///< Medium-sized icons for the desktop
-    SizeLarge=48,         ///< Large icons for the panel
-    SizeHuge=64,          ///< Huge icons for iconviews
-    SizeEnormous=128      ///< Enormous icons for iconviews
-  };
+    /// Standard icon sizes
+    enum StdSizes {
+        SizeSmall = 16,   ///< Small icons for menu entries
+        SizeSmallMedium = 22, ///< Slightly larger small icons for toolbars, panels, etc
+        SizeMedium = 32,  ///< Medium-sized icons for the desktop
+        SizeLarge = 48,   ///< Large icons for the panel
+        SizeHuge = 64,    ///< Huge icons for iconviews
+        SizeEnormous = 128 ///< Enormous icons for iconviews
+    };
 
-  explicit IconLoader(QObject *parent = 0);
-  ~IconLoader();
+    explicit IconLoader(QObject *parent = 0);
+    ~IconLoader();
 
-  static IconLoader *global();
+    static IconLoader *global();
 
-  /// Load a pixmap for the given name and group
-  QPixmap loadIcon(const QString& name, IconLoader::Group group, int size = 0);
+    /// Load a pixmap for the given name and group
+    QPixmap loadIcon(const QString &name, IconLoader::Group group, int size = 0);
 
-  inline QString theme() const;
-  void setTheme(const QString &name);
+    inline QString theme() const;
+    void setTheme(const QString &name);
 
 private:
-  QString findIconPath(const QString &name, int size);
+    QString findIconPath(const QString &name, int size);
 
-  static IconLoader _iconLoader;
-  QString _theme;
-  QStringList _themedIconDirNames;
-  QStringList _plainIconDirNames;
-  static int _groupSize[];
+    static IconLoader _iconLoader;
+    QString _theme;
+    QStringList _themedIconDirNames;
+    QStringList _plainIconDirNames;
+    static int _groupSize[];
 };
 
+
 // convenience
-QPixmap DesktopIcon(const QString& name, int size = 0);
-QPixmap BarIcon(const QString& name, int size = 0);
-QPixmap MainBarIcon(const QString& name, int size = 0);
-QPixmap SmallIcon(const QString& name, int size = 0);
+QPixmap DesktopIcon(const QString &name, int size = 0);
+QPixmap BarIcon(const QString &name, int size = 0);
+QPixmap MainBarIcon(const QString &name, int size = 0);
+QPixmap SmallIcon(const QString &name, int size = 0);
 //QPixmap SmallMediumIcon(const QString &name, int size = 0);  // not part of KIconLoader
 
 QString IconLoader::theme() const { return _theme; }
@@ -107,7 +109,11 @@ QString IconLoader::theme() const { return _theme; }
 #else /* HAVE_KDE */
 
 #include <KIconLoader>
-class IconLoader : public KIconLoader { Q_OBJECT };
+class IconLoader : public KIconLoader
+{
+    Q_OBJECT
+};
+
 
 #endif /* HAVE_KDE */
 

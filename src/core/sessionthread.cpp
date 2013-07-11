@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-09 by the Quassel Project                          *
+ *   Copyright (C) 2005-2013 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -15,93 +15,116 @@
  *   You should have received a copy of the GNU General Public License     *
  *   along with this program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
- *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#include <QMutexLocker>
-
+#include "core.h"
+#include "coresession.h"
+#include "internalpeer.h"
+#include "remotepeer.h"
 #include "sessionthread.h"
 #include "signalproxy.h"
-#include "coresession.h"
-#include "core.h"
 
 SessionThread::SessionThread(UserId uid, bool restoreState, QObject *parent)
-  : QThread(parent),
+    : QThread(parent),
     _session(0),
     _user(uid),
     _sessionInitialized(false),
     _restoreState(restoreState)
 {
-  connect(this, SIGNAL(initialized()), this, SLOT(setSessionInitialized()));
+    connect(this, SIGNAL(initialized()), this, SLOT(setSessionInitialized()));
 }
 
-SessionThread::~SessionThread() {
-  // shut down thread gracefully
-  quit();
-  wait();
+
+SessionThread::~SessionThread()
+{
+    // shut down thread gracefully
+    quit();
+    wait();
 }
 
-CoreSession *SessionThread::session() {
-  return _session;
+
+CoreSession *SessionThread::session()
+{
+    return _session;
 }
 
-UserId SessionThread::user() {
-  return _user;
+
+UserId SessionThread::user()
+{
+    return _user;
 }
 
-bool SessionThread::isSessionInitialized() {
-  return _sessionInitialized;
+
+bool SessionThread::isSessionInitialized()
+{
+    return _sessionInitialized;
 }
 
-void SessionThread::setSessionInitialized() {
-  _sessionInitialized = true;
-  foreach(QObject *peer, clientQueue) {
-    addClientToSession(peer);
-  }
-  clientQueue.clear();
+
+void SessionThread::setSessionInitialized()
+{
+    _sessionInitialized = true;
+    foreach(QObject *peer, clientQueue) {
+        addClientToSession(peer);
+    }
+    clientQueue.clear();
 }
 
-void SessionThread::addClient(QObject *peer) {
-  if(isSessionInitialized()) {
-    addClientToSession(peer);
-  } else {
-    clientQueue.append(peer);
-  }
+
+// this and the following related methods are executed in the Core thread!
+void SessionThread::addClient(QObject *peer)
+{
+    if (isSessionInitialized()) {
+        addClientToSession(peer);
+    }
+    else {
+        clientQueue.append(peer);
+    }
 }
 
-void SessionThread::addClientToSession(QObject *peer) {
-  QIODevice *socket = qobject_cast<QIODevice *>(peer);
-  if(socket) {
-    addRemoteClientToSession(socket);
-    return;
-  }
 
-  SignalProxy *proxy = qobject_cast<SignalProxy *>(peer);
-  if(proxy) {
-    addInternalClientToSession(proxy);
-    return;
-  }
+void SessionThread::addClientToSession(QObject *peer)
+{
+    RemotePeer *remote = qobject_cast<RemotePeer *>(peer);
+    if (remote) {
+        addRemoteClientToSession(remote);
+        return;
+    }
 
-  qWarning() << "SessionThread::addClient() received neither QIODevice nor SignalProxy as peer!" << peer;
+    InternalPeer *internal = qobject_cast<InternalPeer *>(peer);
+    if (internal) {
+        addInternalClientToSession(internal);
+        return;
+    }
+
+    qWarning() << "SessionThread::addClient() received invalid peer!" << peer;
 }
 
-void SessionThread::addRemoteClientToSession(QIODevice *socket) {
-  socket->setParent(0);
-  socket->moveToThread(session()->thread());
-  emit addRemoteClient(socket);
+
+void SessionThread::addRemoteClientToSession(RemotePeer *remotePeer)
+{
+    remotePeer->setParent(0);
+    remotePeer->moveToThread(session()->thread());
+    emit addRemoteClient(remotePeer);
 }
 
-void SessionThread::addInternalClientToSession(SignalProxy *proxy) {
-  emit addInternalClient(proxy);
+
+void SessionThread::addInternalClientToSession(InternalPeer *internalPeer)
+{
+    internalPeer->setParent(0);
+    internalPeer->moveToThread(session()->thread());
+    emit addInternalClient(internalPeer);
 }
 
-void SessionThread::run() {
-  _session = new CoreSession(user(), _restoreState);
-  connect(this, SIGNAL(addRemoteClient(QIODevice *)), _session, SLOT(addClient(QIODevice *)));
-  connect(this, SIGNAL(addInternalClient(SignalProxy *)), _session, SLOT(addClient(SignalProxy *)));
-  connect(_session, SIGNAL(sessionState(const QVariant &)), Core::instance(), SIGNAL(sessionState(const QVariant &)));
-  emit initialized();
-  exec();
-  delete _session;
-}
 
+void SessionThread::run()
+{
+    _session = new CoreSession(user(), _restoreState);
+    connect(this, SIGNAL(addRemoteClient(RemotePeer*)), _session, SLOT(addClient(RemotePeer*)));
+    connect(this, SIGNAL(addInternalClient(InternalPeer*)), _session, SLOT(addClient(InternalPeer*)));
+    connect(_session, SIGNAL(sessionState(QVariant)), Core::instance(), SIGNAL(sessionState(QVariant)));
+    emit initialized();
+    exec();
+    delete _session;
+}

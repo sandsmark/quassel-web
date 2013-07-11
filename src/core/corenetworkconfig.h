@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-09 by the Quassel Project                          *
+ *   Copyright (C) 2005-2013 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -15,7 +15,7 @@
  *   You should have received a copy of the GNU General Public License     *
  *   along with this program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
- *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
 #ifndef CORENETWORKCONFIG_H_
@@ -25,25 +25,28 @@
 
 class CoreSession;
 
-class CoreNetworkConfig : public NetworkConfig {
-  SYNCABLE_OBJECT
-  Q_OBJECT
+class CoreNetworkConfig : public NetworkConfig
+{
+    SYNCABLE_OBJECT
+        Q_OBJECT
 
 public:
-  CoreNetworkConfig(const QString &objectName, CoreSession *parent);
+    CoreNetworkConfig(const QString &objectName, CoreSession *parent);
 
-  inline virtual const QMetaObject *syncMetaObject() const { return &NetworkConfig::staticMetaObject; }
+    inline virtual const QMetaObject *syncMetaObject() const { return &NetworkConfig::staticMetaObject; }
 
-  void save();
+    void save();
 
 public slots:
-  virtual inline void requestSetPingTimeoutEnabled(bool enabled) { setPingTimeoutEnabled(enabled); }
-  virtual inline void requestSetPingInterval(int interval) { setPingInterval(interval); }
-  virtual inline void requestSetMaxPingCount(int count) { setMaxPingCount(count); }
-  virtual inline void requestSetAutoWhoEnabled(bool enabled) { setAutoWhoEnabled(enabled); }
-  virtual inline void requestSetAutoWhoInterval(int interval) { setAutoWhoInterval(interval); }
-  virtual inline void requestSetAutoWhoNickLimit(int nickLimit) { setAutoWhoNickLimit(nickLimit); }
-  virtual inline void requestSetAutoWhoDelay(int delay) { setAutoWhoDelay(delay); }
+    virtual inline void requestSetPingTimeoutEnabled(bool enabled) { setPingTimeoutEnabled(enabled); }
+    virtual inline void requestSetPingInterval(int interval) { setPingInterval(interval); }
+    virtual inline void requestSetMaxPingCount(int count) { setMaxPingCount(count); }
+    virtual inline void requestSetAutoWhoEnabled(bool enabled) { setAutoWhoEnabled(enabled); }
+    virtual inline void requestSetAutoWhoInterval(int interval) { setAutoWhoInterval(interval); }
+    virtual inline void requestSetAutoWhoNickLimit(int nickLimit) { setAutoWhoNickLimit(nickLimit); }
+    virtual inline void requestSetAutoWhoDelay(int delay) { setAutoWhoDelay(delay); }
+    virtual inline void requestSetStandardCtcp(bool enabled) { setStandardCtcp(enabled); }
 };
+
 
 #endif

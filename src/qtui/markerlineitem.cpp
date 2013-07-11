@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2010 by the Quassel Project                             *
+ *   Copyright (C) 2005-2013 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -15,7 +15,7 @@
  *   You should have received a copy of the GNU General Public License     *
  *   along with this program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
- *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
 #include <QPainter>
@@ -24,44 +24,51 @@
 #include "qtui.h"
 
 MarkerLineItem::MarkerLineItem(qreal sceneWidth, QGraphicsItem *parent)
-  : QGraphicsObject(parent),
+    : QGraphicsObject(parent),
     _boundingRect(0, 0, sceneWidth, 1),
     _chatLine(0)
 {
-  setVisible(false);
-  setZValue(8);
-  styleChanged(); // init brush and height
-  connect(QtUi::style(), SIGNAL(changed()), SLOT(styleChanged()));
-}
-
-void MarkerLineItem::setChatLine(ChatLine *line) {
-  _chatLine = line;
-  if(!line)
     setVisible(false);
+    setZValue(8);
+    styleChanged(); // init brush and height
+    connect(QtUi::style(), SIGNAL(changed()), SLOT(styleChanged()));
 }
 
-void MarkerLineItem::styleChanged() {
-  _brush = QtUi::style()->brush(UiStyle::MarkerLine);
 
-  // if this is a solid color, we assume 1px because wesurely  don't surely don't want to fill the entire chatline.
-  // else, use the height of a single line of text to play around with gradients etc.
-  qreal height = 1.;
-  if(_brush.style() != Qt::SolidPattern)
-    height = QtUi::style()->fontMetrics(QtUiStyle::PlainMsg, 0)->lineSpacing();
-
-
-  prepareGeometryChange();
-  _boundingRect = QRectF(0, 0, scene()? scene()->width() : 100, height);
+void MarkerLineItem::setChatLine(ChatLine *line)
+{
+    _chatLine = line;
+    if (!line)
+        setVisible(false);
 }
 
-void MarkerLineItem::sceneRectChanged(const QRectF &rect) {
-  prepareGeometryChange();
-  _boundingRect.setWidth(rect.width());
+
+void MarkerLineItem::styleChanged()
+{
+    _brush = QtUi::style()->brush(UiStyle::MarkerLine);
+
+    // if this is a solid color, we assume 1px because wesurely  don't surely don't want to fill the entire chatline.
+    // else, use the height of a single line of text to play around with gradients etc.
+    qreal height = 1.;
+    if (_brush.style() != Qt::SolidPattern)
+        height = QtUi::style()->fontMetrics(QtUiStyle::PlainMsg, 0)->lineSpacing();
+
+    prepareGeometryChange();
+    _boundingRect = QRectF(0, 0, scene() ? scene()->width() : 100, height);
 }
 
-void MarkerLineItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
-  Q_UNUSED(option);
-  Q_UNUSED(widget);
 
-  painter->fillRect(boundingRect(), _brush);
+void MarkerLineItem::sceneRectChanged(const QRectF &rect)
+{
+    prepareGeometryChange();
+    _boundingRect.setWidth(rect.width());
+}
+
+
+void MarkerLineItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+{
+    Q_UNUSED(option);
+    Q_UNUSED(widget);
+
+    painter->fillRect(boundingRect(), _brush);
 }

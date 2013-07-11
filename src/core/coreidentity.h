@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-09 by the Quassel Project                          *
+ *   Copyright (C) 2005-2013 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -15,7 +15,7 @@
  *   You should have received a copy of the GNU General Public License     *
  *   along with this program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
- *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
 #ifndef COREIDENTITY_H
@@ -35,70 +35,81 @@ class SignalProxy;
 // ========================================
 #ifdef HAVE_SSL
 class CoreIdentity;
-class CoreCertManager : public CertManager {
-  SYNCABLE_OBJECT
-  Q_OBJECT
+class CoreCertManager : public CertManager
+{
+    SYNCABLE_OBJECT
+        Q_OBJECT
 
 public:
-  CoreCertManager(CoreIdentity &identity);
+    CoreCertManager(CoreIdentity &identity);
 
 #ifdef HAVE_SSL
-  virtual const QSslKey &sslKey() const;
-  virtual const QSslCertificate &sslCert() const;
+    virtual const QSslKey &sslKey() const;
+    virtual const QSslCertificate &sslCert() const;
 
 public slots:
-  virtual void setSslKey(const QByteArray &encoded);
-  virtual void setSslCert(const QByteArray &encoded);
+    virtual void setSslKey(const QByteArray &encoded);
+    virtual void setSslCert(const QByteArray &encoded);
 #endif
 
-  void setId(IdentityId id);
+    void setId(IdentityId id);
 
 private:
-  CoreIdentity &identity;
+    CoreIdentity &identity;
 };
+
+
 #endif //HAVE_SSL
 
 // =========================================
 //  CoreIdentity
 // =========================================
-class CoreIdentity : public Identity {
-  SYNCABLE_OBJECT
-  Q_OBJECT
+class CoreIdentity : public Identity
+{
+    SYNCABLE_OBJECT
+        Q_OBJECT
 
 public:
-  CoreIdentity(IdentityId id, QObject *parent = 0);
-  CoreIdentity(const Identity &other, QObject *parent = 0);
-  CoreIdentity(const CoreIdentity &other, QObject *parent = 0);
+    CoreIdentity(IdentityId id, QObject *parent = 0);
+    CoreIdentity(const Identity &other, QObject *parent = 0);
+    CoreIdentity(const CoreIdentity &other, QObject *parent = 0);
 
-  void synchronize(SignalProxy *proxy);
+    void synchronize(SignalProxy *proxy);
 
 #ifdef HAVE_SSL
-  inline const QSslKey &sslKey() const { return _sslKey; }
-  inline void setSslKey(const QSslKey &key) { _sslKey = key; }
-  void setSslKey(const QByteArray &encoded);
-  inline const QSslCertificate &sslCert() const { return _sslCert; }
-  inline void setSslCert(const QSslCertificate &cert) { _sslCert = cert; }
-  void setSslCert(const QByteArray &encoded);
+    inline const QSslKey &sslKey() const { return _sslKey; }
+    inline void setSslKey(const QSslKey &key) { _sslKey = key; }
+    void setSslKey(const QByteArray &encoded);
+    inline const QSslCertificate &sslCert() const { return _sslCert; }
+    inline void setSslCert(const QSslCertificate &cert) { _sslCert = cert; }
+    void setSslCert(const QByteArray &encoded);
 #endif /* HAVE_SSL */
 
-  CoreIdentity& operator=(const CoreIdentity &identity);
+    CoreIdentity &operator=(const CoreIdentity &identity);
 
 private:
 #ifdef HAVE_SSL
-  QSslKey _sslKey;
-  QSslCertificate _sslCert;
+    QSslKey _sslKey;
+    QSslCertificate _sslCert;
 
-  CoreCertManager _certManager;
+    CoreCertManager _certManager;
 #endif
 };
 
+
 #ifdef HAVE_SSL
-inline const QSslKey &CoreCertManager::sslKey() const {
-  return identity.sslKey();
+inline const QSslKey &CoreCertManager::sslKey() const
+{
+    return identity.sslKey();
 }
-inline const QSslCertificate &CoreCertManager::sslCert() const {
-  return identity.sslCert();
+
+
+inline const QSslCertificate &CoreCertManager::sslCert() const
+{
+    return identity.sslCert();
 }
+
+
 #endif
 
 #endif //COREIDENTITY_H

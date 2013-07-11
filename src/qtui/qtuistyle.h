@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-09 by the Quassel Project                          *
+ *   Copyright (C) 2005-2013 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -15,7 +15,7 @@
  *   You should have received a copy of the GNU General Public License     *
  *   along with this program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
- *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
 #ifndef QTUISTYLE_H_
@@ -24,29 +24,31 @@
 #include "uistyle.h"
 #include "qtuisettings.h"
 
-class QtUiStyle : public UiStyle {
-  Q_OBJECT
+class QtUiStyle : public UiStyle
+{
+    Q_OBJECT
 
 public:
-  QtUiStyle(QObject *parent = 0);
-  virtual ~QtUiStyle();
+    QtUiStyle(QObject *parent = 0);
+    virtual ~QtUiStyle();
 
-  virtual inline qreal firstColumnSeparator() const { return 6; }
-  virtual inline qreal secondColumnSeparator() const { return 6; }
+    virtual inline qreal firstColumnSeparator() const { return 6; }
+    virtual inline qreal secondColumnSeparator() const { return 6; }
 
 public slots:
-  void generateSettingsQss() const;
+    void generateSettingsQss() const;
 
 private slots:
-  void updateTimestampFormatString();
+    void updateTimestampFormatString();
 
 private:
-  QString fontDescription(const QFont &font) const;
-  QString color(const QString &key, UiSettings &settings) const;
+    QString fontDescription(const QFont &font) const;
+    QString color(const QString &key, UiSettings &settings) const;
 
-  QString msgTypeQss(const QString &msgType, const QString &key, UiSettings &settings) const;
-  QString senderQss(int i, UiSettings &settings) const;
-  QString chatListItemQss(const QString &state, const QString &key, UiSettings &settings) const;
+    QString msgTypeQss(const QString &msgType, const QString &key, UiSettings &settings) const;
+    QString senderQss(int i, UiSettings &settings) const;
+    QString chatListItemQss(const QString &state, const QString &key, UiSettings &settings) const;
 };
+
 
 #endif

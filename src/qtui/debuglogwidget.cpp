@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-09 by the Quassel Project                          *
+ *   Copyright (C) 2005-2013 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -15,7 +15,7 @@
  *   You should have received a copy of the GNU General Public License     *
  *   along with this program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
- *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
 #include "debuglogwidget.h"
@@ -23,18 +23,19 @@
 #include "client.h"
 
 DebugLogWidget::DebugLogWidget(QWidget *parent)
-  : QWidget(parent)
+    : QWidget(parent)
 {
-  ui.setupUi(this);
-  setAttribute(Qt::WA_DeleteOnClose, true);
-  ui.textEdit->setPlainText(Client::debugLog());
-  connect(Client::instance(), SIGNAL(logUpdated(const QString &)), this, SLOT(logUpdated(const QString &)));
-  ui.textEdit->setReadOnly(true);
+    ui.setupUi(this);
+    setAttribute(Qt::WA_DeleteOnClose, true);
+    ui.textEdit->setPlainText(Client::debugLog());
+    connect(Client::instance(), SIGNAL(logUpdated(const QString &)), this, SLOT(logUpdated(const QString &)));
+    ui.textEdit->setReadOnly(true);
 }
 
-void DebugLogWidget::logUpdated(const QString &msg) {
-  ui.textEdit->moveCursor(QTextCursor::End);
-  ui.textEdit->insertPlainText(msg);
-  ui.textEdit->moveCursor(QTextCursor::End);
-}
 
+void DebugLogWidget::logUpdated(const QString &msg)
+{
+    ui.textEdit->moveCursor(QTextCursor::End);
+    ui.textEdit->insertPlainText(msg);
+    ui.textEdit->moveCursor(QTextCursor::End);
+}

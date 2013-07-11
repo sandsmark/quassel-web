@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-09 by the Quassel Project                          *
+ *   Copyright (C) 2005-2013 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -15,7 +15,7 @@
  *   You should have received a copy of the GNU General Public License     *
  *   along with this program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
- *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
 #ifndef CORECOREINFO_H
@@ -28,21 +28,23 @@ class CoreSession;
 /*
  * Yes this name is somewhat stupid... but it fits the general naming scheme
  * which is prefixing core specific sync objects with "Core"... ;)
- */ 
-class CoreCoreInfo : public CoreInfo {
-  SYNCABLE_OBJECT
-  Q_OBJECT
+ */
+class CoreCoreInfo : public CoreInfo
+{
+    SYNCABLE_OBJECT
+        Q_OBJECT
 
 public:
-  CoreCoreInfo(CoreSession *parent);
+    CoreCoreInfo(CoreSession *parent);
 
-  inline virtual const QMetaObject *syncMetaObject() const { return &CoreInfo::staticMetaObject; }
+    inline virtual const QMetaObject *syncMetaObject() const { return &CoreInfo::staticMetaObject; }
 
 public slots:
-  virtual QVariantMap coreData() const;
+    virtual QVariantMap coreData() const;
 
 private:
-  CoreSession *_coreSession;
+    CoreSession *_coreSession;
 };
+
 
 #endif //CORECOREINFO_H

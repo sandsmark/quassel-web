@@ -15,6 +15,7 @@
     <!-- properties -->
 
     <property name="RegisteredStatusNotifierItems" type="as" access="read">
+       <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QStringList"/>
        <annotation name="com.trolltech.QtDBus.QtTypeName.Out0" value="QStringList"/>
     </property>
 

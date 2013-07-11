@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-09 by the Quassel Project                          *
+ *   Copyright (C) 2005-2013 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -15,42 +15,50 @@
  *   You should have received a copy of the GNU General Public License     *
  *   along with this program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
- *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
 #include "qtuisettings.h"
 
 QtUiSettings::QtUiSettings(const QString &subGroup)
-  : UiSettings(QString("QtUi/%1").arg(subGroup))
+    : UiSettings(QString("QtUi/%1").arg(subGroup))
 {
 }
 
+
 QtUiSettings::QtUiSettings()
-  : UiSettings("QtUi")
+    : UiSettings("QtUi")
 {
 }
+
 
 /***********************************************************************/
 QtUiStyleSettings::QtUiStyleSettings(const QString &subGroup)
-  : UiSettings(QString("QtUiStyle/%1").arg(subGroup))
+    : UiSettings(QString("QtUiStyle/%1").arg(subGroup))
 {
 }
 
+
 QtUiStyleSettings::QtUiStyleSettings()
-  : UiSettings("QtUiStyle")
+    : UiSettings("QtUiStyle")
 {
 }
+
 
 /***********************************************************************/
 
-WarningsSettings::WarningsSettings() : UiSettings("Warnings") {
-
+WarningsSettings::WarningsSettings() : UiSettings("Warnings")
+{
 }
 
-bool WarningsSettings::showWarning(const QString &key) {
-  return localValue(key, true).toBool();
+
+bool WarningsSettings::showWarning(const QString &key)
+{
+    return localValue(key, true).toBool();
 }
 
-void WarningsSettings::setShowWarning(const QString &key, bool show) {
-  setLocalValue(key, show);
+
+void WarningsSettings::setShowWarning(const QString &key, bool show)
+{
+    setLocalValue(key, show);
 }

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-09 by the Quassel Project                          *
+ *   Copyright (C) 2005-2013 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -15,7 +15,7 @@
  *   You should have received a copy of the GNU General Public License     *
  *   along with this program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
- *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
 #ifndef TOPICWIDGETSETTINGSPAGE_H_
@@ -24,18 +24,20 @@
 #include "settingspage.h"
 #include "ui_topicwidgetsettingspage.h"
 
-class TopicWidgetSettingsPage : public SettingsPage {
-  Q_OBJECT
+class TopicWidgetSettingsPage : public SettingsPage
+{
+    Q_OBJECT
 
 public:
-  TopicWidgetSettingsPage(QWidget *parent = 0);
+    TopicWidgetSettingsPage(QWidget *parent = 0);
 
-  inline bool hasDefaults() const { return true; }
+    inline bool hasDefaults() const { return true; }
 
 private:
-  Ui::TopicWidgetSettingsPage ui;
+    Ui::TopicWidgetSettingsPage ui;
 
-  inline QString settingsKey() const { return QString("TopicWidget"); }
+    inline QString settingsKey() const { return QString("TopicWidget"); }
 };
+
 
 #endif

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-09 by the Quassel Project                          *
+ *   Copyright (C) 2005-2013 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -15,7 +15,7 @@
  *   You should have received a copy of the GNU General Public License     *
  *   along with this program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
- *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
 #ifndef MAINWIN_H_
@@ -56,13 +56,14 @@ class KHelpMenu;
 //!\brief The main window of Quassel's QtUi.
 class MainWin
 #ifdef HAVE_KDE
-: public KMainWindow {
+    : public KMainWindow
+{
 #else
 : public QMainWindow {
 #endif
-  Q_OBJECT
+    Q_OBJECT
 
-  public:
+public:
     MainWin(QWidget *parent = 0);
     virtual ~MainWin();
 
@@ -83,8 +84,9 @@ class MainWin
     void saveStateToSettings(UiSettings &);
     void restoreStateFromSettings(UiSettings &);
 
-  public slots:
+public slots:
     void showStatusBarMessage(const QString &message);
+    void hideCurrentBuffer();
     void nextBufferView();     //!< Activate the next bufferview
     void previousBufferView(); //!< Activate the previous bufferview
     void nextBuffer();
@@ -93,18 +95,18 @@ class MainWin
     //! Quit application
     void quit();
 
-  protected:
+protected:
     void closeEvent(QCloseEvent *event);
     void moveEvent(QMoveEvent *event);
     void resizeEvent(QResizeEvent *event);
 
-  protected slots:
+protected slots:
     void connectedToCore();
     void setConnectedState();
     void disconnectedFromCore();
     void setDisconnectedState();
 
-  private slots:
+private slots:
     void addBufferView(int bufferViewConfigId);
     void awayLogDestroyed();
     void removeBufferView(int bufferViewConfigId);
@@ -159,11 +161,11 @@ class MainWin
     void changeActiveBufferView(bool backwards);
     void changeActiveBufferView(int bufferViewId);
 
-  signals:
+signals:
     void connectToCore(const QVariantMap &connInfo);
     void disconnectFromCore();
 
-  private:
+private:
 #ifdef HAVE_KDE
     KHelpMenu *_kHelpMenu;
 #endif
@@ -215,5 +217,6 @@ class MainWin
 
     friend class QtUi;
 };
+
 
 #endif

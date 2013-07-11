@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-09 by the Quassel Project                          *
+ *   Copyright (C) 2005-2013 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -15,7 +15,7 @@
  *   You should have received a copy of the GNU General Public License     *
  *   along with this program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
- *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
 #ifndef COREIGNORELISTMANAGER_H
@@ -26,31 +26,34 @@
 class CoreSession;
 struct RawMessage;
 
-class CoreIgnoreListManager : public IgnoreListManager {
-  SYNCABLE_OBJECT
-  Q_OBJECT
+class CoreIgnoreListManager : public IgnoreListManager
+{
+    SYNCABLE_OBJECT
+        Q_OBJECT
 
 public:
-  explicit CoreIgnoreListManager(CoreSession *parent);
+    explicit CoreIgnoreListManager(CoreSession *parent);
 
-  inline virtual const QMetaObject *syncMetaObject() const { return &IgnoreListManager::staticMetaObject; }
+    inline virtual const QMetaObject *syncMetaObject() const { return &IgnoreListManager::staticMetaObject; }
 
-  StrictnessType match(const RawMessage &rawMsg, const QString &networkName);
+    StrictnessType match(const RawMessage &rawMsg, const QString &networkName);
 
 public slots:
-  virtual inline void requestToggleIgnoreRule(const QString &ignoreRule) { toggleIgnoreRule(ignoreRule); }
-  virtual inline void requestRemoveIgnoreListItem(const QString &ignoreRule) { removeIgnoreListItem(ignoreRule); }
-  virtual inline void requestAddIgnoreListItem(int type, const QString &ignoreRule, bool isRegEx, int strictness,
-                                               int scope, const QString &scopeRule, bool isActive) {
-    addIgnoreListItem(type, ignoreRule, isRegEx, strictness, scope, scopeRule, isActive);
-  }
+    virtual inline void requestToggleIgnoreRule(const QString &ignoreRule) { toggleIgnoreRule(ignoreRule); }
+    virtual inline void requestRemoveIgnoreListItem(const QString &ignoreRule) { removeIgnoreListItem(ignoreRule); }
+    virtual inline void requestAddIgnoreListItem(int type, const QString &ignoreRule, bool isRegEx, int strictness,
+        int scope, const QString &scopeRule, bool isActive)
+    {
+        addIgnoreListItem(type, ignoreRule, isRegEx, strictness, scope, scopeRule, isActive);
+    }
+
 
 private slots:
-  void save() const;
+    void save() const;
 
 //private:
 //  void loadDefaults();
-
 };
+
 
 #endif //COREIGNORELISTMANAGER_H

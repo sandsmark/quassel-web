@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-08 by the Quassel Project                          *
+ *   Copyright (C) 2005-2013 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -15,42 +15,46 @@
  *   You should have received a copy of the GNU General Public License     *
  *   along with this program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
- *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
 #include "awaylogfilter.h"
 
 AwayLogFilter::AwayLogFilter(MessageModel *model, QObject *parent)
-  : ChatMonitorFilter(model, parent)
+    : ChatMonitorFilter(model, parent)
 {
 }
 
-bool AwayLogFilter::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const {
-  Q_UNUSED(sourceParent)
 
-  QModelIndex source_index = sourceModel()->index(sourceRow, 0);
+bool AwayLogFilter::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const
+{
+    Q_UNUSED(sourceParent)
 
-  Message::Flags flags = (Message::Flags)sourceModel()->data(source_index, MessageModel::FlagsRole).toInt();
-  if(!(flags & Message::Backlog && flags & Message::Highlight))
-    return false;
+    QModelIndex source_index = sourceModel()->index(sourceRow, 0);
 
-  BufferId bufferId = sourceModel()->data(source_index, MessageModel::BufferIdRole).value<BufferId>();
-  if(!bufferId.isValid()) {
-    return false;
-  }
+    Message::Flags flags = (Message::Flags)sourceModel()->data(source_index, MessageModel::FlagsRole).toInt();
+    if (!(flags & Message::Backlog && flags & Message::Highlight))
+        return false;
 
-  if(Client::networkModel()->lastSeenMsgId(bufferId) >= sourceModel()->data(source_index, MessageModel::MsgIdRole).value<MsgId>())
-    return false;
+    BufferId bufferId = sourceModel()->data(source_index, MessageModel::BufferIdRole).value<BufferId>();
+    if (!bufferId.isValid()) {
+        return false;
+    }
 
-  return true;
+    if (Client::networkModel()->lastSeenMsgId(bufferId) >= sourceModel()->data(source_index, MessageModel::MsgIdRole).value<MsgId>())
+        return false;
+
+    return true;
 }
 
-QVariant AwayLogFilter::data(const QModelIndex &index, int role) const {
-  if(role != MessageModel::FlagsRole)
-    return ChatMonitorFilter::data(index, role);
 
-  QModelIndex source_index = mapToSource(index);
-  Message::Flags flags = (Message::Flags)sourceModel()->data(source_index, MessageModel::FlagsRole).toInt();
-  flags &= ~Message::Highlight;
-  return (int)flags;
+QVariant AwayLogFilter::data(const QModelIndex &index, int role) const
+{
+    if (role != MessageModel::FlagsRole)
+        return ChatMonitorFilter::data(index, role);
+
+    QModelIndex source_index = mapToSource(index);
+    Message::Flags flags = (Message::Flags)sourceModel()->data(source_index, MessageModel::FlagsRole).toInt();
+    flags &= ~Message::Highlight;
+    return (int)flags;
 }

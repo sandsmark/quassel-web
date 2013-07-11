@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-09 by the Quassel Project                          *
+ *   Copyright (C) 2005-2013 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -15,7 +15,7 @@
  *   You should have received a copy of the GNU General Public License     *
  *   along with this program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
- *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
 #ifndef COREINFO_H
@@ -27,17 +27,19 @@
  * gather various informations about the core.
  */
 
-class CoreInfo : public SyncableObject {
-  Q_OBJECT
+class CoreInfo : public SyncableObject
+{
+    Q_OBJECT
 
-  Q_PROPERTY(QVariantMap coreData READ coreData WRITE setCoreData STORED false)
+    Q_PROPERTY(QVariantMap coreData READ coreData WRITE setCoreData STORED false)
 
-public:
-  CoreInfo(QObject *parent = 0) : SyncableObject(parent) {}
+public :
+        CoreInfo(QObject *parent = 0) : SyncableObject(parent) {}
 
-public Q_SLOTS:
-  virtual inline QVariantMap coreData() const { return QVariantMap(); }
-  virtual inline void setCoreData(const QVariantMap &) {}
+public slots:
+    virtual inline QVariantMap coreData() const { return QVariantMap(); }
+    virtual inline void setCoreData(const QVariantMap &) {}
 };
+
 
 #endif //COREINFO_H

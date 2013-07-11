@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-09 by the Quassel Project                          *
+ *   Copyright (C) 2005-2013 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -15,7 +15,7 @@
  *   You should have received a copy of the GNU General Public License     *
  *   along with this program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
- *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
 #ifndef CHATVIEWSEARCHBAR_H
@@ -28,34 +28,36 @@
 
 class QAction;
 
-class ChatViewSearchBar : public QWidget {
-  Q_OBJECT
+class ChatViewSearchBar : public QWidget
+{
+    Q_OBJECT
 
 public:
-  ChatViewSearchBar(QWidget *parent = 0);
+    ChatViewSearchBar(QWidget *parent = 0);
 
-  inline QLineEdit *searchEditLine() const { return ui.searchEditLine; }
-  inline QCheckBox *caseSensitiveBox() const { return ui.caseSensitiveBox; }
-  inline QCheckBox *searchSendersBox() const { return ui.searchSendersBox; }
-  inline QCheckBox *searchMsgsBox() const { return ui.searchMsgsBox; }
-  inline QCheckBox *searchOnlyRegularMsgsBox() const { return ui.searchOnlyRegularMsgsBox; }
-  inline QToolButton *searchUpButton() const { return  ui.searchUpButton; }
-  inline QToolButton *searchDownButton() const { return ui.searchDownButton; }
+    inline QLineEdit *searchEditLine() const { return ui.searchEditLine; }
+    inline QCheckBox *caseSensitiveBox() const { return ui.caseSensitiveBox; }
+    inline QCheckBox *searchSendersBox() const { return ui.searchSendersBox; }
+    inline QCheckBox *searchMsgsBox() const { return ui.searchMsgsBox; }
+    inline QCheckBox *searchOnlyRegularMsgsBox() const { return ui.searchOnlyRegularMsgsBox; }
+    inline QToolButton *searchUpButton() const { return ui.searchUpButton; }
+    inline QToolButton *searchDownButton() const { return ui.searchDownButton; }
 
 public slots:
-  void setVisible(bool);
+    void setVisible(bool);
 
 signals:
-  void searchChanged(const QString &);
-  void hidden();
+    void searchChanged(const QString &);
+    void hidden();
 
 private slots:
-  void delaySearch();
-  void search();
+    void delaySearch();
+    void search();
 
 private:
-  Ui::ChatViewSearchBar ui;
-  QTimer _searchDelayTimer;
+    Ui::ChatViewSearchBar ui;
+    QTimer _searchDelayTimer;
 };
+
 
 #endif //CHATVIEWSEARCHBAR_H

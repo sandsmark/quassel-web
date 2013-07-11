@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-09 by the Quassel Project                          *
+ *   Copyright (C) 2005-2013 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -15,7 +15,7 @@
  *   You should have received a copy of the GNU General Public License     *
  *   along with this program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
- *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
 #include "corebufferviewmanager.h"
@@ -27,68 +27,78 @@
 
 INIT_SYNCABLE_OBJECT(CoreBufferViewManager)
 CoreBufferViewManager::CoreBufferViewManager(SignalProxy *proxy, CoreSession *parent)
-  : BufferViewManager(proxy, parent),
+    : BufferViewManager(proxy, parent),
     _coreSession(parent)
 {
-  QVariantMap views = Core::getUserSetting(_coreSession->user(), "BufferViews").toMap();
-  QVariantMap::iterator iter = views.begin();
-  QVariantMap::iterator iterEnd = views.end();
-  CoreBufferViewConfig *config = 0;
-  while(iter != iterEnd) {
-    config = new CoreBufferViewConfig(iter.key().toInt(), iter.value().toMap(), this);
+    QVariantMap views = Core::getUserSetting(_coreSession->user(), "BufferViews").toMap();
+    QVariantMap::iterator iter = views.begin();
+    QVariantMap::iterator iterEnd = views.end();
+    CoreBufferViewConfig *config = 0;
+    while (iter != iterEnd) {
+        config = new CoreBufferViewConfig(iter.key().toInt(), iter.value().toMap(), this);
+        addBufferViewConfig(config);
+        iter++;
+    }
+}
+
+
+void CoreBufferViewManager::saveBufferViews()
+{
+    QVariantMap views;
+
+    BufferViewConfigHash::const_iterator iter = bufferViewConfigHash().constBegin();
+    BufferViewConfigHash::const_iterator iterEnd = bufferViewConfigHash().constEnd();
+    while (iter != iterEnd) {
+        views[QString::number((*iter)->bufferViewId())] = (*iter)->toVariantMap();
+        iter++;
+    }
+
+    Core::setUserSetting(_coreSession->user(), "BufferViews", views);
+}
+
+
+void CoreBufferViewManager::requestCreateBufferView(const QVariantMap &properties)
+{
+    QString bufferViewName = properties["bufferViewName"].toString();
+    int maxId = -1;
+    BufferViewConfigHash::const_iterator iter = bufferViewConfigHash().constBegin();
+    BufferViewConfigHash::const_iterator iterEnd = bufferViewConfigHash().constEnd();
+    while (iter != iterEnd) {
+        if ((*iter)->bufferViewName() == bufferViewName)
+            return;
+
+        if ((*iter)->bufferViewId() > maxId)
+            maxId = (*iter)->bufferViewId();
+
+        iter++;
+    }
+    maxId++;
+
+    CoreBufferViewConfig *config = new CoreBufferViewConfig(maxId, properties);
     addBufferViewConfig(config);
-    iter++;
-  }
 }
 
-void CoreBufferViewManager::saveBufferViews() {
-  QVariantMap views;
 
-  BufferViewConfigHash::const_iterator iter = bufferViewConfigHash().constBegin();
-  BufferViewConfigHash::const_iterator iterEnd = bufferViewConfigHash().constEnd();
-  while(iter != iterEnd) {
-    views[QString::number((*iter)->bufferViewId())] = (*iter)->toVariantMap();
-    iter++;
-  }
-
-  Core::setUserSetting(_coreSession->user(), "BufferViews", views);
+void CoreBufferViewManager::requestCreateBufferViews(const QVariantList &properties)
+{
+    QVariantList::const_iterator iter = properties.constBegin();
+    QVariantList::const_iterator iterEnd = properties.constEnd();
+    while (iter != iterEnd) {
+        requestCreateBufferView((*iter).toMap());
+        iter++;
+    }
 }
 
-void CoreBufferViewManager::requestCreateBufferView(const QVariantMap &properties) {
-  QString bufferViewName = properties["bufferViewName"].toString();
-  int maxId = -1;
-  BufferViewConfigHash::const_iterator iter = bufferViewConfigHash().constBegin();
-  BufferViewConfigHash::const_iterator iterEnd = bufferViewConfigHash().constEnd();
-  while(iter != iterEnd) {
-    if((*iter)->bufferViewName() == bufferViewName)
-      return;
-    
-    if((*iter)->bufferViewId() > maxId)
-      maxId = (*iter)->bufferViewId();
-    
-    iter++;
-  }
-  maxId++;
 
-  CoreBufferViewConfig *config = new CoreBufferViewConfig(maxId, properties);
-  addBufferViewConfig(config);
+void CoreBufferViewManager::requestDeleteBufferView(int bufferViewId)
+{
+    deleteBufferViewConfig(bufferViewId);
 }
 
-void CoreBufferViewManager::requestCreateBufferViews(const QVariantList &properties) {
-  QVariantList::const_iterator iter = properties.constBegin();
-  QVariantList::const_iterator iterEnd = properties.constEnd();
-  while(iter != iterEnd) {
-    requestCreateBufferView((*iter).toMap());
-    iter++;
-  }
-}
 
-void CoreBufferViewManager::requestDeleteBufferView(int bufferViewId) {
-  deleteBufferViewConfig(bufferViewId);
-}
-
-void CoreBufferViewManager::requestDeleteBufferViews(const QVariantList &bufferViews) {
-  foreach(QVariant bufferView, bufferViews) {
-    deleteBufferViewConfig(bufferView.toInt());
-  }
+void CoreBufferViewManager::requestDeleteBufferViews(const QVariantList &bufferViews)
+{
+    foreach(QVariant bufferView, bufferViews) {
+        deleteBufferViewConfig(bufferView.toInt());
+    }
 }

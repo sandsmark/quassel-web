@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-09 by the Quassel Project                          *
+ *   Copyright (C) 2005-2013 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -15,7 +15,7 @@
  *   You should have received a copy of the GNU General Public License     *
  *   along with this program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
- *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
 #include "corebacklogmanager.h"
@@ -26,86 +26,92 @@
 
 INIT_SYNCABLE_OBJECT(CoreBacklogManager)
 CoreBacklogManager::CoreBacklogManager(CoreSession *coreSession)
-  : BacklogManager(coreSession),
+    : BacklogManager(coreSession),
     _coreSession(coreSession)
 {
 }
 
-QVariantList CoreBacklogManager::requestBacklog(BufferId bufferId, MsgId first, MsgId last, int limit, int additional) {
-  QVariantList backlog;
-  QList<Message> msgList;
-  msgList = Core::requestMsgs(coreSession()->user(), bufferId, first, last, limit);
 
-  QList<Message>::const_iterator msgIter = msgList.constBegin();
-  QList<Message>::const_iterator msgListEnd = msgList.constEnd();
-  while(msgIter != msgListEnd) {
-    backlog << qVariantFromValue(*msgIter);
-    msgIter++;
-  }
+QVariantList CoreBacklogManager::requestBacklog(BufferId bufferId, MsgId first, MsgId last, int limit, int additional)
+{
+    QVariantList backlog;
+    QList<Message> msgList;
+    msgList = Core::requestMsgs(coreSession()->user(), bufferId, first, last, limit);
 
-  if(additional && limit != 0) {
-    MsgId oldestMessage = first;
-    if(!msgList.isEmpty()) {
-      if(msgList.first().msgId() < msgList.last().msgId())
-        oldestMessage = msgList.first().msgId();
-      else
-        oldestMessage = msgList.last().msgId();
-    }
-
-    if(first != -1) {
-      last = first;
-    } else {
-      last = oldestMessage;
-    }
-
-    // only fetch additional messages if they continue seemlessly
-    // that is, if the list of messages is not truncated by the limit
-    if(last == oldestMessage) {
-      msgList = Core::requestMsgs(coreSession()->user(), bufferId, -1, last, additional);
-      msgIter = msgList.constBegin();
-      msgListEnd = msgList.constEnd();
-      while(msgIter != msgListEnd) {
+    QList<Message>::const_iterator msgIter = msgList.constBegin();
+    QList<Message>::const_iterator msgListEnd = msgList.constEnd();
+    while (msgIter != msgListEnd) {
         backlog << qVariantFromValue(*msgIter);
         msgIter++;
-      }
     }
-  }
 
-  return backlog;
+    if (additional && limit != 0) {
+        MsgId oldestMessage = first;
+        if (!msgList.isEmpty()) {
+            if (msgList.first().msgId() < msgList.last().msgId())
+                oldestMessage = msgList.first().msgId();
+            else
+                oldestMessage = msgList.last().msgId();
+        }
+
+        if (first != -1) {
+            last = first;
+        }
+        else {
+            last = oldestMessage;
+        }
+
+        // only fetch additional messages if they continue seemlessly
+        // that is, if the list of messages is not truncated by the limit
+        if (last == oldestMessage) {
+            msgList = Core::requestMsgs(coreSession()->user(), bufferId, -1, last, additional);
+            msgIter = msgList.constBegin();
+            msgListEnd = msgList.constEnd();
+            while (msgIter != msgListEnd) {
+                backlog << qVariantFromValue(*msgIter);
+                msgIter++;
+            }
+        }
+    }
+
+    return backlog;
 }
 
-QVariantList CoreBacklogManager::requestBacklogAll(MsgId first, MsgId last, int limit, int additional) {
-  QVariantList backlog;
-  QList<Message> msgList;
-  msgList = Core::requestAllMsgs(coreSession()->user(), first, last, limit);
 
-  QList<Message>::const_iterator msgIter = msgList.constBegin();
-  QList<Message>::const_iterator msgListEnd = msgList.constEnd();
-  while(msgIter != msgListEnd) {
-    backlog << qVariantFromValue(*msgIter);
-    msgIter++;
-  }
+QVariantList CoreBacklogManager::requestBacklogAll(MsgId first, MsgId last, int limit, int additional)
+{
+    QVariantList backlog;
+    QList<Message> msgList;
+    msgList = Core::requestAllMsgs(coreSession()->user(), first, last, limit);
 
-  if(additional) {
-    if(first != -1) {
-      last = first;
-    } else {
-      last = -1;
-      if(!msgList.isEmpty()) {
-	if(msgList.first().msgId() < msgList.last().msgId())
-	  last = msgList.first().msgId();
-	else
-	  last = msgList.last().msgId();
-      }
+    QList<Message>::const_iterator msgIter = msgList.constBegin();
+    QList<Message>::const_iterator msgListEnd = msgList.constEnd();
+    while (msgIter != msgListEnd) {
+        backlog << qVariantFromValue(*msgIter);
+        msgIter++;
     }
-    msgList = Core::requestAllMsgs(coreSession()->user(), -1, last, additional);
-    msgIter = msgList.constBegin();
-    msgListEnd = msgList.constEnd();
-    while(msgIter != msgListEnd) {
-      backlog << qVariantFromValue(*msgIter);
-      msgIter++;
-    }
-  }
 
-  return backlog;
+    if (additional) {
+        if (first != -1) {
+            last = first;
+        }
+        else {
+            last = -1;
+            if (!msgList.isEmpty()) {
+                if (msgList.first().msgId() < msgList.last().msgId())
+                    last = msgList.first().msgId();
+                else
+                    last = msgList.last().msgId();
+            }
+        }
+        msgList = Core::requestAllMsgs(coreSession()->user(), -1, last, additional);
+        msgIter = msgList.constBegin();
+        msgListEnd = msgList.constEnd();
+        while (msgIter != msgListEnd) {
+            backlog << qVariantFromValue(*msgIter);
+            msgIter++;
+        }
+    }
+
+    return backlog;
 }

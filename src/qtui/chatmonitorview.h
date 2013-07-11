@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-09 by the Quassel Project                          *
+ *   Copyright (C) 2005-2013 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -15,7 +15,7 @@
  *   You should have received a copy of the GNU General Public License     *
  *   along with this program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
- *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
 #ifndef CHATMONITORVIEW_H
@@ -25,26 +25,28 @@
 
 class ChatMonitorFilter;
 
-class ChatMonitorView : public ChatView {
-  Q_OBJECT
+class ChatMonitorView : public ChatView
+{
+    Q_OBJECT
 
 public:
-  ChatMonitorView(ChatMonitorFilter *filter, QWidget *parent);
+    ChatMonitorView(ChatMonitorFilter *filter, QWidget *parent);
 
 protected:
-  virtual void addActionsToMenu(QMenu *menu, const QPointF &pos);
-  virtual void mouseDoubleClickEvent(QMouseEvent *event);
+    virtual void addActionsToMenu(QMenu *menu, const QPointF &pos);
+    virtual void mouseDoubleClickEvent(QMouseEvent *event);
 
 private slots:
-  void showFieldsChanged(bool checked);
-  void showSettingsPage();
-  virtual void coreConnectionStateChanged(bool connected);
+    void showFieldsChanged(bool checked);
+    void showSettingsPage();
+    virtual void coreConnectionStateChanged(bool connected);
 
 protected:
-  inline ChatMonitorFilter *filter() const { return _filter; }
+    inline ChatMonitorFilter *filter() const { return _filter; }
 
 private:
-  ChatMonitorFilter *_filter;
+    ChatMonitorFilter *_filter;
 };
+
 
 #endif //CHATMONITORVIEW_H

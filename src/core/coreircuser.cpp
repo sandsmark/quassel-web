@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2010 by the Quassel Project                        *
+ *   Copyright (C) 2005-2013 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -15,34 +15,42 @@
  *   You should have received a copy of the GNU General Public License     *
  *   along with this program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
- *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
 #include "coreircuser.h"
 
-CoreIrcUser::CoreIrcUser(const QString &hostmask, Network *network) : IrcUser(hostmask, network) {
+CoreIrcUser::CoreIrcUser(const QString &hostmask, Network *network) : IrcUser(hostmask, network)
+{
 #ifdef HAVE_QCA2
-  _cipher = 0;
+    _cipher = 0;
 #endif
 }
 
-CoreIrcUser::~CoreIrcUser() {
+
+CoreIrcUser::~CoreIrcUser()
+{
 #ifdef HAVE_QCA2
-  delete _cipher;
+    delete _cipher;
 #endif
 }
 
+
 #ifdef HAVE_QCA2
-Cipher *CoreIrcUser::cipher() const {
-  if(!_cipher)
-    _cipher = new Cipher();
+Cipher *CoreIrcUser::cipher() const
+{
+    if (!_cipher)
+        _cipher = new Cipher();
 
-  return _cipher;
+    return _cipher;
 }
 
-void CoreIrcUser::setEncrypted(bool e) {
-  Q_UNUSED(e);
-  // TODO
+
+void CoreIrcUser::setEncrypted(bool e)
+{
+    Q_UNUSED(e);
+    // TODO
 }
+
 
 #endif

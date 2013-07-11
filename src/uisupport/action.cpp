@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-09 by the Quassel Project                          *
+ *   Copyright (C) 2005-2013 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -15,7 +15,7 @@
  *   You should have received a copy of the GNU General Public License     *
  *   along with this program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
- *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************
  * Parts of this implementation are taken from KDE's kaction.cpp           *
  ***************************************************************************/
@@ -26,85 +26,102 @@
 
 Action::Action(QObject *parent)
 #ifdef HAVE_KDE
-: KAction(parent)
+    : KAction(parent)
 #else
-: QWidgetAction(parent)
+    : QWidgetAction(parent)
 #endif
 {
-  init();
+    init();
 }
+
 
 Action::Action(const QString &text, QObject *parent, const QObject *receiver, const char *slot, const QKeySequence &shortcut)
 #ifdef HAVE_KDE
-: KAction(parent)
+    : KAction(parent)
 #else
-: QWidgetAction(parent)
+    : QWidgetAction(parent)
 #endif
 {
-  init();
-  setText(text);
-  setShortcut(shortcut);
-  if(receiver && slot)
-    connect(this, SIGNAL(triggered()), receiver, slot);
+    init();
+    setText(text);
+    setShortcut(shortcut);
+    if (receiver && slot)
+        connect(this, SIGNAL(triggered()), receiver, slot);
 }
+
 
 Action::Action(const QIcon &icon, const QString &text, QObject *parent, const QObject *receiver, const char *slot, const QKeySequence &shortcut)
 #ifdef HAVE_KDE
-: KAction(parent)
+    : KAction(parent)
 #else
-: QWidgetAction(parent)
+    : QWidgetAction(parent)
 #endif
 {
-  init();
-  setIcon(icon);
-  setText(text);
-  setShortcut(shortcut);
-  if(receiver && slot)
-    connect(this, SIGNAL(triggered()), receiver, slot);
+    init();
+    setIcon(icon);
+    setText(text);
+    setShortcut(shortcut);
+    if (receiver && slot)
+        connect(this, SIGNAL(triggered()), receiver, slot);
 }
+
 
 #ifdef HAVE_KDE
-void Action::init() { }
+void Action::init() {}
 #else
-void Action::init() {
-  connect(this, SIGNAL(triggered(bool)), this, SLOT(slotTriggered()));
+void Action::init()
+{
+    connect(this, SIGNAL(triggered(bool)), this, SLOT(slotTriggered()));
 
-  setProperty("isShortcutConfigurable", true);
+    setProperty("isShortcutConfigurable", true);
 }
 
-void Action::slotTriggered() {
-  emit triggered(QApplication::mouseButtons(), QApplication::keyboardModifiers());
+
+void Action::slotTriggered()
+{
+    emit triggered(QApplication::mouseButtons(), QApplication::keyboardModifiers());
 }
 
-bool Action::isShortcutConfigurable() const {
-  return property("isShortcutConfigurable").toBool();
+
+bool Action::isShortcutConfigurable() const
+{
+    return property("isShortcutConfigurable").toBool();
 }
 
-void Action::setShortcutConfigurable(bool b) {
-  setProperty("isShortcutConfigurable", b);
+
+void Action::setShortcutConfigurable(bool b)
+{
+    setProperty("isShortcutConfigurable", b);
 }
 
-QKeySequence Action::shortcut(ShortcutTypes type) const {
-  Q_ASSERT(type);
-  if(type == DefaultShortcut)
-    return property("defaultShortcut").value<QKeySequence>();
 
-  if(shortcuts().count()) return shortcuts().value(0);
-  return QKeySequence();
+QKeySequence Action::shortcut(ShortcutTypes type) const
+{
+    Q_ASSERT(type);
+    if (type == DefaultShortcut)
+        return property("defaultShortcut").value<QKeySequence>();
+
+    if (shortcuts().count()) return shortcuts().value(0);
+    return QKeySequence();
 }
 
-void Action::setShortcut(const QShortcut &shortcut, ShortcutTypes type) {
-  setShortcut(shortcut.key(), type);
+
+void Action::setShortcut(const QShortcut &shortcut, ShortcutTypes type)
+{
+    setShortcut(shortcut.key(), type);
 }
 
-void Action::setShortcut(const QKeySequence &key, ShortcutTypes type) {
-  Q_ASSERT(type);
 
-  if(type & DefaultShortcut)
-    setProperty("defaultShortcut", key);
+void Action::setShortcut(const QKeySequence &key, ShortcutTypes type)
+{
+    Q_ASSERT(type);
 
-  if(type & ActiveShortcut)
-    QAction::setShortcut(key);
+    if (type & DefaultShortcut)
+        setProperty("defaultShortcut", key);
+
+    if (type & ActiveShortcut)
+        QAction::setShortcut(key);
 }
+
 
 #endif /* HAVE_KDE */

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-08 by the Quassel Project                          *
+ *   Copyright (C) 2005-2013 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -15,7 +15,7 @@
  *   You should have received a copy of the GNU General Public License     *
  *   along with this program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
- *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
 #ifndef CLIENTBUFFERVIEWMANAGER_H
@@ -26,21 +26,23 @@
 class ClientBufferViewConfig;
 class BufferViewOverlay;
 
-class ClientBufferViewManager : public BufferViewManager {
-  SYNCABLE_OBJECT
-  Q_OBJECT
+class ClientBufferViewManager : public BufferViewManager
+{
+    SYNCABLE_OBJECT
+        Q_OBJECT
 
 public:
-  ClientBufferViewManager(SignalProxy *proxy, QObject *parent = 0);
+    ClientBufferViewManager(SignalProxy *proxy, QObject *parent = 0);
 
-  QList<ClientBufferViewConfig *> clientBufferViewConfigs() const;
-  ClientBufferViewConfig *clientBufferViewConfig(int bufferViewId) const;
+    QList<ClientBufferViewConfig *> clientBufferViewConfigs() const;
+    ClientBufferViewConfig *clientBufferViewConfig(int bufferViewId) const;
 
-public Q_SLOTS:
-  virtual void setInitialized();
+public slots:
+    virtual void setInitialized();
 
 protected:
-  virtual BufferViewConfig *bufferViewConfigFactory(int bufferViewConfigId);
+    virtual BufferViewConfig *bufferViewConfigFactory(int bufferViewConfigId);
 };
+
 
 #endif //CLIENTBUFFERVIEWMANAGER_H

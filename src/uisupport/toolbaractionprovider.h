@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-09 by the Quassel Project                          *
+ *   Copyright (C) 2005-2013 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -15,7 +15,7 @@
  *   You should have received a copy of the GNU General Public License     *
  *   along with this program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
- *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
 #ifndef TOOLBARACTIONPROVIDER_H_
@@ -25,46 +25,48 @@
 
 class QToolBar;
 
-class ToolBarActionProvider : public NetworkModelController {
-  Q_OBJECT
+class ToolBarActionProvider : public NetworkModelController
+{
+    Q_OBJECT
 
 public:
-  ToolBarActionProvider(QObject *parent = 0);
-  virtual ~ToolBarActionProvider();
+    ToolBarActionProvider(QObject *parent = 0);
+    virtual ~ToolBarActionProvider();
 
-  enum ToolBarType {
-    MainToolBar,
-    ChatViewToolBar,
-    NickToolBar
-  };
+    enum ToolBarType {
+        MainToolBar,
+        ChatViewToolBar,
+        NickToolBar
+    };
 
-  void addActions(QToolBar *, ToolBarType type);
+    void addActions(QToolBar *, ToolBarType type);
 
-public Q_SLOTS:
-  virtual void disconnectedFromCore();
+public slots:
+    virtual void disconnectedFromCore();
 
 protected:
-  virtual void handleNetworkAction(ActionType, QAction *);
-  virtual void handleBufferAction(ActionType, QAction *);
-  virtual void handleNickAction(ActionType, QAction *);
-  virtual void handleGeneralAction(ActionType, QAction *);
+    virtual void handleNetworkAction(ActionType, QAction *);
+    virtual void handleBufferAction(ActionType, QAction *);
+    virtual void handleNickAction(ActionType, QAction *);
+    virtual void handleGeneralAction(ActionType, QAction *);
 
-private Q_SLOTS:
-  void networkCreated(NetworkId id);
-  void networkRemoved(NetworkId id);
-  void networkUpdated(const Network *net = 0);
-  void connectOrDisconnectNet();
+private slots:
+    void networkCreated(NetworkId id);
+    void networkRemoved(NetworkId id);
+    void networkUpdated(const Network *net = 0);
+    void connectOrDisconnectNet();
 
-  void currentBufferChanged(const QModelIndex &);
-  void nickSelectionChanged(const QModelIndexList &);
+    void currentBufferChanged(const QModelIndex &);
+    void nickSelectionChanged(const QModelIndexList &);
 
-  void updateStates();
+    void updateStates();
 
 private:
-  QMenu *_networksConnectMenu, *_networksDisconnectMenu;
-  QHash<NetworkId, Action *> _networkActions;
-  QModelIndex _currentBuffer;
-  QModelIndexList _selectedNicks;
+    QMenu *_networksConnectMenu, *_networksDisconnectMenu;
+    QHash<NetworkId, Action *> _networkActions;
+    QModelIndex _currentBuffer;
+    QModelIndexList _selectedNicks;
 };
+
 
 #endif

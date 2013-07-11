@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-09 by the Quassel Project                          *
+ *   Copyright (C) 2005-2013 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -15,7 +15,7 @@
  *   You should have received a copy of the GNU General Public License     *
  *   along with this program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
- *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
 #ifndef CHATVIEWSETTINGS_H
@@ -26,26 +26,29 @@
 class ChatScene;
 class ChatView;
 
-class ChatViewSettings : public QtUiSettings {
+class ChatViewSettings : public QtUiSettings
+{
 public:
-  Q_ENUMS(OperationMode)
-  public:
+    Q_ENUMS(OperationMode)
+public:
     enum OperationMode {
-      InvalidMode = 0,
-      OptIn = 1,
-      OptOut = 2
+        InvalidMode = 0,
+        OptIn = 1,
+        OptOut = 2
     };
-  Q_DECLARE_FLAGS(operationModes, OperationMode);
+    Q_DECLARE_FLAGS(operationModes, OperationMode);
 
-  ChatViewSettings(const QString &id = "__default__");
-  ChatViewSettings(ChatScene *scene);
-  ChatViewSettings(ChatView *view);
+    ChatViewSettings(const QString &id = "__default__");
+    ChatViewSettings(ChatScene *scene);
+    ChatViewSettings(ChatView *view);
 
-  inline bool showWebPreview() { return localValue("ShowWebPreview", true).toBool(); }
-  inline void enableWebPreview(bool enabled) { setLocalValue("ShowWebPreview", enabled); }
+    inline bool showWebPreview() { return localValue("ShowWebPreview", true).toBool(); }
+    inline void enableWebPreview(bool enabled) { setLocalValue("ShowWebPreview", enabled); }
 
-  inline QString timestampFormatString() { return localValue("TimestampFormat", "[hh:mm:ss]").toString(); }
-  inline void setTimestampFormatString(const QString &format) { setLocalValue("TimestampFormat", format); }
+    inline QString timestampFormatString() { return localValue("TimestampFormat", "[hh:mm:ss]").toString(); }
+    inline void setTimestampFormatString(const QString &format) { setLocalValue("TimestampFormat", format); }
 };
+
+
 Q_DECLARE_METATYPE(ChatViewSettings::OperationMode);
 #endif //CHATVIEWSETTINGS_H

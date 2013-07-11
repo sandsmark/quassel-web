@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-09 by the Quassel Project                          *
+ *   Copyright (C) 2005-2013 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -15,61 +15,77 @@
  *   You should have received a copy of the GNU General Public License     *
  *   along with this program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
- *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
 #include "coreusersettings.h"
 
-CoreUserSettings::CoreUserSettings(UserId uid) : CoreSettings(QString("CoreUser/%1").arg(uid.toInt())), user(uid) {
-
-
+CoreUserSettings::CoreUserSettings(UserId uid) : CoreSettings(QString("CoreUser/%1").arg(uid.toInt())), user(uid)
+{
 }
 
-Identity CoreUserSettings::identity(IdentityId id) {
-  QVariant v = localValue(QString("Identities/%1").arg(id.toInt()));
-  if(qVariantCanConvert<Identity>(v)) {
-    return v.value<Identity>();
-  }
-  return Identity();
+
+Identity CoreUserSettings::identity(IdentityId id)
+{
+    QVariant v = localValue(QString("Identities/%1").arg(id.toInt()));
+    if (qVariantCanConvert<Identity>(v)) {
+        return v.value<Identity>();
+    }
+    return Identity();
 }
 
-QList<IdentityId> CoreUserSettings::identityIds() {
-  QList<IdentityId> res;
-  foreach(QString id, localChildKeys("Identities")) {
-    res << id.toInt();
-  }
-  return res;
+
+QList<IdentityId> CoreUserSettings::identityIds()
+{
+    QList<IdentityId> res;
+    foreach(QString id, localChildKeys("Identities")) {
+        res << id.toInt();
+    }
+    return res;
 }
 
-void CoreUserSettings::storeIdentity(const Identity &identity) {
-  setLocalValue(QString("Identities/%1").arg(identity.id().toInt()), qVariantFromValue(identity));
+
+void CoreUserSettings::storeIdentity(const Identity &identity)
+{
+    setLocalValue(QString("Identities/%1").arg(identity.id().toInt()), qVariantFromValue(identity));
 }
 
-void CoreUserSettings::removeIdentity(IdentityId id) {
-  removeLocalKey(QString("Identities/%1").arg(id.toInt()));
+
+void CoreUserSettings::removeIdentity(IdentityId id)
+{
+    removeLocalKey(QString("Identities/%1").arg(id.toInt()));
 }
 
-void CoreUserSettings::setSessionState(const QVariant &data) {
-  setLocalValue("SessionState", data);
+
+void CoreUserSettings::setSessionState(const QVariant &data)
+{
+    setLocalValue("SessionState", data);
 }
 
-QVariant CoreUserSettings::sessionState(const QVariant &def) {
-  return localValue("SessionState", def);
+
+QVariant CoreUserSettings::sessionState(const QVariant &def)
+{
+    return localValue("SessionState", def);
 }
 
-QVariantMap CoreUserSettings::sessionData() {
-  QVariantMap res;
-  foreach(QString key, localChildKeys(QString("SessionData"))) {
-    res[key] = localValue(QString("SessionData/%1").arg(key));
-  }
-  return res;
+
+QVariantMap CoreUserSettings::sessionData()
+{
+    QVariantMap res;
+    foreach(QString key, localChildKeys(QString("SessionData"))) {
+        res[key] = localValue(QString("SessionData/%1").arg(key));
+    }
+    return res;
 }
 
-void CoreUserSettings::setSessionValue(const QString &key, const QVariant &data) {
-  setLocalValue(QString("SessionData/%1").arg(key), data);
+
+void CoreUserSettings::setSessionValue(const QString &key, const QVariant &data)
+{
+    setLocalValue(QString("SessionData/%1").arg(key), data);
 }
 
-QVariant CoreUserSettings::sessionValue(const QString &key, const QVariant &def) {
-  return localValue(QString("SessionData/%1").arg(key), def);
-}
 
+QVariant CoreUserSettings::sessionValue(const QString &key, const QVariant &def)
+{
+    return localValue(QString("SessionData/%1").arg(key), def);
+}

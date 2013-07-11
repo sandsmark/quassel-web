@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-08 by the Quassel Project                          *
+ *   Copyright (C) 2005-2013 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -15,7 +15,7 @@
  *   You should have received a copy of the GNU General Public License     *
  *   along with this program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
- *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
 #ifndef BUFFERHOTLISTFILTER_H
@@ -23,18 +23,20 @@
 
 #include <QSortFilterProxyModel>
 
-class BufferHotListFilter : public QSortFilterProxyModel {
-  Q_OBJECT
+class BufferHotListFilter : public QSortFilterProxyModel
+{
+    Q_OBJECT
 
 public:
-  BufferHotListFilter(QAbstractItemModel *source, QObject *parent = 0);
+    BufferHotListFilter(QAbstractItemModel *source, QObject *parent = 0);
 
-  virtual inline int columnCount(const QModelIndex &) const { return 1; }
+    virtual inline int columnCount(const QModelIndex &) const { return 1; }
 //   QVariant data(const QModelIndex &index, int role) const;
 
 protected:
-  virtual bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const;
-  virtual bool lessThan(const QModelIndex &source_left, const QModelIndex &source_right) const;
+    virtual bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const;
+    virtual bool lessThan(const QModelIndex &source_left, const QModelIndex &source_right) const;
 };
+
 
 #endif //BUFFERHOTLISTFILTER_H

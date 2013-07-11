@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-09 by the Quassel Project                          *
+ *   Copyright (C) 2005-2013 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -15,7 +15,7 @@
  *   You should have received a copy of the GNU General Public License     *
  *   along with this program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
- *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
 #ifndef CLIENTCOREINFO_H
@@ -26,23 +26,25 @@
 /*
  * Yes this name is somewhat stupid... but it fits the general naming scheme
  * which is prefixing client specific sync objects with "Client"... ;)
- */ 
-class ClientCoreInfo : public CoreInfo {
-  Q_OBJECT
-  SYNCABLE_OBJECT
+ */
+class ClientCoreInfo : public CoreInfo
+{
+    Q_OBJECT
+        SYNCABLE_OBJECT
 
 public:
-  ClientCoreInfo(QObject *parent = 0) : CoreInfo(parent) {}
+    ClientCoreInfo(QObject *parent = 0) : CoreInfo(parent) {}
 
-  inline virtual const QMetaObject *syncMetaObject() const { return &CoreInfo::staticMetaObject; }
+    inline virtual const QMetaObject *syncMetaObject() const { return &CoreInfo::staticMetaObject; }
 
-  inline QVariant &operator[](const QString &key) { return _coreData[key]; }
+    inline QVariant &operator[](const QString &key) { return _coreData[key]; }
 
-public Q_SLOTS:
-  inline virtual void setCoreData(const QVariantMap &data) { _coreData = data; }
+public slots:
+    inline virtual void setCoreData(const QVariantMap &data) { _coreData = data; }
 
 private:
-  QVariantMap _coreData;
+    QVariantMap _coreData;
 };
+
 
 #endif //CLIENTCOREINFO_H

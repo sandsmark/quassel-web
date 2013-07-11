@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-09 by the Quassel Project                          *
+ *   Copyright (C) 2005-2013 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -15,7 +15,7 @@
  *   You should have received a copy of the GNU General Public License     *
  *   along with this program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
- *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
 #ifndef SSLSERVER_H
@@ -28,29 +28,32 @@
 #include <QTcpServer>
 #include <QLinkedList>
 
-class SslServer : public QTcpServer {
-  Q_OBJECT
+class SslServer : public QTcpServer
+{
+    Q_OBJECT
 
 public:
-  SslServer(QObject *parent = 0);
+    SslServer(QObject *parent = 0);
 
-  virtual inline bool hasPendingConnections() const { return !_pendingConnections.isEmpty(); }
-  virtual QTcpSocket *nextPendingConnection();
+    virtual inline bool hasPendingConnections() const { return !_pendingConnections.isEmpty(); }
+    virtual QTcpSocket *nextPendingConnection();
 
-  virtual inline const QSslCertificate &certificate() const { return _cert; }
-  virtual inline const QSslKey &key() const { return _key; }
-  virtual inline bool isCertValid() const { return _isCertValid; }
+    virtual inline const QSslCertificate &certificate() const { return _cert; }
+    virtual inline const QSslKey &key() const { return _key; }
+    virtual inline bool isCertValid() const { return _isCertValid; }
 
 protected:
-  virtual void incomingConnection(int socketDescriptor);
-  virtual bool setCertificate(const QString &path);
+    virtual void incomingConnection(int socketDescriptor);
+    virtual bool setCertificate(const QString &path);
 
 private:
-  QLinkedList<QTcpSocket *> _pendingConnections;
-  QSslCertificate _cert;
-  QSslKey _key;
-  bool _isCertValid;
+    QLinkedList<QTcpSocket *> _pendingConnections;
+    QSslCertificate _cert;
+    QSslKey _key;
+    QList<QSslCertificate> _ca;
+    bool _isCertValid;
 };
+
 
 #endif //HAVE_SSL
 

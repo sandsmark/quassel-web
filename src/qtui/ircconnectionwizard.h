@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-08 by the Quassel Project                          *
+ *   Copyright (C) 2005-2013 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -15,7 +15,7 @@
  *   You should have received a copy of the GNU General Public License     *
  *   along with this program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
- *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
 #ifndef IRCCONNECTIONWIZARD_H
@@ -25,23 +25,24 @@
 
 #include "types.h"
 
-class IrcConnectionWizard : public QWizard {
-  Q_OBJECT
+class IrcConnectionWizard : public QWizard
+{
+    Q_OBJECT
 
 public:
-  IrcConnectionWizard(QWidget *parent = 0, Qt::WindowFlags flags = 0);
+    IrcConnectionWizard(QWidget *parent = 0, Qt::WindowFlags flags = 0);
 
-  static QWizardPage *createIntroductionPage(QWidget *parent = 0);
+    static QWizardPage *createIntroductionPage(QWidget *parent = 0);
 
 private slots:
-  void finishClicked();
-  void identityReady(IdentityId id);
-  void networkReady(NetworkId id);
+    void finishClicked();
+    void identityReady(IdentityId id);
+    void networkReady(NetworkId id);
 
 private:
-  QWizardPage *_introductionPage;
-  QWizardPage *_identityPage;
-  QWizardPage *_networkPage;
+    QWizardPage *_introductionPage;
+    QWizardPage *_identityPage;
+    QWizardPage *_networkPage;
 };
 
 
@@ -54,17 +55,18 @@ private:
 
 class IdentityEditWidget;
 
-class IdentityPage : public QWizardPage {
-  Q_OBJECT
+class IdentityPage : public QWizardPage
+{
+    Q_OBJECT
 
 public:
-  IdentityPage(QWidget *parent = 0);
+    IdentityPage(QWidget *parent = 0);
 
-  CertIdentity *identity();
+    CertIdentity *identity();
 
 private:
-  IdentityEditWidget *_identityEditWidget;
-  CertIdentity *_identity;
+    IdentityEditWidget *_identityEditWidget;
+    CertIdentity *_identity;
 };
 
 
@@ -73,19 +75,21 @@ private:
 
 class SimpleNetworkEditor;
 
-class NetworkPage : public QWizardPage {
-  Q_OBJECT
+class NetworkPage : public QWizardPage
+{
+    Q_OBJECT
 
 public:
-  NetworkPage(QWidget *parent = 0);
+    NetworkPage(QWidget *parent = 0);
 
-  NetworkInfo networkInfo();
-  QStringList channelList();
+    NetworkInfo networkInfo();
+    QStringList channelList();
 
 private:
-  SimpleNetworkEditor *_networkEditor;
-  NetworkInfo _networkInfo;
-  QStringList _channelList;
+    SimpleNetworkEditor *_networkEditor;
+    NetworkInfo _networkInfo;
+    QStringList _channelList;
 };
+
 
 #endif //IRCCONNECTIONWIZARD_H

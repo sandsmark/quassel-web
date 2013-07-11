@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-09 by the Quassel Project                          *
+ *   Copyright (C) 2005-2013 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -15,7 +15,7 @@
  *   You should have received a copy of the GNU General Public License     *
  *   along with this program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
- *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
 #ifndef DEBUGMESSAGEMODELFILTER_H
@@ -23,13 +23,15 @@
 
 #include <QSortFilterProxyModel>
 
-class DebugMessageModelFilter : public QSortFilterProxyModel {
-  Q_OBJECT
+class DebugMessageModelFilter : public QSortFilterProxyModel
+{
+    Q_OBJECT
 
 public:
-  DebugMessageModelFilter(QObject *parent = 0);
-  QVariant headerData(int section, Qt::Orientation orientation, int role) const;
-  virtual QVariant data(const QModelIndex &index, int role) const;
+    DebugMessageModelFilter(QObject *parent = 0);
+    QVariant headerData(int section, Qt::Orientation orientation, int role) const;
+    virtual QVariant data(const QModelIndex &index, int role) const;
 };
+
 
 #endif //DEBUGMESSAGEMODELFILTER_H

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-09 by the Quassel Project                          *
+ *   Copyright (C) 2005-2013 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -15,7 +15,7 @@
  *   You should have received a copy of the GNU General Public License     *
  *   along with this program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
- *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
 #ifndef COREBACKLOGMANAGER_H
@@ -25,21 +25,23 @@
 
 class CoreSession;
 
-class CoreBacklogManager : public BacklogManager {
-  SYNCABLE_OBJECT
-  Q_OBJECT
+class CoreBacklogManager : public BacklogManager
+{
+    SYNCABLE_OBJECT
+        Q_OBJECT
 
 public:
-  CoreBacklogManager(CoreSession *coreSession = 0);
+    CoreBacklogManager(CoreSession *coreSession = 0);
 
-  CoreSession *coreSession() { return _coreSession; }
+    CoreSession *coreSession() { return _coreSession; }
 
 public slots:
-  virtual QVariantList requestBacklog(BufferId bufferId, MsgId first = -1, MsgId last = -1, int limit = -1, int additional = 0);
-  virtual QVariantList requestBacklogAll(MsgId first = -1, MsgId last = -1, int limit = -1, int additional = 0);
+    virtual QVariantList requestBacklog(BufferId bufferId, MsgId first = -1, MsgId last = -1, int limit = -1, int additional = 0);
+    virtual QVariantList requestBacklogAll(MsgId first = -1, MsgId last = -1, int limit = -1, int additional = 0);
 
 private:
-  CoreSession *_coreSession;
+    CoreSession *_coreSession;
 };
+
 
 #endif // COREBACKLOGMANAGER_H

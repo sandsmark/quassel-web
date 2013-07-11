@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2009 by the Quassel Project                             *
+ *   Copyright (C) 2005-2013 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -15,7 +15,7 @@
  *   You should have received a copy of the GNU General Public License     *
  *   along with this program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
- *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
 #ifndef SSLINFODLG_H
@@ -33,19 +33,21 @@ class QSslSocket;
 
 class QSslCertificate;
 
-class SslInfoDlg : public QDialog {
-  Q_OBJECT
+class SslInfoDlg : public QDialog
+{
+    Q_OBJECT
 
 public:
-  SslInfoDlg(const QSslSocket *socket, QWidget *parent = 0);
-  inline const QSslSocket *socket() const { return _socket; }
+    SslInfoDlg(const QSslSocket *socket, QWidget *parent = 0);
+    inline const QSslSocket *socket() const { return _socket; }
 
 private slots:
-  void setCurrentCert(int index);
+    void setCurrentCert(int index);
 
 private:
-  Ui::SslInfoDlg ui;
-  const QSslSocket *_socket;
+    Ui::SslInfoDlg ui;
+    const QSslSocket *_socket;
 };
+
 
 #endif

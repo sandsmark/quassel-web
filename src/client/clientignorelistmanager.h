@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-09 by the Quassel Project                          *
+ *   Copyright (C) 2005-2013 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -15,7 +15,7 @@
  *   You should have received a copy of the GNU General Public License     *
  *   along with this program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
- *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
 #ifndef CLIENTIGNORELISTMANAGER_H
@@ -26,27 +26,28 @@
 
 class ClientIgnoreListManager : public IgnoreListManager
 {
-  SYNCABLE_OBJECT
-  Q_OBJECT
+    SYNCABLE_OBJECT
+        Q_OBJECT
 
 public:
-  explicit ClientIgnoreListManager(QObject *parent = 0);
-  inline virtual const QMetaObject *syncMetaObject() const { return &IgnoreListManager::staticMetaObject; }
+    explicit ClientIgnoreListManager(QObject *parent = 0);
+    inline virtual const QMetaObject *syncMetaObject() const { return &IgnoreListManager::staticMetaObject; }
 
-  //! Fetch all matching ignore rules for a given hostmask
-  /** \param hostmask The hostmask of the user
-    * \param network The network name
-    * \param channel The channel name
-    * \return Returns a QMap with the rule as key and a bool, representing if the rule is enabled or not, as value
-    */
-  QMap<QString, bool> matchingRulesForHostmask(const QString &hostmask, const QString &network, const QString &channel) const;
+    //! Fetch all matching ignore rules for a given hostmask
+    /** \param hostmask The hostmask of the user
+      * \param network The network name
+      * \param channel The channel name
+      * \return Returns a QMap with the rule as key and a bool, representing if the rule is enabled or not, as value
+      */
+    QMap<QString, bool> matchingRulesForHostmask(const QString &hostmask, const QString &network, const QString &channel) const;
 
-Q_SIGNALS:
-  void ignoreListChanged();
+signals:
+    void ignoreListChanged();
 
 private:
-  // matches an ignore rule against a given string
-  bool pureMatch(const IgnoreListItem &item, const QString &string) const;
+    // matches an ignore rule against a given string
+    bool pureMatch(const IgnoreListItem &item, const QString &string) const;
 };
+
 
 #endif // CLIENTIGNORELISTMANAGER_H

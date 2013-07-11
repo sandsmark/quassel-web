@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-09 by the Quassel Project                          *
+ *   Copyright (C) 2005-2013 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -15,7 +15,7 @@
  *   You should have received a copy of the GNU General Public License     *
  *   along with this program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
- *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
 #include "bufferviewconfig.h"
@@ -23,22 +23,24 @@
 #ifndef COREBUFFERVIEWCONFIG_H
 #define COREBUFFERVIEWCONFIG_H
 
-class CoreBufferViewConfig : public BufferViewConfig {
-  SYNCABLE_OBJECT
-  Q_OBJECT
+class CoreBufferViewConfig : public BufferViewConfig
+{
+    SYNCABLE_OBJECT
+        Q_OBJECT
 
 public:
-  CoreBufferViewConfig(int bufferViewId, QObject *parent = 0);
-  CoreBufferViewConfig(int bufferViewId, const QVariantMap &properties, QObject *parent = 0);
-  
-  inline virtual const QMetaObject *syncMetaObject() const { return &BufferViewConfig::staticMetaObject; }
+    CoreBufferViewConfig(int bufferViewId, QObject *parent = 0);
+    CoreBufferViewConfig(int bufferViewId, const QVariantMap &properties, QObject *parent = 0);
+
+    inline virtual const QMetaObject *syncMetaObject() const { return &BufferViewConfig::staticMetaObject; }
 
 public slots:
-  virtual inline void requestSetBufferViewName(const QString &bufferViewName) { setBufferViewName(bufferViewName); }
-  virtual inline void requestRemoveBuffer(const BufferId &bufferId) { removeBuffer(bufferId); }
-  virtual inline void requestRemoveBufferPermanently(const BufferId &bufferId) { removeBufferPermanently(bufferId); }
-  virtual inline void requestAddBuffer(const BufferId &bufferId, int pos) { addBuffer(bufferId, pos); }
-  virtual inline void requestMoveBuffer(const BufferId &bufferId, int pos) { moveBuffer(bufferId, pos); }
+    virtual inline void requestSetBufferViewName(const QString &bufferViewName) { setBufferViewName(bufferViewName); }
+    virtual inline void requestRemoveBuffer(const BufferId &bufferId) { removeBuffer(bufferId); }
+    virtual inline void requestRemoveBufferPermanently(const BufferId &bufferId) { removeBufferPermanently(bufferId); }
+    virtual inline void requestAddBuffer(const BufferId &bufferId, int pos) { addBuffer(bufferId, pos); }
+    virtual inline void requestMoveBuffer(const BufferId &bufferId, int pos) { moveBuffer(bufferId, pos); }
 };
+
 
 #endif // COREBUFFERVIEWCONFIG_H

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-09 by the Quassel Project                          *
+ *   Copyright (C) 2005-2013 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -15,7 +15,7 @@
  *   You should have received a copy of the GNU General Public License     *
  *   along with this program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
- *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
 #ifndef COREBUFFERSYNCER_H
@@ -25,43 +25,45 @@
 
 class CoreSession;
 
-class CoreBufferSyncer : public BufferSyncer {
-  SYNCABLE_OBJECT
-  Q_OBJECT
+class CoreBufferSyncer : public BufferSyncer
+{
+    SYNCABLE_OBJECT
+        Q_OBJECT
 
 public:
-  CoreBufferSyncer(CoreSession *parent);
+    CoreBufferSyncer(CoreSession *parent);
 
 public slots:
-  virtual void requestSetLastSeenMsg(BufferId buffer, const MsgId &msgId);
-  virtual void requestSetMarkerLine(BufferId buffer, const MsgId &msgId);
+    virtual void requestSetLastSeenMsg(BufferId buffer, const MsgId &msgId);
+    virtual void requestSetMarkerLine(BufferId buffer, const MsgId &msgId);
 
-  virtual inline void requestRemoveBuffer(BufferId buffer) { removeBuffer(buffer); }
-  virtual void removeBuffer(BufferId bufferId);
+    virtual inline void requestRemoveBuffer(BufferId buffer) { removeBuffer(buffer); }
+    virtual void removeBuffer(BufferId bufferId);
 
-  virtual inline void requestRenameBuffer(BufferId buffer, QString newName) { renameBuffer(buffer, newName); }
-  virtual void renameBuffer(BufferId buffer, QString newName);
+    virtual inline void requestRenameBuffer(BufferId buffer, QString newName) { renameBuffer(buffer, newName); }
+    virtual void renameBuffer(BufferId buffer, QString newName);
 
-  virtual inline void requestMergeBuffersPermanently(BufferId buffer1, BufferId buffer2) { mergeBuffersPermanently(buffer1, buffer2); }
-  virtual void mergeBuffersPermanently(BufferId buffer1, BufferId buffer2);
+    virtual inline void requestMergeBuffersPermanently(BufferId buffer1, BufferId buffer2) { mergeBuffersPermanently(buffer1, buffer2); }
+    virtual void mergeBuffersPermanently(BufferId buffer1, BufferId buffer2);
 
-  virtual void requestPurgeBufferIds();
+    virtual void requestPurgeBufferIds();
 
-  virtual inline void requestMarkBufferAsRead(BufferId buffer) { markBufferAsRead(buffer); }
+    virtual inline void requestMarkBufferAsRead(BufferId buffer) { markBufferAsRead(buffer); }
 
-  void storeDirtyIds();
+    void storeDirtyIds();
 
 protected:
-  virtual void customEvent(QEvent *event);
+    virtual void customEvent(QEvent *event);
 
 private:
-  CoreSession *_coreSession;
-  bool _purgeBuffers;
+    CoreSession *_coreSession;
+    bool _purgeBuffers;
 
-  QSet<BufferId> dirtyLastSeenBuffers;
-  QSet<BufferId> dirtyMarkerLineBuffers;
+    QSet<BufferId> dirtyLastSeenBuffers;
+    QSet<BufferId> dirtyMarkerLineBuffers;
 
-  void purgeBufferIds();
+    void purgeBufferIds();
 };
+
 
 #endif //COREBUFFERSYNCER_H

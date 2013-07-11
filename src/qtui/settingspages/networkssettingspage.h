@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-09 by the Quassel Project                          *
+ *   Copyright (C) 2005-2013 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -15,7 +15,7 @@
  *   You should have received a copy of the GNU General Public License     *
  *   along with this program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
- *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
 #ifndef NETWORKSSETTINGSPAGE_H
@@ -25,6 +25,7 @@
 
 #include "network.h"
 #include "settingspage.h"
+#include "clientidentity.h"
 
 #include "ui_networkssettingspage.h"
 #include "ui_networkadddlg.h"
@@ -32,137 +33,150 @@
 #include "ui_servereditdlg.h"
 #include "ui_saveidentitiesdlg.h"
 
-class NetworksSettingsPage : public SettingsPage {
-  Q_OBJECT
+class NetworksSettingsPage : public SettingsPage
+{
+    Q_OBJECT
 
 public:
-  NetworksSettingsPage(QWidget *parent = 0);
+    NetworksSettingsPage(QWidget *parent = 0);
 
-  virtual inline bool needsCoreConnection() const { return true; }
+    virtual inline bool needsCoreConnection() const { return true; }
 
-  bool aboutToSave();
+    bool aboutToSave();
 
 public slots:
-  void save();
-  void load();
+    void save();
+    void load();
 
 private slots:
-  void widgetHasChanged();
-  void setWidgetStates();
-  void coreConnectionStateChanged(bool);
-  void networkConnectionStateChanged(Network::ConnectionState state);
-  void networkConnectionError(const QString &msg);
+    void widgetHasChanged();
+    void setWidgetStates();
+    void coreConnectionStateChanged(bool);
+    void networkConnectionStateChanged(Network::ConnectionState state);
+    void networkConnectionError(const QString &msg);
 
-  void displayNetwork(NetworkId);
-  void setItemState(NetworkId, QListWidgetItem *item = 0);
+    void displayNetwork(NetworkId);
+    void setItemState(NetworkId, QListWidgetItem *item = 0);
 
-  void clientNetworkAdded(NetworkId);
-  void clientNetworkRemoved(NetworkId);
-  void clientNetworkUpdated();
+    void clientNetworkAdded(NetworkId);
+    void clientNetworkRemoved(NetworkId);
+    void clientNetworkUpdated();
 
-  void clientIdentityAdded(IdentityId);
-  void clientIdentityRemoved(IdentityId);
-  void clientIdentityUpdated();
+    void clientIdentityAdded(IdentityId);
+    void clientIdentityRemoved(IdentityId);
+    void clientIdentityUpdated();
 
-  void on_networkList_itemSelectionChanged();
-  void on_addNetwork_clicked();
-  void on_deleteNetwork_clicked();
-  void on_renameNetwork_clicked();
-  void on_editIdentities_clicked();
+#ifdef HAVE_SSL
+    void sslUpdated();
+#endif
 
-  // void on_connectNow_clicked();
+    void on_networkList_itemSelectionChanged();
+    void on_addNetwork_clicked();
+    void on_deleteNetwork_clicked();
+    void on_renameNetwork_clicked();
+    void on_editIdentities_clicked();
 
-  void on_serverList_itemSelectionChanged();
-  void on_addServer_clicked();
-  void on_deleteServer_clicked();
-  void on_editServer_clicked();
-  void on_upServer_clicked();
-  void on_downServer_clicked();
+    // void on_connectNow_clicked();
+
+    void on_serverList_itemSelectionChanged();
+    void on_addServer_clicked();
+    void on_deleteServer_clicked();
+    void on_editServer_clicked();
+    void on_upServer_clicked();
+    void on_downServer_clicked();
 
 private:
-  Ui::NetworksSettingsPage ui;
+    Ui::NetworksSettingsPage ui;
 
-  NetworkId currentId;
-  QHash<NetworkId, NetworkInfo> networkInfos;
-  bool _ignoreWidgetChanges;
+    NetworkId currentId;
+    QHash<NetworkId, NetworkInfo> networkInfos;
+    bool _ignoreWidgetChanges;
+#ifdef HAVE_SSL
+    CertIdentity *_cid;
+#endif
 
-  QPixmap connectedIcon, connectingIcon, disconnectedIcon;
+    QPixmap connectedIcon, connectingIcon, disconnectedIcon;
 
-  void reset();
-  bool testHasChanged();
-  QListWidgetItem *insertNetwork(NetworkId);
-  QListWidgetItem *insertNetwork(const NetworkInfo &info);
-  QListWidgetItem *networkItem(NetworkId) const;
-  void saveToNetworkInfo(NetworkInfo &);
-  IdentityId defaultIdentity() const;
+    void reset();
+    bool testHasChanged();
+    QListWidgetItem *insertNetwork(NetworkId);
+    QListWidgetItem *insertNetwork(const NetworkInfo &info);
+    QListWidgetItem *networkItem(NetworkId) const;
+    void saveToNetworkInfo(NetworkInfo &);
+    IdentityId defaultIdentity() const;
 };
 
 
-class NetworkAddDlg : public QDialog {
-  Q_OBJECT
+class NetworkAddDlg : public QDialog
+{
+    Q_OBJECT
 
-  public:
+public:
     NetworkAddDlg(const QStringList &existing = QStringList(), QWidget *parent = 0);
 
     NetworkInfo networkInfo() const;
 
-  private slots:
+private slots:
     void setButtonStates();
 
-  private:
+private:
     Ui::NetworkAddDlg ui;
 
     QStringList existing;
 };
 
 
-class NetworkEditDlg : public QDialog {
-  Q_OBJECT
+class NetworkEditDlg : public QDialog
+{
+    Q_OBJECT
 
-  public:
+public:
     NetworkEditDlg(const QString &old, const QStringList &existing = QStringList(), QWidget *parent = 0);
 
     QString networkName() const;
 
-  private slots:
+private slots:
     void on_networkEdit_textChanged(const QString &);
 
-  private:
+private:
     Ui::NetworkEditDlg ui;
 
     QStringList existing;
 };
 
 
-class ServerEditDlg : public QDialog {
-  Q_OBJECT
+class ServerEditDlg : public QDialog
+{
+    Q_OBJECT
 
 public:
-  ServerEditDlg(const Network::Server &server = Network::Server(), QWidget *parent = 0);
+    ServerEditDlg(const Network::Server &server = Network::Server(), QWidget *parent = 0);
 
-  Network::Server serverData() const;
+    Network::Server serverData() const;
 
 private slots:
-  void on_host_textChanged();
+    void on_host_textChanged();
 
 private:
-  Ui::ServerEditDlg ui;
+    Ui::ServerEditDlg ui;
 };
 
 
-class SaveNetworksDlg : public QDialog {
-  Q_OBJECT
+class SaveNetworksDlg : public QDialog
+{
+    Q_OBJECT
 
-  public:
+public:
     SaveNetworksDlg(const QList<NetworkInfo> &toCreate, const QList<NetworkInfo> &toUpdate, const QList<NetworkId> &toRemove, QWidget *parent = 0);
 
-  private slots:
+private slots:
     void clientEvent();
 
-  private:
+private:
     Ui::SaveIdentitiesDlg ui;
 
     int numevents, rcvevents;
 };
+
 
 #endif

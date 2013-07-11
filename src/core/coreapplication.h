@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-09 by the Quassel Project                          *
+ *   Copyright (C) 2005-2013 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -15,7 +15,7 @@
  *   You should have received a copy of the GNU General Public License     *
  *   along with this program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
- *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
 #ifndef COREAPPLICATION_H_
@@ -32,30 +32,33 @@
 /// Encapsulates CoreApplication's logic.
 /** This allows it to be reused within MonolithicApplication as well.
  */
-class CoreApplicationInternal {
-  Q_DECLARE_TR_FUNCTIONS(CoreApplicationInternal)
+class CoreApplicationInternal
+{
+    Q_DECLARE_TR_FUNCTIONS(CoreApplicationInternal)
 
-  public:
+public:
     CoreApplicationInternal();
     ~CoreApplicationInternal();
 
     bool init();
 
-  private:
+private:
     bool _coreCreated;
 };
 
-class CoreApplication : public QCoreApplication, public Quassel {
 
-  Q_OBJECT
-  public:
+class CoreApplication : public QCoreApplication, public Quassel
+{
+    Q_OBJECT
+public:
     CoreApplication(int &argc, char **argv);
     ~CoreApplication();
 
     bool init();
 
-  private:
+private:
     CoreApplicationInternal *_internal;
 };
+
 
 #endif

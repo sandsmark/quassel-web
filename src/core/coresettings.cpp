@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-09 by the Quassel Project                          *
+ *   Copyright (C) 2005-2013 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -15,37 +15,49 @@
  *   You should have received a copy of the GNU General Public License     *
  *   along with this program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
- *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
 #include "coresettings.h"
 
 #include "quassel.h"
 
-CoreSettings::CoreSettings(const QString group) : Settings(group, Quassel::buildInfo().coreApplicationName) {
-
+CoreSettings::CoreSettings(const QString group) : Settings(group, Quassel::buildInfo().coreApplicationName)
+{
 }
 
-CoreSettings::~CoreSettings() {
+
+CoreSettings::~CoreSettings()
+{
 }
 
-void CoreSettings::setStorageSettings(const QVariant &data) {
-  setLocalValue("StorageSettings", data);
+
+void CoreSettings::setStorageSettings(const QVariant &data)
+{
+    setLocalValue("StorageSettings", data);
 }
 
-QVariant CoreSettings::storageSettings(const QVariant &def) {
-  return localValue("StorageSettings", def);
+
+QVariant CoreSettings::storageSettings(const QVariant &def)
+{
+    return localValue("StorageSettings", def);
 }
+
 
 // FIXME remove
-QVariant CoreSettings::oldDbSettings() {
-  return localValue("DatabaseSettings");
+QVariant CoreSettings::oldDbSettings()
+{
+    return localValue("DatabaseSettings");
 }
 
-void CoreSettings::setCoreState(const QVariant &data) {
-  setLocalValue("CoreState", data);
+
+void CoreSettings::setCoreState(const QVariant &data)
+{
+    setLocalValue("CoreState", data);
 }
 
-QVariant CoreSettings::coreState(const QVariant &def) {
-  return localValue("CoreState", def);
+
+QVariant CoreSettings::coreState(const QVariant &def)
+{
+    return localValue("CoreState", def);
 }

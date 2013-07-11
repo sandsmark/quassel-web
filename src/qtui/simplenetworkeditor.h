@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-08 by the Quassel Project                          *
+ *   Copyright (C) 2005-2013 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -15,7 +15,7 @@
  *   You should have received a copy of the GNU General Public License     *
  *   along with this program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
- *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
 #ifndef SIMPLENETWORKEDITOR_H
@@ -25,36 +25,38 @@
 
 #include "network.h"
 
-class SimpleNetworkEditor : public QWidget {
-  Q_OBJECT
+class SimpleNetworkEditor : public QWidget
+{
+    Q_OBJECT
 
 public:
-  SimpleNetworkEditor(QWidget *parent = 0);
+    SimpleNetworkEditor(QWidget *parent = 0);
 
-  void displayNetworkInfo(const NetworkInfo &networkInfo);
-  void saveToNetworkInfo(NetworkInfo &networkInfo);
+    void displayNetworkInfo(const NetworkInfo &networkInfo);
+    void saveToNetworkInfo(NetworkInfo &networkInfo);
 
-  QStringList defaultChannels() const;
-  void setDefaultChannels(const QStringList &channels);
+    QStringList defaultChannels() const;
+    void setDefaultChannels(const QStringList &channels);
 
 signals:
-  void widgetHasChanged();
+    void widgetHasChanged();
 
 private slots:
-  // code duplication from settingspages/networkssettingspage.{h|cpp}
-  void on_serverList_itemSelectionChanged();
-  void on_addServer_clicked();
-  void on_deleteServer_clicked();
-  void on_editServer_clicked();
-  void on_upServer_clicked();
-  void on_downServer_clicked();
+    // code duplication from settingspages/networkssettingspage.{h|cpp}
+    void on_serverList_itemSelectionChanged();
+    void on_addServer_clicked();
+    void on_deleteServer_clicked();
+    void on_editServer_clicked();
+    void on_upServer_clicked();
+    void on_downServer_clicked();
 
-  void setWidgetStates();
+    void setWidgetStates();
 
 private:
-  Ui::SimpleNetworkEditor ui;
+    Ui::SimpleNetworkEditor ui;
 
-  NetworkInfo _networkInfo;
+    NetworkInfo _networkInfo;
 };
+
 
 #endif //SIMPLENETWORKEDITOR_H

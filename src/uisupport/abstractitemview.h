@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-09 by the Quassel Project                          *
+ *   Copyright (C) 2005-2013 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -15,7 +15,7 @@
  *   You should have received a copy of the GNU General Public License     *
  *   along with this program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
- *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
 #ifndef ABSTRACTITEMVIEW_H
@@ -29,33 +29,35 @@
 #include <QAbstractItemDelegate>
 #include <QPointer>
 
-class AbstractItemView : public QWidget {
-  Q_OBJECT
+class AbstractItemView : public QWidget
+{
+    Q_OBJECT
 
 public:
-  AbstractItemView(QWidget *parent = 0);
+    AbstractItemView(QWidget *parent = 0);
 
-  inline QAbstractItemModel *model() { return _model; }
-  void setModel(QAbstractItemModel *model);
+    inline QAbstractItemModel *model() { return _model; }
+    void setModel(QAbstractItemModel *model);
 
-  inline QItemSelectionModel *selectionModel() const { return _selectionModel; }
-  void setSelectionModel(QItemSelectionModel *selectionModel);
+    inline QItemSelectionModel *selectionModel() const { return _selectionModel; }
+    void setSelectionModel(QItemSelectionModel *selectionModel);
 
-  inline QModelIndex currentIndex() const { return _selectionModel->currentIndex(); }
+    inline QModelIndex currentIndex() const { return _selectionModel->currentIndex(); }
 
-protected Q_SLOTS:
-  virtual void closeEditor(QWidget *, QAbstractItemDelegate::EndEditHint) {};
-  virtual void commitData(QWidget *) {};
-  virtual void currentChanged(const QModelIndex &, const QModelIndex &) {};
-  virtual void dataChanged(const QModelIndex &, const QModelIndex &) {};
-  virtual void editorDestroyed(QObject *) {};
-  virtual void rowsAboutToBeRemoved(const QModelIndex &, int, int) {};
-  virtual void rowsInserted(const QModelIndex &, int, int) {};
-  virtual void selectionChanged(const QItemSelection &, const QItemSelection &) {};
+protected slots:
+    virtual void closeEditor(QWidget *, QAbstractItemDelegate::EndEditHint) {};
+    virtual void commitData(QWidget *) {};
+    virtual void currentChanged(const QModelIndex &, const QModelIndex &) {};
+    virtual void dataChanged(const QModelIndex &, const QModelIndex &) {};
+    virtual void editorDestroyed(QObject *) {};
+    virtual void rowsAboutToBeRemoved(const QModelIndex &, int, int) {};
+    virtual void rowsInserted(const QModelIndex &, int, int) {};
+    virtual void selectionChanged(const QItemSelection &, const QItemSelection &) {};
 
 protected:
-  QPointer<QAbstractItemModel> _model;
-  QPointer<QItemSelectionModel> _selectionModel;
+    QPointer<QAbstractItemModel> _model;
+    QPointer<QItemSelectionModel> _selectionModel;
 };
+
 
 #endif // ABSTRACTITEMVIEW_H

@@ -1,11 +1,11 @@
 /***************************************************************************
- *   Copyright (C) 2005-09 by the Quassel Project                          *
+ *   Copyright (C) 2005-2013 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
  *   the Free Software Foundation; either version 2 of the License, or     *
- *   (at your option) any later version.                                   *
+ *   (at your option) version 3.                                           *
  *                                                                         *
  *   This program is distributed in the hope that it will be useful,       *
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
@@ -15,7 +15,7 @@
  *   You should have received a copy of the GNU General Public License     *
  *   along with this program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
- *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
 #ifndef IDENTITIESSETTINGSPAGE_H
@@ -32,99 +32,101 @@
 
 class QAbstractItemModel;
 
-class IdentitiesSettingsPage : public SettingsPage {
-  Q_OBJECT
+class IdentitiesSettingsPage : public SettingsPage
+{
+    Q_OBJECT
 
 public:
-  IdentitiesSettingsPage(QWidget *parent = 0);
+    IdentitiesSettingsPage(QWidget *parent = 0);
 
-  virtual inline bool needsCoreConnection() const { return true; }
+    virtual inline bool needsCoreConnection() const { return true; }
 
-  bool aboutToSave();
+    bool aboutToSave();
 
 public slots:
-  void save();
-  void load();
+    void save();
+    void load();
 
 private slots:
-  void coreConnectionStateChanged(bool);
-  void clientIdentityCreated(IdentityId);
-  void clientIdentityUpdated();
-  void clientIdentityRemoved(IdentityId);
+    void coreConnectionStateChanged(bool);
+    void clientIdentityCreated(IdentityId);
+    void clientIdentityUpdated();
+    void clientIdentityRemoved(IdentityId);
 
-  void on_identityList_currentIndexChanged(int index);
+    void on_identityList_currentIndexChanged(int index);
 
-  void on_addIdentity_clicked();
-  void on_deleteIdentity_clicked();
-  void on_renameIdentity_clicked();
+    void on_addIdentity_clicked();
+    void on_deleteIdentity_clicked();
+    void on_renameIdentity_clicked();
 
 #ifdef HAVE_SSL
-  void continueUnsecured();
+    void continueUnsecured();
 #endif
-  void widgetHasChanged();
-  void setWidgetStates();
+    void widgetHasChanged();
+    void setWidgetStates();
 
 private:
-  Ui::IdentitiesSettingsPage ui;
+    Ui::IdentitiesSettingsPage ui;
 
-  QHash<IdentityId, CertIdentity *> identities;
-  IdentityId currentId;
+    QHash<IdentityId, CertIdentity *> identities;
+    IdentityId currentId;
 
-  QList<IdentityId> changedIdentities;  // for setting the widget changed state
-  QList<IdentityId> deletedIdentities;
+    QList<IdentityId> changedIdentities; // for setting the widget changed state
+    QList<IdentityId> deletedIdentities;
 
-  bool _editSsl;
+    bool _editSsl;
 
-  void insertIdentity(CertIdentity *identity);
-  void removeIdentity(Identity *identity);
-  void renameIdentity(IdentityId id, const QString &newName);
+    void insertIdentity(CertIdentity *identity);
+    void removeIdentity(Identity *identity);
+    void renameIdentity(IdentityId id, const QString &newName);
 
 #ifdef HAVE_SSL
-  QSslKey keyByFilename(const QString &filename);
-  void showKeyState(const QSslKey &key);
-  QSslCertificate certByFilename(const QString &filename);
-  void showCertState(const QSslCertificate &cert);
+    QSslKey keyByFilename(const QString &filename);
+    void showKeyState(const QSslKey &key);
+    QSslCertificate certByFilename(const QString &filename);
+    void showCertState(const QSslCertificate &cert);
 #endif
 
-  bool testHasChanged();
+    bool testHasChanged();
 };
+
 
 // ==============================
 //  Various Dialogs
 // ==============================
-class CreateIdentityDlg : public QDialog {
-  Q_OBJECT
+class CreateIdentityDlg : public QDialog
+{
+    Q_OBJECT
 
 public:
-  CreateIdentityDlg(QAbstractItemModel *model, QWidget *parent = 0);
+    CreateIdentityDlg(QAbstractItemModel *model, QWidget *parent = 0);
 
-  QString identityName() const;
-  IdentityId duplicateId() const;
+    QString identityName() const;
+    IdentityId duplicateId() const;
 
 private slots:
-  void on_identityName_textChanged(const QString &text);
+    void on_identityName_textChanged(const QString &text);
 
 private:
-  Ui::CreateIdentityDlg ui;
+    Ui::CreateIdentityDlg ui;
 };
 
 
-
-class SaveIdentitiesDlg : public QDialog {
-  Q_OBJECT
+class SaveIdentitiesDlg : public QDialog
+{
+    Q_OBJECT
 
 public:
-  SaveIdentitiesDlg(const QList<CertIdentity *> &toCreate, const QList<CertIdentity *> &toUpdate, const QList<IdentityId> &toRemove, QWidget *parent = 0);
+    SaveIdentitiesDlg(const QList<CertIdentity *> &toCreate, const QList<CertIdentity *> &toUpdate, const QList<IdentityId> &toRemove, QWidget *parent = 0);
 
 private slots:
-  void clientEvent();
+    void clientEvent();
 
 private:
-  Ui::SaveIdentitiesDlg ui;
+    Ui::SaveIdentitiesDlg ui;
 
-  int numevents, rcvevents;
+    int numevents, rcvevents;
 };
-
 
 
 #endif

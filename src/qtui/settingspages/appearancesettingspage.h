@@ -1,11 +1,11 @@
 /***************************************************************************
- *   Copyright (C) 2005-09 by the Quassel Project                          *
+ *   Copyright (C) 2005-2013 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
  *   the Free Software Foundation; either version 2 of the License, or     *
- *   (at your option) any later version.                                   *
+ *   (at your option) version 3.                                           *
  *                                                                         *
  *   This program is distributed in the hope that it will be useful,       *
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
@@ -15,7 +15,7 @@
  *   You should have received a copy of the GNU General Public License     *
  *   along with this program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
- *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
 #ifndef APPEARANCESETTINGSPAGE_H
@@ -30,35 +30,37 @@
 #include "settingspage.h"
 #include "ui_appearancesettingspage.h"
 
-class AppearanceSettingsPage : public SettingsPage {
-  Q_OBJECT
+class AppearanceSettingsPage : public SettingsPage
+{
+    Q_OBJECT
 
 public:
-  AppearanceSettingsPage(QWidget *parent = 0);
+    AppearanceSettingsPage(QWidget *parent = 0);
 
-  inline bool hasDefaults() const { return true; }
+    inline bool hasDefaults() const { return true; }
 
 public slots:
-  void save();
-  void load();
-  void defaults();
+    void save();
+    void load();
+    void defaults();
 
 private slots:
-  void widgetHasChanged();
+    void widgetHasChanged();
 
-  void chooseStyleSheet();
+    void chooseStyleSheet();
 
 private:
-  bool testHasChanged();
-  void initStyleComboBox();
-  void initLanguageComboBox();
-  QLocale selectedLocale() const;
+    bool testHasChanged();
+    void initStyleComboBox();
+    void initLanguageComboBox();
+    QLocale selectedLocale() const;
 
-  Ui::AppearanceSettingsPage ui;
-  QHash<QString, QVariant> settings;
-  QMap<QString, QLocale> _locales;
+    Ui::AppearanceSettingsPage ui;
+    QHash<QString, QVariant> settings;
+    QMap<QString, QLocale> _locales;
 
-  inline QString settingsKey() const { return QString("QtUi"); }
+    inline QString settingsKey() const { return QString("QtUi"); }
 };
+
 
 #endif

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-09 by the Quassel Project                          *
+ *   Copyright (C) 2005-2013 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -15,7 +15,7 @@
  *   You should have received a copy of the GNU General Public License     *
  *   along with this program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
- *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
 #include "bufferviewmanager.h"
@@ -25,67 +25,80 @@
 
 INIT_SYNCABLE_OBJECT(BufferViewManager)
 BufferViewManager::BufferViewManager(SignalProxy *proxy, QObject *parent)
-  : SyncableObject(parent),
+    : SyncableObject(parent),
     _proxy(proxy)
 {
-  _proxy->synchronize(this);
+    _proxy->synchronize(this);
 }
 
-BufferViewConfig *BufferViewManager::bufferViewConfig(int bufferViewId) const {
-  if(_bufferViewConfigs.contains(bufferViewId))
-    return _bufferViewConfigs[bufferViewId];
-  else
-    return 0;
+
+BufferViewConfig *BufferViewManager::bufferViewConfig(int bufferViewId) const
+{
+    if (_bufferViewConfigs.contains(bufferViewId))
+        return _bufferViewConfigs[bufferViewId];
+    else
+        return 0;
 }
 
-BufferViewConfig *BufferViewManager::bufferViewConfigFactory(int bufferViewConfigId) {
-  return new BufferViewConfig(bufferViewConfigId, this);
+
+BufferViewConfig *BufferViewManager::bufferViewConfigFactory(int bufferViewConfigId)
+{
+    return new BufferViewConfig(bufferViewConfigId, this);
 }
 
-void BufferViewManager::addBufferViewConfig(BufferViewConfig *config) {
-  if(_bufferViewConfigs.contains(config->bufferViewId()))
-     return;
 
-  _proxy->synchronize(config);
-  _bufferViewConfigs[config->bufferViewId()] = config;
-  int bufferViewId = config->bufferViewId();
-  SYNC_OTHER(addBufferViewConfig, ARG(bufferViewId))
-  Q_EMIT bufferViewConfigAdded(bufferViewId);
+void BufferViewManager::addBufferViewConfig(BufferViewConfig *config)
+{
+    if (_bufferViewConfigs.contains(config->bufferViewId()))
+        return;
+
+    _proxy->synchronize(config);
+    _bufferViewConfigs[config->bufferViewId()] = config;
+    int bufferViewId = config->bufferViewId();
+    SYNC_OTHER(addBufferViewConfig, ARG(bufferViewId))
+    emit bufferViewConfigAdded(bufferViewId);
 }
 
-void BufferViewManager::addBufferViewConfig(int bufferViewConfigId) {
-  if(_bufferViewConfigs.contains(bufferViewConfigId))
-     return;
-  
-  addBufferViewConfig(bufferViewConfigFactory(bufferViewConfigId));
+
+void BufferViewManager::addBufferViewConfig(int bufferViewConfigId)
+{
+    if (_bufferViewConfigs.contains(bufferViewConfigId))
+        return;
+
+    addBufferViewConfig(bufferViewConfigFactory(bufferViewConfigId));
 }
 
-void BufferViewManager::deleteBufferViewConfig(int bufferViewConfigId) {
-  if(!_bufferViewConfigs.contains(bufferViewConfigId))
-     return;
+void BufferViewManager::deleteBufferViewConfig(int bufferViewConfigId)
+{
+    if (!_bufferViewConfigs.contains(bufferViewConfigId))
+        return;
 
-  _bufferViewConfigs[bufferViewConfigId]->deleteLater();
-  _bufferViewConfigs.remove(bufferViewConfigId);
-  SYNC(ARG(bufferViewConfigId))
-  Q_EMIT bufferViewConfigDeleted(bufferViewConfigId);
+    _bufferViewConfigs[bufferViewConfigId]->deleteLater();
+    _bufferViewConfigs.remove(bufferViewConfigId);
+    SYNC(ARG(bufferViewConfigId))
+    emit bufferViewConfigDeleted(bufferViewConfigId);
 }
 
-QVariantList BufferViewManager::initBufferViewIds() const {
-  QVariantList bufferViewIds;
-  BufferViewConfigHash::const_iterator iter = _bufferViewConfigs.constBegin();
-  BufferViewConfigHash::const_iterator iterEnd = _bufferViewConfigs.constEnd();
-  while(iter != iterEnd) {
-    bufferViewIds << (*iter)->bufferViewId();
-    iter++;
-  }
-  return bufferViewIds;
+
+QVariantList BufferViewManager::initBufferViewIds() const
+{
+    QVariantList bufferViewIds;
+    BufferViewConfigHash::const_iterator iter = _bufferViewConfigs.constBegin();
+    BufferViewConfigHash::const_iterator iterEnd = _bufferViewConfigs.constEnd();
+    while (iter != iterEnd) {
+        bufferViewIds << (*iter)->bufferViewId();
+        iter++;
+    }
+    return bufferViewIds;
 }
 
-void BufferViewManager::initSetBufferViewIds(const QVariantList bufferViewIds) {
-  QVariantList::const_iterator iter = bufferViewIds.constBegin();
-  QVariantList::const_iterator iterEnd = bufferViewIds.constEnd();
-  while(iter != iterEnd) {
-    newBufferViewConfig((*iter).value<int>());
-    iter++;
-  }
+
+void BufferViewManager::initSetBufferViewIds(const QVariantList bufferViewIds)
+{
+    QVariantList::const_iterator iter = bufferViewIds.constBegin();
+    QVariantList::const_iterator iterEnd = bufferViewIds.constEnd();
+    while (iter != iterEnd) {
+        newBufferViewConfig((*iter).value<int>());
+        iter++;
+    }
 }

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-09 by the Quassel Project                          *
+ *   Copyright (C) 2005-2013 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -15,7 +15,7 @@
  *   You should have received a copy of the GNU General Public License     *
  *   along with this program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
- *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
 #ifndef CLICKABLELABEL_H
@@ -23,17 +23,19 @@
 
 #include <QLabel>
 
-class ClickableLabel : public QLabel {
-  Q_OBJECT
+class ClickableLabel : public QLabel
+{
+    Q_OBJECT
 
 public:
-  ClickableLabel(QWidget *parent = 0);
+    ClickableLabel(QWidget *parent = 0);
 
-Q_SIGNALS:
-  void clicked();
+signals:
+    void clicked();
 
 protected:
-  void mouseReleaseEvent(QMouseEvent *event);
+    void mouseReleaseEvent(QMouseEvent *event);
 };
+
 
 #endif //CLICKABLELABEL_H

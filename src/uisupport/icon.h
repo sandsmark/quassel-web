@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-09 by the Quassel Project                          *
+ *   Copyright (C) 2005-2013 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -15,7 +15,7 @@
  *   You should have received a copy of the GNU General Public License     *
  *   along with this program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
- *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
 #ifndef ICON_H_
@@ -30,25 +30,27 @@
  *  The overloaded ctor uses IconLoader to locate an icon with this basename in the current theme
  *  or in Qt Resources.
  */
-class Icon : public QIcon {
-
-  public:
+class Icon : public QIcon
+{
+public:
     Icon();
     explicit Icon(const QString &iconName);
-    explicit Icon(const QIcon& copy);
+    explicit Icon(const QIcon &copy);
 
-    Icon& operator=(const Icon &other);
+    Icon &operator=(const Icon &other);
 };
+
 
 #else /* HAVE_KDE */
 #include <KIcon>
-class Icon : public KIcon {
-
-  public:
+class Icon : public KIcon
+{
+public:
     inline Icon() : KIcon() {};
     inline explicit Icon(const QString &iconName) : KIcon(iconName) {};
-    inline explicit Icon(const QIcon& copy) : KIcon(copy) {};
+    inline explicit Icon(const QIcon &copy) : KIcon(copy) {};
 };
+
 
 #endif /* HAVE_KDE */
 

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-09 by the Quassel Project                          *
+ *   Copyright (C) 2005-2013 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -15,7 +15,7 @@
  *   You should have received a copy of the GNU General Public License     *
  *   along with this program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
- *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
 #ifndef _SELECTIONMODELSYNCHRONIZER_H_
@@ -26,45 +26,47 @@
 
 class QAbstractItemModel;
 
-class SelectionModelSynchronizer : public QObject {
-  Q_OBJECT
+class SelectionModelSynchronizer : public QObject
+{
+    Q_OBJECT
 
 public:
-  SelectionModelSynchronizer(QAbstractItemModel *parent = 0);
+    SelectionModelSynchronizer(QAbstractItemModel *parent = 0);
 
-  void synchronizeSelectionModel(QItemSelectionModel *selectionModel);
-  void removeSelectionModel(QItemSelectionModel *selectionModel);
+    void synchronizeSelectionModel(QItemSelectionModel *selectionModel);
+    void removeSelectionModel(QItemSelectionModel *selectionModel);
 
-  inline QAbstractItemModel *model() { return _model; }
-  inline QItemSelectionModel *selectionModel() const { return const_cast<QItemSelectionModel *>(&_selectionModel); }
-  inline QModelIndex currentIndex() const { return _selectionModel.currentIndex(); }
-  inline QItemSelection currentSelection() const { return _selectionModel.selection(); }
+    inline QAbstractItemModel *model() { return _model; }
+    inline QItemSelectionModel *selectionModel() const { return const_cast<QItemSelectionModel *>(&_selectionModel); }
+    inline QModelIndex currentIndex() const { return _selectionModel.currentIndex(); }
+    inline QItemSelection currentSelection() const { return _selectionModel.selection(); }
 
-private Q_SLOTS:
-  void syncedCurrentChanged(const QModelIndex &current, const QModelIndex &previous);
-  void syncedSelectionChanged(const QItemSelection &selected, const QItemSelection &previous);
+private slots:
+    void syncedCurrentChanged(const QModelIndex &current, const QModelIndex &previous);
+    void syncedSelectionChanged(const QItemSelection &selected, const QItemSelection &previous);
 
-  void setCurrentIndex(const QModelIndex &index);
-  void setCurrentSelection(const QItemSelection &selection);
+    void setCurrentIndex(const QModelIndex &index);
+    void setCurrentSelection(const QItemSelection &selection);
 
-  void currentChanged(const QModelIndex &current, const QModelIndex &previous);
-  void selectionChanged(const QItemSelection &selected, const QItemSelection &deselected);
+    void currentChanged(const QModelIndex &current, const QModelIndex &previous);
+    void selectionChanged(const QItemSelection &selected, const QItemSelection &deselected);
 
-  void selectionModelDestroyed(QObject *object);
+    void selectionModelDestroyed(QObject *object);
 
 private:
-  QAbstractItemModel *_model;
-  QItemSelectionModel _selectionModel;
-  bool _changeCurrentEnabled;
-  bool _changeSelectionEnabled;
+    QAbstractItemModel *_model;
+    QItemSelectionModel _selectionModel;
+    bool _changeCurrentEnabled;
+    bool _changeSelectionEnabled;
 
-  bool checkBaseModel(QItemSelectionModel *model);
-  QModelIndex mapFromSource(const QModelIndex &sourceIndex, const QItemSelectionModel *selectionModel);
-  QItemSelection mapSelectionFromSource(const QItemSelection &sourceSelection, const QItemSelectionModel *selectionModel);
-  QModelIndex mapToSource(const QModelIndex &index, QItemSelectionModel *selectionModel);
-  QItemSelection mapSelectionToSource(const QItemSelection &selection, QItemSelectionModel *selectionModel);
+    bool checkBaseModel(QItemSelectionModel *model);
+    QModelIndex mapFromSource(const QModelIndex &sourceIndex, const QItemSelectionModel *selectionModel);
+    QItemSelection mapSelectionFromSource(const QItemSelection &sourceSelection, const QItemSelectionModel *selectionModel);
+    QModelIndex mapToSource(const QModelIndex &index, QItemSelectionModel *selectionModel);
+    QItemSelection mapSelectionToSource(const QItemSelection &selection, QItemSelectionModel *selectionModel);
 
-  QSet<QItemSelectionModel *> _selectionModels;
+    QSet<QItemSelectionModel *> _selectionModels;
 };
+
 
 #endif
